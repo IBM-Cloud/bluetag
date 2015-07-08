@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+@javax.ws.rs.ApplicationPath("resources")
 @Path("/test")
 public class HelloWorldREST {
 	
