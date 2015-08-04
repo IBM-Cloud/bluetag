@@ -29,57 +29,59 @@ public class GameLogicThread extends Thread {
 	private String contentHeaderValue = "application/json";
 	private String cloudantURI = "https://ce70b172-450a-4bb0-a7b0-1c57c500f8f7-bluemix:c2858c25dda5de8d0679be0fa50e7801046ac74de2fa80dda1cb5cb585150328@ce70b172-450a-4bb0-a7b0-1c57c500f8f7-bluemix.cloudant.com";
 
-	private HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
-	private final int maxTaggableDistance = 10;
+	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+	private final int maxTaggableDistance = 5;
 
 	public void run() {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
 
-		try {
-			// get all location info from cloudantDB
-			HttpGet locInfoGet = new HttpGet(cloudantURI
-					+ "/location/_all_docs?include_docs=true");
-			locInfoGet.addHeader(authHeaderKey, authHeaderValue);
-			locInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
-			locInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
-			HttpResponse locInfoResp = httpclient.execute(locInfoGet);
-			Gson gson = new Gson();
-			AllDocsModel allDocs = gson.fromJson(
-					EntityUtils.toString(locInfoResp.getEntity()),
-					AllDocsModel.class);
-			httpclient.close();
+		while (true) {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+			try {
+				// get all location info from cloudantDB
+				HttpGet locInfoGet = new HttpGet(cloudantURI
+						+ "/location/_all_docs?include_docs=true");
+				locInfoGet.addHeader(authHeaderKey, authHeaderValue);
+				locInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+				locInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
+				HttpResponse locInfoResp = httpclient.execute(locInfoGet);
+				Gson gson = new Gson();
+				AllDocsModel allDocs = gson.fromJson(
+						EntityUtils.toString(locInfoResp.getEntity()),
+						AllDocsModel.class);
+				httpclient.close();
 
-			// clear taggedDB and start updating
-			taggableDB = new HashMap<String, ArrayList<String>>();
-
-			for (CloudantRowModel row1 : allDocs.getRows()) {
-				LocationModel loc1 = row1.getDoc();
-				taggableDB.put(loc1.get_id(), new ArrayList<String>());
-				for (CloudantRowModel row2 : allDocs.getRows()) {
-					LocationModel loc2 = row2.getDoc();
-					// if person2 is standing less than 3 meters away, add them
-					// to taggable
-					if (!loc1.get_id().equals(loc2.get_id())
-							&& distance(loc1.getLatitude(), loc2.getLatitude(),
-									loc1.getLongitude(), loc2.getLongitude(),
-									loc1.getAltitude(), loc2.getAltitude()) <= maxTaggableDistance) {
-						taggableDB.get(loc1.get_id()).add(loc2.get_id());
+				for (CloudantRowModel row1 : allDocs.getRows()) {
+					LocationModel loc1 = row1.getDoc();
+					taggableDB.put(loc1.get_id(), new ArrayList<String>());
+					for (CloudantRowModel row2 : allDocs.getRows()) {
+						LocationModel loc2 = row2.getDoc();
+						// if person2 is standing less than 3 meters away, add
+						// them to taggable
+						if (!loc1.get_id().equals(loc2.get_id())
+								&& distance(loc1.getLatitude(),
+										loc2.getLatitude(),
+										loc1.getLongitude(),
+										loc2.getLongitude(),
+										loc1.getAltitude(), loc2.getAltitude()) <= maxTaggableDistance) {
+							taggableDB.get(loc1.get_id()).add(loc2.get_id());
+						}
 					}
 				}
-			}
 
-			// update global database
-			DatabaseClass.setTaggabledDB(taggableDB);
+				// update global database
+				DatabaseClass.setTaggabledDB(taggableDB);
 
-		} catch (Exception e) {
-			try {
-				httpclient.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					httpclient.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			e.printStackTrace();
 		}
-
 	}
 
 	/*
