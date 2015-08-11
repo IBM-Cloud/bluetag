@@ -13,14 +13,14 @@ import org.apache.http.util.EntityUtils;
 public class QueryService {
 	private String failJson = "{\"result\": \"something has gone horribly wrong. Please try again\"}";
 	private String authHeaderKey = "Authorization";
-	private String toConvert = "ce70b172-450a-4bb0-a7b0-1c57c500f8f7-bluemix:c2858c25dda5de8d0679be0fa50e7801046ac74de2fa80dda1cb5cb585150328";
+	private String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
 	private String authHeaderValue = "Basic "
 			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
 	private String acceptHeaderKey = "Accept";
 	private String acceptHeaderValue = "application/json";
 	private String contentHeaderKey = "Content-Type";
 	private String contentHeaderValue = "application/json";
-	private String cloudantURI = "https://ce70b172-450a-4bb0-a7b0-1c57c500f8f7-bluemix:c2858c25dda5de8d0679be0fa50e7801046ac74de2fa80dda1cb5cb585150328@ce70b172-450a-4bb0-a7b0-1c57c500f8f7-bluemix.cloudant.com";
+	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
 	
 	public String getUserInfo(String username){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
