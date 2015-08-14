@@ -7,11 +7,14 @@ import java.util.HashMap;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import com.bluetag.api.admin.model.TagModel;
 import com.bluetag.api.game.database.DatabaseClass;
 import com.bluetag.api.game.model.AllDocsModel;
 import com.bluetag.api.game.model.CloudantRowModel;
@@ -19,15 +22,15 @@ import com.bluetag.api.game.model.LocationModel;
 import com.google.gson.Gson;
 
 public class GameLogicThread extends Thread {
-	private String authHeaderKey = "Authorization";
-	private String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
-	private String authHeaderValue = "Basic "
+	private static String authHeaderKey = "Authorization";
+	private static String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
+	private static String authHeaderValue = "Basic "
 			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
-	private String acceptHeaderKey = "Accept";
-	private String acceptHeaderValue = "application/json";
-	private String contentHeaderKey = "Content-Type";
-	private String contentHeaderValue = "application/json";
-	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
+	private static String acceptHeaderKey = "Accept";
+	private static String acceptHeaderValue = "application/json";
+	private static String contentHeaderKey = "Content-Type";
+	private static String contentHeaderValue = "application/json";
+	private static String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
 
 	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
 	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
@@ -36,11 +39,12 @@ public class GameLogicThread extends Thread {
 	public void run() {
 
 		while (true) {
-			CloseableHttpClient httpclient = HttpClients.createDefault();
+			CloseableHttpClient httpclient = HttpClientBuilder.create().setMaxConnPerRoute(100).setMaxConnTotal(100).build();
 			HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
 			HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 			try {
 				// get all location info from cloudantDB
+				HashMap<String, ArrayList<String>> taggedDB = getTagged(httpclient);
 				HttpGet locInfoGet = new HttpGet(cloudantURI
 						+ "/location/_all_docs?include_docs=true");
 				locInfoGet.addHeader(authHeaderKey, authHeaderValue);
@@ -53,14 +57,12 @@ public class GameLogicThread extends Thread {
 						AllDocsModel.class);
 				httpclient.close();
 
-				
-
 				for (CloudantRowModel row1 : allDocs.getRows()) {
-					LocationModel loc1 = row1.getDoc();
+					LocationModel loc1 = (LocationModel) row1.getDoc();
 					taggableDB.put(loc1.get_id(), new ArrayList<String>());
 					distancesDB.put(loc1.get_id(), new ArrayList<String>());
 					for (CloudantRowModel row2 : allDocs.getRows()) {
-						LocationModel loc2 = row2.getDoc();
+						LocationModel loc2 = (LocationModel) row2.getDoc();
 						// if person2 is standing less than 3 meters away, add
 						// them to taggable
 						if (!loc1.get_id().equals(loc2.get_id())
@@ -68,20 +70,17 @@ public class GameLogicThread extends Thread {
 										loc2.getLatitude(),
 										loc1.getLongitude(),
 										loc2.getLongitude(),
-										0, 0) <= maxTaggableDistance) {
+										0, 0) <= maxTaggableDistance
+										&& !taggedDB.get(loc1.get_id()).contains(loc2.get_id())) {
 							taggableDB.get(loc1.get_id()).add(loc2.get_id());
-							distancesDB.get(loc1.get_id()).add(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString().substring(0, 4) );
-							
+							distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));
 						}
 					}
 				}
-				
-
 
 				// update global database
 				DatabaseClass.setTaggabledDB(taggableDB);
 				DatabaseClass.setDistancesDB(distancesDB);
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -92,6 +91,44 @@ public class GameLogicThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	private static HashMap<String, ArrayList<String>> getTagged(CloseableHttpClient httpclient){
+		HashMap<String, ArrayList<String>> tagged = new HashMap<String, ArrayList<String>>();
+		HttpGet tagInfoGet = new HttpGet(cloudantURI
+				+ "/tag/_all_docs?include_docs=true");
+		tagInfoGet.addHeader(authHeaderKey, authHeaderValue);
+		tagInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+		tagInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
+		try {
+			HttpResponse tagInfoResp = httpclient.execute(tagInfoGet);
+			Gson gson = new Gson();
+			AllDocsModel allDocs = gson.fromJson(
+					EntityUtils.toString(tagInfoResp.getEntity()),
+					AllDocsModel.class);
+			for(CloudantRowModel row1 : allDocs.getRows()){
+				TagModel tag1 = (TagModel) row1.getDoc();
+				String name = tag1.get_id();
+				tagged.put(name, tag1.getTagged());
+			}
+			return tagged;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return tagged;
+		}
+	}
+	
+	private static String truncate(String str){
+	boolean done=false;
+	int i = 0;
+	while(!done){
+		if(str.charAt(i) == '.'){
+			i=i+1;
+			done=true;
+		}
+		i++;
+	}
+	return str.substring(0, i);
 	}
 
 	/*

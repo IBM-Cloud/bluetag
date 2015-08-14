@@ -4,7 +4,7 @@ public class CloudantRowModel {
 	private String id;
 	private String key;
 	private Value value;
-	private LocationModel doc;
+	private Object doc;
 	
 	public String getId() {
 		return id;
@@ -24,10 +24,10 @@ public class CloudantRowModel {
 	public void setValue(Value value) {
 		this.value = value;
 	}
-	public LocationModel getDoc() {
+	public Object getDoc() {
 		return doc;
 	}
-	public void setDoc(LocationModel doc) {
+	public void setDoc(Object doc) {
 		this.doc = doc;
 	}
 	
