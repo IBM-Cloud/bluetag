@@ -14,11 +14,11 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import com.bluetag.api.admin.model.TagModel;
 import com.bluetag.api.game.database.DatabaseClass;
 import com.bluetag.api.game.model.AllDocsModel;
 import com.bluetag.api.game.model.CloudantRowModel;
 import com.bluetag.api.game.model.LocationModel;
+import com.bluetag.api.game.model.TagModel;
 import com.google.gson.Gson;
 
 public class GameLogicThread extends Thread {
@@ -108,8 +108,7 @@ public class GameLogicThread extends Thread {
 					AllDocsModel.class);
 			for(CloudantRowModel row1 : allDocs.getRows()){
 				TagModel tag1 = (TagModel) row1.getDoc();
-				String name = tag1.get_id();
-				tagged.put(name, tag1.getTagged());
+				tagged.put(tag1.get_id(), tag1.getTagged());
 			}
 			return tagged;
 		} catch (Exception e) {
