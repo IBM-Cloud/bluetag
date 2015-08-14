@@ -80,7 +80,7 @@ public class GameLogicThread extends Thread {
 
 				// update global database
 				DatabaseClass.setTaggabledDB(taggableDB);
-				DatabaseClass.setDistancesDB(taggableDB);
+				DatabaseClass.setDistancesDB(distancesDB);
 
 			} catch (Exception e) {
 				e.printStackTrace();
