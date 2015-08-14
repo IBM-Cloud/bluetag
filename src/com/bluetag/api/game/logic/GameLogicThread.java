@@ -30,13 +30,15 @@ public class GameLogicThread extends Thread {
 	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
 
 	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
-	private final int maxTaggableDistance = 5;
+	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
+	private final int maxTaggableDistance = 1000;
 
 	public void run() {
 
 		while (true) {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+			HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 			try {
 				// get all location info from cloudantDB
 				HttpGet locInfoGet = new HttpGet(cloudantURI
@@ -51,9 +53,12 @@ public class GameLogicThread extends Thread {
 						AllDocsModel.class);
 				httpclient.close();
 
+				
+
 				for (CloudantRowModel row1 : allDocs.getRows()) {
 					LocationModel loc1 = row1.getDoc();
 					taggableDB.put(loc1.get_id(), new ArrayList<String>());
+					distances.put(loc1.get_id(), new ArrayList<String>());
 					for (CloudantRowModel row2 : allDocs.getRows()) {
 						LocationModel loc2 = row2.getDoc();
 						// if person2 is standing less than 3 meters away, add
@@ -63,14 +68,19 @@ public class GameLogicThread extends Thread {
 										loc2.getLatitude(),
 										loc1.getLongitude(),
 										loc2.getLongitude(),
-										loc1.getAltitude(), loc2.getAltitude()) <= maxTaggableDistance) {
+										0, 0) <= maxTaggableDistance) {
 							taggableDB.get(loc1.get_id()).add(loc2.get_id());
+							distancesDB.get(loc1.get_id()).add(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString().substring(0, 4) );
+							
 						}
 					}
 				}
+				
+
 
 				// update global database
 				DatabaseClass.setTaggabledDB(taggableDB);
+				DatabaseClass.setDistancesDB(taggableDB);
 
 			} catch (Exception e) {
 				e.printStackTrace();
