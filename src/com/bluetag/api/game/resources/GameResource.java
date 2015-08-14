@@ -17,7 +17,7 @@ public class GameResource {
 	@Path("/{username}")
 	public String getTaggable(@PathParam("username") String username){
 		Gson gson = new Gson();
-		TaggableModel taggableModel = new TaggableModel(DatabaseClass.getTaggableList(username));
+		TaggableModel taggableModel = new TaggableModel(DatabaseClass.getTaggableList(username),DatabaseClass.getDistancesList(username));
 		return gson.toJson(taggableModel);
 	}
 }

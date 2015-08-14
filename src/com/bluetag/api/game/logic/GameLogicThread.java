@@ -58,7 +58,7 @@ public class GameLogicThread extends Thread {
 				for (CloudantRowModel row1 : allDocs.getRows()) {
 					LocationModel loc1 = row1.getDoc();
 					taggableDB.put(loc1.get_id(), new ArrayList<String>());
-					distances.put(loc1.get_id(), new ArrayList<String>());
+					distancesDB.put(loc1.get_id(), new ArrayList<String>());
 					for (CloudantRowModel row2 : allDocs.getRows()) {
 						LocationModel loc2 = row2.getDoc();
 						// if person2 is standing less than 3 meters away, add
