@@ -15,10 +15,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.bluetag.api.game.database.DatabaseClass;
-import com.bluetag.api.game.model.AllDocsModel;
-import com.bluetag.api.game.model.CloudantRowModel;
+import com.bluetag.api.game.model.AllLocationDocsModel;
+import com.bluetag.api.game.model.AllTagDocsModel;
+import com.bluetag.api.game.model.LocationRowModel;
 import com.bluetag.api.game.model.LocationModel;
 import com.bluetag.api.game.model.TagModel;
+import com.bluetag.api.game.model.TagRowModel;
 import com.google.gson.Gson;
 
 public class GameLogicThread extends Thread {
@@ -52,16 +54,16 @@ public class GameLogicThread extends Thread {
 				locInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
 				HttpResponse locInfoResp = httpclient.execute(locInfoGet);
 				Gson gson = new Gson();
-				AllDocsModel allDocs = gson.fromJson(
+				AllLocationDocsModel allDocs = gson.fromJson(
 						EntityUtils.toString(locInfoResp.getEntity()),
-						AllDocsModel.class);
+						AllLocationDocsModel.class);
 				httpclient.close();
 
-				for (CloudantRowModel row1 : allDocs.getRows()) {
-					LocationModel loc1 = (LocationModel) row1.getDoc();
+				for (LocationRowModel row1 : allDocs.getRows()) {
+					LocationModel loc1 = row1.getDoc();
 					taggableDB.put(loc1.get_id(), new ArrayList<String>());
 					distancesDB.put(loc1.get_id(), new ArrayList<String>());
-					for (CloudantRowModel row2 : allDocs.getRows()) {
+					for (LocationRowModel row2 : allDocs.getRows()) {
 						LocationModel loc2 = (LocationModel) row2.getDoc();
 						// if person2 is standing less than 3 meters away, add
 						// them to taggable
@@ -103,11 +105,11 @@ public class GameLogicThread extends Thread {
 		try {
 			HttpResponse tagInfoResp = httpclient.execute(tagInfoGet);
 			Gson gson = new Gson();
-			AllDocsModel allDocs = gson.fromJson(
+			AllTagDocsModel allDocs = gson.fromJson(
 					EntityUtils.toString(tagInfoResp.getEntity()),
-					AllDocsModel.class);
-			for(CloudantRowModel row1 : allDocs.getRows()){
-				TagModel tag1 = (TagModel) row1.getDoc();
+					AllTagDocsModel.class);
+			for(TagRowModel row1 : allDocs.getRows()){
+				TagModel tag1 = row1.getDoc();
 				tagged.put(tag1.get_id(), tag1.getTagged());
 			}
 			return tagged;
