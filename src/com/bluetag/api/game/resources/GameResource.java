@@ -20,4 +20,12 @@ public class GameResource {
 		TaggableModel taggableModel = new TaggableModel(DatabaseClass.getTaggableList(username),DatabaseClass.getDistancesList(username));
 		return gson.toJson(taggableModel);
 	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/count/{username}")
+	public String getTaggableCount(@PathParam("username") String username){
+		Gson gson = new Gson();
+		int count = DatabaseClass.getTaggableList(username).size();
+		return gson.toJson(count);
+	}
 }

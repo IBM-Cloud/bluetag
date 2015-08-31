@@ -36,7 +36,7 @@ public class GameLogicThread extends Thread {
 
 	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
 	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
-	private final int maxTaggableDistance = 1000;
+	private final int maxTaggableDistance = 10;
 
 	public void run() {
 
