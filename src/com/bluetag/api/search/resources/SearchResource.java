@@ -15,6 +15,7 @@ public class SearchResource {
 	@Path("/{searchString}")
 	public String searchUsers(@PathParam("searchString") String searchString){
 		SearchService searchService = new SearchService();
+		System.out.println("SearchResource.searchUsers - searchString: "+ searchString);
 		return searchService.searchUsers(searchString);
 	}
 }

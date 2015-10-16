@@ -31,10 +31,11 @@ public class SearchService {
 		queryInfoGet.addHeader(authHeaderKey, authHeaderValue);
 		queryInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
 		queryInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
-		log.finest("searchUsers searchString: "  + searchPath + searchString) ;
+		System.out.println("searchUsers searchString: "  + searchPath + searchString) ;
 		try {
 			HttpResponse queryInfoResp = httpclient.execute(queryInfoGet); 
 			String info = EntityUtils.toString(queryInfoResp.getEntity());
+			System.out.println("Entity info: " + info);
 			httpclient.close();
 			return info;
 		} catch (Exception e) {
