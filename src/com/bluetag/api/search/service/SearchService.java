@@ -23,15 +23,15 @@ public class SearchService {
 	private String contentHeaderKey = "Content-Type";
 	private String contentHeaderValue = "application/json";
 	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
-	private String searchPath = "/info/_design/info/_search/nameSearch/";
+	private String searchPath = "/info/_design/info/_search/nameSearch/?q=";
 	
-	public String searchUsers(String searchString){
+	public String searchUsers(String queryString){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpGet queryInfoGet = new HttpGet(cloudantURI + searchPath + searchString);
+		HttpGet queryInfoGet = new HttpGet(cloudantURI + searchPath + queryString);
 		queryInfoGet.addHeader(authHeaderKey, authHeaderValue);
 		queryInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
 		queryInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
-		System.out.println("searchUsers searchString: "  + searchPath + searchString) ;
+		System.out.println("searchUsers queryString: "  + searchPath + queryString) ;
 		try {
 			HttpResponse queryInfoResp = httpclient.execute(queryInfoGet); 
 			String info = EntityUtils.toString(queryInfoResp.getEntity());
