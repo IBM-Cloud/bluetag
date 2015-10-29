@@ -12,18 +12,18 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import javax.enterprise.context.ApplicationScoped;
 
-import com.bluetag.api.admin.model.LocationModel;
+
 import com.bluetag.api.search.model.SearchModel;
 import com.bluetag.api.search.service.SearchService;
 
 import com.google.gson.Gson;
 
 @ApplicationScoped
-@ServerEndpoint(value = "/SearchResourceWS")
+@ServerEndpoint(value = "/SearchWS")
 public class SearchResourceWS {
 	private Session currentSession = null;
 
-	private final String updateLocation = "/UPDATE";
+	//private final String updateLocation = "/UPDATE";
 
 	SearchService searchService;
 	Gson gson;

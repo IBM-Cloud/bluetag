@@ -11,3 +11,4 @@
 # git has its own built in compression methods
 *.jar
 *.war
+/.apt_generated/

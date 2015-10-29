@@ -19,8 +19,8 @@
     <webContainer extractHostHeaderPort="true" trustHostHeaderPort="true"/>
     <include location="runtime-vars.xml"/>
     <logging consoleLogLevel="INFO" logDirectory="${application.log.dir}"/>
-    <httpDispatcher enableWelcomePage="false"/>
+    <!--  httpDispatcher enableWelcomePage="false" -->
     <applicationMonitor dropinsEnabled="false" updateTrigger="mbean"/>
     <config updateTrigger="mbean"/>
-    <appstate appName="myapp" markerPath="${home}/../.liberty.state"/>
+    <!--  appstate appName="myapp" markerPath="${home}/../.liberty.state"-->
 </server>
