@@ -5,5 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BluetagModels"/>
 	<classpathentry kind="lib" path="/BluetagCommon/lib/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/tsee/bt2/liberty/dev/api/spec/com.ibm.ws.javaee.websocket.1.1_1.0.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
