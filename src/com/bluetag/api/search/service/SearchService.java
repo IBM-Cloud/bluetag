@@ -1,6 +1,7 @@
 package com.bluetag.api.search.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
@@ -10,6 +11,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import com.bluetag.api.search.model.ProcessedSearchResultsModel;
+import com.bluetag.api.search.model.SearchResultsModel;
+import com.bluetag.api.search.model.SearchResultsRowModel;
+import com.google.gson.Gson;
 
 public class SearchService {
 	private static final Logger log = Logger.getLogger(SearchService.class.getName());
@@ -24,6 +30,8 @@ public class SearchService {
 	private String contentHeaderValue = "application/json";
 	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
 	private String searchPath = "/info/_design/info/_search/nameSearch/?q=";
+	private ArrayList<String> searchList = new ArrayList<String>();
+	private ProcessedSearchResultsModel gsonSearchList = new ProcessedSearchResultsModel();
 	
 	public String searchUsers(String queryString){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -34,10 +42,21 @@ public class SearchService {
 		System.out.println("searchUsers queryString: "  + searchPath + queryString) ;
 		try {
 			HttpResponse queryInfoResp = httpclient.execute(queryInfoGet); 
-			String info = EntityUtils.toString(queryInfoResp.getEntity());
-			System.out.println("Entity info: " + info);
+			
+			Gson gson = new Gson();
+			SearchResultsModel gsonSearchResults = gson.fromJson(EntityUtils.toString(queryInfoResp.getEntity()), SearchResultsModel.class);
+			
+			for (SearchResultsRowModel row : gsonSearchResults.getRows() ) {
+				searchList.add(row.getId());
+				System.out.println(searchList);
+			}
+			
+			gsonSearchList.setProcessedResults(searchList);
+			
+			System.out.println("Entity info: " + gson.toJson(gsonSearchResults));
+			System.out.println("Processed search results: " + gson.toJson(searchList));
 			httpclient.close();
-			return info;
+			return gson.toJson(gsonSearchList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
