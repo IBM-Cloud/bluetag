@@ -47,7 +47,8 @@ public class SearchResourceWS {
 		System.out.println("Search from " + session.getId() + " : " + searchString);
 		
 		//return searchService.searchUsers(gson.fromJson(searchString, searchStringModel.class));
-		return searchService.searchUsers(searchString);
+		//append "name:" and "*" to search string required format for cloudant query 
+		return searchService.searchUsers("name:" + searchString + "*");
 	}
 
 	@OnError

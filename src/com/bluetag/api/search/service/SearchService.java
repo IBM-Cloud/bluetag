@@ -46,7 +46,7 @@ public class SearchService {
 			
 			Gson gson = new Gson();
 			SearchResultsModel gsonSearchResults = gson.fromJson(EntityUtils.toString(queryInfoResp.getEntity()), SearchResultsModel.class);
-			
+			searchList.clear();
 			for (SearchResultsRowModel row : gsonSearchResults.getRows() ) {
 				searchList.add(row.getId());
 				System.out.println(searchList);
