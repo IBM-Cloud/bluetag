@@ -2,7 +2,8 @@
     <wb-module deploy-name="BluetagSearch">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="java-output-path" value="/BluetagSearch/WebContent/WEB-INF/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
         <property name="context-root" value="BluetagSearch"/>
+        <property name="java-output-path" value="/BluetagSearch/WebContent/WEB-INF/classes"/>
     </wb-module>
 </project-modules>

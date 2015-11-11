@@ -32,6 +32,7 @@ public class SearchService {
 	private String searchPath = "/info/_design/info/_search/nameSearch/?q=";
 	private ArrayList<String> searchList = new ArrayList<String>();
 	private ProcessedSearchResultsModel gsonSearchList = new ProcessedSearchResultsModel();
+
 	
 	public String searchUsers(String queryString){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
