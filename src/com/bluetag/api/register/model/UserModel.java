@@ -4,6 +4,7 @@ public class UserModel {
 	private String _id;
 	private String name;
 	
+	
 	public String get_id() {
 		return _id;
 	}
@@ -19,6 +20,4 @@ public class UserModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 }
