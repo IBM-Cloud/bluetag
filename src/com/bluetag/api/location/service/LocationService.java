@@ -23,10 +23,10 @@ public class LocationService {
 	private String failJson = "{\"result\": \"something has gone horribly wrong. Please try again\"}";
 	private String authHeaderKey = "Authorization";
 	private String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
-	private String authHeaderValue = "Basic" + Base64.getEncoder().encodeToString(toConvert.getBytes());
+	//private String authHeaderValue = "Basic" + Base64.getEncoder().encodeToString(toConvert.getBytes());
 	//authHeaderValue.replace("a", "");
-//	private String authHeaderValue = "Basic "
-//			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
+	private String authHeaderValue = "Basic "
+			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
 	private String acceptHeaderKey = "Accept";
 	private String acceptHeaderValue = "application/json";
 	private String contentHeaderKey = "Content-Type";
@@ -40,8 +40,8 @@ public class LocationService {
 			// get old location from cloudant
 			HttpGet oldLocGet = new HttpGet(cloudantURI + "/location/"
 					+ newloc.get_id());
-			authHeaderValue.replace("\n","");
-			System.out.println("VKVK = "+ authHeaderValue);
+			//authHeaderValue.replace("\n","");
+			//System.out.println("VKVK = "+ authHeaderValue);
 			oldLocGet.addHeader(authHeaderKey, authHeaderValue);
 			oldLocGet.addHeader(acceptHeaderKey, acceptHeaderValue);
 			oldLocGet.addHeader(contentHeaderKey, contentHeaderValue);
