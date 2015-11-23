@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 import com.bluetag.model.LocationModel;
 import com.bluetag.model.TagModel;
 import com.bluetag.model.UserModel;
+import com.bluetag.api.register.model.MarkitModel;
 import com.google.gson.Gson;
 
 public class RegisterService {
@@ -98,9 +99,25 @@ public class RegisterService {
 			httpclient = HttpClients.createDefault();
 			HttpResponse createLocResp = httpclient.execute(createLocationPost);
 			if (!(createLocResp.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)) {
-				String createLocEntity = EntityUtils.toString(createTaggedResp.getEntity());
+				String createLocEntity = EntityUtils.toString(createLocResp.getEntity());
 				httpclient.close();
 				return createLocEntity;
+			}
+			httpclient.close();
+			
+			//create marked locations entry
+			HttpPost createMarkitPost = new HttpPost(cloudantURI + "/markedlocations");
+			createMarkitPost.addHeader(authHeaderKey, authHeaderValue);
+			createMarkitPost.addHeader(acceptHeaderKey, acceptHeaderValue);
+			createMarkitPost.addHeader(contentHeaderKey, contentHeaderValue);
+			MarkitModel markModel = new MarkitModel(userID);
+			createMarkitPost.setEntity(new StringEntity(gson.toJson(markModel)));
+			httpclient = HttpClients.createDefault();
+			HttpResponse createMarkitResponse = httpclient.execute(createMarkitPost);
+			if(!(createMarkitResponse.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)) {
+				String createMarkitEntity = EntityUtils.toString(createMarkitResponse.getEntity());
+				httpclient.close();
+				return createMarkitEntity;
 			}
 			httpclient.close();
 			
