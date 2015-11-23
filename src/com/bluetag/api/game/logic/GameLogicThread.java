@@ -24,6 +24,7 @@ import com.bluetag.model.TagRowModel;
 import com.google.gson.Gson;
 
 public class GameLogicThread extends Thread {
+	private final static Logger LOGGER = Logger.getLogger(GameLogicThread.class.getName());
 	private static String authHeaderKey = "Authorization";
 	private static String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
 	private static String authHeaderValue = "Basic "
@@ -47,6 +48,7 @@ public class GameLogicThread extends Thread {
 			try {
 				// get all location info from cloudantDB
 				HashMap<String, ArrayList<String>> taggedDB = getTagged(httpclient);
+				LOGGER.info("Tagged: " + taggedDB.toString());
 				HttpGet locInfoGet = new HttpGet(cloudantURI
 						+ "/location/_all_docs?include_docs=true");
 				locInfoGet.addHeader(authHeaderKey, authHeaderValue);
@@ -58,7 +60,7 @@ public class GameLogicThread extends Thread {
 						EntityUtils.toString(locInfoResp.getEntity()),
 						AllLocationDocsModel.class);
 				httpclient.close();
-
+				
 				for (LocationRowModel row1 : allDocs.getRows()) {
 					LocationModel loc1 = row1.getDoc();
 					taggableDB.put(loc1.get_id(), new ArrayList<String>());
@@ -67,18 +69,27 @@ public class GameLogicThread extends Thread {
 						LocationModel loc2 = (LocationModel) row2.getDoc();
 						// if person2 is standing less than 3 meters away, add
 						// them to taggable
-						if (!loc1.get_id().equals(loc2.get_id())
-								&& distance(loc1.getLatitude(),
-										loc2.getLatitude(),
-										loc1.getLongitude(),
-										loc2.getLongitude(),
-										0, 0) <= maxTaggableDistance
-										&& !taggedDB.get(loc1.get_id()).contains(loc2.get_id())) {
-							taggableDB.get(loc1.get_id()).add(loc2.get_id());
-							distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));
+						if (!loc1.get_id().equals(loc2.get_id())) {
+							
+							
+							double d = distance(loc1.getLatitude(),
+									loc2.getLatitude(),
+									loc1.getLongitude(),
+									loc2.getLongitude(),
+									0, 0);
+							//LOGGER.info("Distance between " + loc1.get_id() + " and " + loc2.get_id() + " is " + d);
+										
+							if (d<= maxTaggableDistance) {
+								if (taggedDB.get(loc1.get_id()) != null && !taggedDB.get(loc1.get_id()).contains(loc2.get_id()))  {
+									taggableDB.get(loc1.get_id()).add(loc2.get_id());
+									distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));				
+								}	
+							}
 						}
 					}
 				}
+				LOGGER.info("Taggable: " + taggableDB.toString());
+				LOGGER.info("Distances: " + distancesDB.toString());
 
 				// update global database
 				DatabaseClass.setTaggabledDB(taggableDB);
