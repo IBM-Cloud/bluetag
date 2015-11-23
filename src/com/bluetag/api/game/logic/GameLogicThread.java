@@ -15,12 +15,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.bluetag.api.game.database.DatabaseClass;
-import com.bluetag.api.game.model.AllLocationDocsModel;
-import com.bluetag.api.game.model.AllTagDocsModel;
-import com.bluetag.api.game.model.LocationRowModel;
-import com.bluetag.api.game.model.LocationModel;
-import com.bluetag.api.game.model.TagModel;
-import com.bluetag.api.game.model.TagRowModel;
+import com.bluetag.model.LocationModel;
+import com.bluetag.model.TagModel;
+import com.bluetag.model.AllLocationDocsModel;
+import com.bluetag.model.AllTagDocsModel;
+import com.bluetag.model.LocationRowModel;
+import com.bluetag.model.TagRowModel;
 import com.google.gson.Gson;
 
 public class GameLogicThread extends Thread {

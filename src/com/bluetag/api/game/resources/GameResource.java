@@ -7,7 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.bluetag.api.game.database.DatabaseClass;
-import com.bluetag.api.game.model.TaggableModel;
+import com.bluetag.model.TaggableModel;
 import com.google.gson.Gson;
 
 @Path("/taggable")
