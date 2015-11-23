@@ -12,9 +12,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import com.bluetag.api.search.model.ProcessedSearchResultsModel;
-import com.bluetag.api.search.model.SearchResultsModel;
-import com.bluetag.api.search.model.SearchResultsRowModel;
+import com.bluetag.search.model.ProcessedSearchResultsModel;
+import com.bluetag.search.model.SearchResultsModel;
+import com.bluetag.search.model.SearchResultsRowModel;
 import com.google.gson.Gson;
 
 public class SearchService {

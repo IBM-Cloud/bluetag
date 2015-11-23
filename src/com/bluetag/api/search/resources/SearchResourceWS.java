@@ -13,7 +13,7 @@ import javax.websocket.server.ServerEndpoint;
 import javax.enterprise.context.ApplicationScoped;
 
 
-import com.bluetag.api.search.model.SearchModel;
+import com.bluetag.search.model.SearchModel;
 import com.bluetag.api.search.service.SearchService;
 
 import com.google.gson.Gson;
