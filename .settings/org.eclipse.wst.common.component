@@ -2,6 +2,13 @@
     <wb-module deploy-name="BluetagRegister">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
+        <dependent-module archiveName="gson-2.3.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/BluetagSharedLibs/lib/gson-2.3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bluetag-models-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/BluetagSharedLibs/lib/bluetag-models-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="BluetagRegister"/>
         <property name="java-output-path" value="/BluetagRegister/WebContent/WEB-INF/classes"/>
     </wb-module>
