@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_60]">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -35,7 +30,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/tsee/bt2/liberty/dev/api/spec/com.ibm.ws.javaee.websocket.1.1_1.0.10.jar"/>
-	<classpathentry kind="lib" path="/Users/tsee/bt2/liberty/dev/api/spec/com.ibm.ws.javaee.cdi.1.2_1.2.10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/WebSphere Application Server Liberty Profile"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>
