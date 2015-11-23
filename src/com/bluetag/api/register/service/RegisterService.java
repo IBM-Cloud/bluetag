@@ -14,9 +14,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.bluetag.model.LocationModel;
+import com.bluetag.model.MarkitModel;
 import com.bluetag.model.TagModel;
 import com.bluetag.model.UserModel;
-import com.bluetag.api.register.model.MarkitModel;
 import com.google.gson.Gson;
 
 public class RegisterService {

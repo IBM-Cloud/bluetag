@@ -8,8 +8,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.bluetag.api.register.model.NewMarkedLocationModel;
 import com.bluetag.api.register.service.MarkitService;
+import com.bluetag.model.NewMarkedLocationModel;
 import com.google.gson.Gson;
 
 @Path("/markit")
