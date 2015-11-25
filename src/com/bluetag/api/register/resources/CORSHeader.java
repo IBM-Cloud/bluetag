@@ -25,7 +25,8 @@ public class CORSHeader implements Filter {
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		
 		servletResponse.setHeader("Access-Control-Allow-Origin", "*");
-		servletResponse.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin");
+		servletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type");
+		servletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT");
 		
 		chain.doFilter(request, response);
 		
