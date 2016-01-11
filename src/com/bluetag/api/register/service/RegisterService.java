@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import com.bluetag.api.register.resources.CloudantCredential;
 import com.bluetag.model.LocationModel;
 import com.bluetag.model.MarkitModel;
 import com.bluetag.model.TagModel;
@@ -25,14 +26,18 @@ public class RegisterService {
 	private String alreadyExistsJson = "{\"result\": \"user already exists\"}";
 	private String failJson = "{\"result\": \"something has gone horribly wrong. Please try again\"}";
 	private String authHeaderKey = "Authorization";
-	private String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
-	private String authHeaderValue = "Basic "
-			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
 	private String acceptHeaderKey = "Accept";
 	private String acceptHeaderValue = "application/json";
 	private String contentHeaderKey = "Content-Type";
 	private String contentHeaderValue = "application/json";
-	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
+	
+	
+	CloudantCredential cc = new CloudantCredential();
+	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
+	private String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
+	private String cloudantURI = cc.getCloudantURI();
+	
+	
 	public String registerUser(String userInfo) {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();

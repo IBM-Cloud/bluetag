@@ -14,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import com.bluetag.api.register.resources.CloudantCredential;
 import com.bluetag.model.MarkitModel;
 import com.bluetag.model.NewMarkedLocationModel;
 import com.google.gson.Gson;
@@ -23,15 +24,15 @@ public class MarkitService {
 	private String successJson = "{\"result\": \"success\"}";
 	private String failJson = "{\"result\": \"something has gone horribly wrong with Markit. Please try again\"}";
 	private String authHeaderKey = "Authorization";
-	private String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
-	private String authHeaderValue = "Basic "
-			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
 	private String acceptHeaderKey = "Accept";
 	private String acceptHeaderValue = "application/json";
 	private String contentHeaderKey = "Content-Type";
 	private String contentHeaderValue = "application/json";
-	private String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
 	
+	
+	CloudantCredential cc = new CloudantCredential();
+	private String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
+	private String cloudantURI = cc.getCloudantURI();
 	
 	public String getMarkedLocs(String username) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -79,7 +80,7 @@ public class MarkitService {
 			updatedMarkitPut.addHeader(authHeaderKey, authHeaderValue);
 			updatedMarkitPut.addHeader(acceptHeaderKey, acceptHeaderValue);
 			updatedMarkitPut.addHeader(contentHeaderKey, contentHeaderValue);
-			//-----The very dumb lazy way to process extra "\" characters out of JSON response (to cloudant)
+			//-----The lazy way to process extra "\" characters out of JSON response (to cloudant)
 			//The right way to do this: change ArrayList<String> in MarkitModel to ArrayList<NewMarkedLocationModel>
 			//Requires debug of previous 'MarkitModel updatedmarked = ...
 //			String jsonupdatedmarked = gson.toJson(updatedmarked);
