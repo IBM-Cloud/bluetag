@@ -16,6 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.bluetag.api.game.database.DatabaseClass;
+import com.bluetag.api.game.resources.CloudantCredential;
 import com.bluetag.model.LocationModel;
 import com.bluetag.model.TagModel;
 import com.bluetag.model.AllLocationDocsModel;
@@ -27,18 +28,20 @@ import com.google.gson.Gson;
 public class GameLogicThread extends Thread {
 	private final static Logger LOGGER = Logger.getLogger(GameLogicThread.class.getName());
 	private static String authHeaderKey = "Authorization";
-	private static String toConvert = "9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943";
-	private static String authHeaderValue = "Basic "
-			+ DatatypeConverter.printBase64Binary(toConvert.getBytes());
 	private static String acceptHeaderKey = "Accept";
 	private static String acceptHeaderValue = "application/json";
 	private static String contentHeaderKey = "Content-Type";
 	private static String contentHeaderValue = "application/json";
-	private static String cloudantURI = "https://9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix:3a27472537c70e3bd9dbf474a06bd0660b4bd08783176d168c2d1f51e1b24943@9885315c-7077-4788-bb1d-cecd6a3530ff-bluemix.cloudant.com";
+	
 
 	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
 	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 	private final int maxTaggableDistance = 10;
+
+	static CloudantCredential cc = new CloudantCredential();
+	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
+	private static String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
+	private static String cloudantURI = cc.getCloudantURI();
 
 	public void run() {
 
