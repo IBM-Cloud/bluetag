@@ -95,21 +95,11 @@ buildpack: Liberty for Java(TM) (SVR-DIR, liberty-2015.10.0_0, ibmjdk-1.8.0_2015
 cf logs BluetagSearch
 ```
 
-=======
-This README.md file is displayed on your project page. You should edit this 
-file to describe your project, including instructions for building and 
-running the project, pointers to the license under which you are making the 
-project available, and anything else you think would be useful for others to
-know.
+##Running local
+Set the following environment variables to allow a service running locally to be able to communicate with a remote Cloudant Database running in Bluemix. 
 
-We have created an empty license.txt file for you. Well, actually, it says,
-"<Replace this text with the license you've chosen for your project.>" We 
-recommend you edit this and include text for license terms under which you're
-making your code available. A good resource for open source licenses is the 
-[Open Source Initiative](http://opensource.org/).
+	dbUsername=(Cloudant username)
+	dbPassword=(Cloudant password)
+	dbURI=(Cloudant URL)
 
-Be sure to update your project's profile with a short description and 
-eye-catching graphic.
-
-Finally, consider defining some sprints and work items in Track & Plan to give 
-interested developers a sense of your cadence and upcoming enhancements.
+Deploy a Cloudant instance in Bluemix and bind to a running service. Click on the service to which Cloudant is bound and select 'Environment Variables' from the left hand panel. Under VCAP_SERVICES, look at the JSON section labeled 'cloudantNoSQLDB'. You should see fields named "username", "password" and "url". Assign these values as local environment variables to "dbUsername", "dbPassword" and "dbURI" - no parentheses. Your local service should now be able to communicate with your Cloudant instance.
