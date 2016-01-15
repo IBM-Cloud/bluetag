@@ -7,9 +7,6 @@
 [submodule "bluetag-test"]
 	path = bluetag-test
 	url = git@github.ibm.com:Bluetag/bluetag-test.git
-[submodule "bluetag-tag"]
-	path = bluetag-tag
-	url = git@github.ibm.com:Bluetag/bluetag-tag.git
 [submodule "bluetag-models"]
 	path = bluetag-models
 	url = git@github.ibm.com:Bluetag/bluetag-models.git
