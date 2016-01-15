@@ -1,0 +1,104 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../ws-element/ws-element.html">
+
+<dom-module name="bt-search" id="bt-search">
+      
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <template>
+        <paper-input type="bt-search"
+            placeholder="Enter user name to search for" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5">
+        </paper-input>
+
+        <ws-element url={{searchValue}} protocol="echo-protocol"></ws-element>
+    
+        <div>Results: </div>
+        <template is="dom-repeat" items="{{searchResults}}">
+            <div><span>{{item}}</span></div>
+        </template>
+    </template> 
+ 
+  <script>
+
+  Polymer({
+    is: 'bt-search',
+    properties: {   
+      searchValue: {
+        type: String
+      },
+
+      searchResults: {
+        type: Array,
+        notify: true
+      }
+    },
+
+        handleMsg: function(message) {
+          console.log("handleMsg:" + message.detail);
+
+          if (message.detail.indexOf('{') === 0) {
+          this.searchResults = JSON.parse(message.detail).processedSearchResults;
+
+          console.log("handleMsg: array of names:" + searchResults);
+          
+          //set searchResults inthe bt-search object.  this.searchResults is not part of bt-search
+          document.querySelector('bt-search').searchResults = searchResults;
+        }
+        },
+
+        ready: function() {
+          //this.searchResults = ['results' ];
+
+          //listen for search results from ws-element          
+          addEventListener('onmessage', this.handleMsg );
+          console.log("bt-search is ready.");
+        },
+
+        doSearch: function(searchValue) {
+            console.log("doSearch value entered: " + this.searchValue);
+            var wsElement = document.querySelector("ws-element");
+
+            if (this.searchValue != "") {
+                wsElement.send(this.searchValue);
+            }
+
+           //document.querySelector("ws-element").addEventListener('onmessage', function(message) {
+           //console.log("message recieved:" + message.detail);
+           //console.log("message recieved:" + message.detail.processedSearchResults);
+           //console.log("message recieved:" + JSON.parse(message.detail).processedSearchResults);
+           //this.searchResults = JSON.parse(message.detail).processedSearchResults; 
+          //});
+        }
+
+      });
+  </script>
+
+</dom-module>

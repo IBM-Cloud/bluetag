@@ -1,0 +1,153 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+<dom-module name="mark-it">
+<style>
+	paper-button {
+		background-color: var(--google-grey-300);
+		padding: 5px;
+	}
+	paper-icon-button {
+		color: var(--paper-green-300);
+		--paper-icon-button-ink-color: var(--paper-green-a100);
+		width: 23px;
+		height: 23px;
+		padding: 0px 4px;
+	}
+/*	paper-dialog {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 300px;
+      height: 300px;
+      overflow: auto;
+    }*/
+</style>
+
+<template>
+
+ <paper-button data-dialog="dropdown" on-click="clickHandler">Mark It</paper-button>
+ <paper-dialog id="dropdown" with-backdrop>
+    <h2>Name this location</h2>
+    <span><div id="markitlat"></div> <span> , </span> <div id="markitlon"></div></span>
+    <paper-input id="locname" floating label="Name" value="{{newlocation}}">
+    	<iron-icon icon="communication:location-on" prefix></iron-icon>
+    	<paper-icon-button suffix on-click="addLocation" icon="check" tabindex="0"></paper-icon-button>
+    </paper-input>
+  </paper-dialog>
+
+<iron-ajax
+  id='putmark'
+  content-type='application/json'
+  url='http://bluetagregister1.mybluemix.net/api/markit/newmark'
+  method='PUT'
+  body='[[newMarkitPutBody(value, newlocation)]]'
+  handle-as='json'
+  last-response="{{ajaxPutmarkResponse}}"
+  on-response="putMarkResponse">
+ </iron-ajax>
+
+ <paper-toast id="toast1" text="Saved"></paper-toast>
+
+</template>
+
+<script>
+Polymer({
+	is: 'mark-it',
+
+	properties: {
+
+		value: {
+			type: String,
+			notify: true
+		},
+
+		newlocation: {
+			type: String
+		}
+	},
+
+
+	ready: function() {
+		console.log("Mark-it is ready.")
+	},
+
+	clickHandler: function(e) {
+		console.log('Opening markit list');
+		document.getElementById('dropdown').open();	
+	},
+
+	addLocation: function(value) {
+		console.log('Mark-it: Current location is - ' + document.getElementById('markitlat').innerHTML + " , " + document.getElementById('markitlon').innerHTML);
+		console.log(this.value + ' marked and saved ' + this.newlocation + ' as new location.');
+		
+
+		document.getElementById('putmark').generateRequest();
+
+		document.getElementById('dropdown').close();
+	},
+
+	newMarkitPutBody: function(value) {
+
+	if(this.value != "") {	
+
+		var newmarkitbody =  {
+			_id: this.value,
+  			locname: this.newlocation,
+  			latitude: parseFloat(document.getElementById('markitlat').innerHTML),
+  			longitude: parseFloat(document.getElementById('markitlon').innerHTML)
+		};
+
+		console.log(newmarkitbody);
+
+
+	}
+		console.log("going to put for markit: " + newmarkitbody);
+		return JSON.stringify(newmarkitbody);
+
+	},
+
+	putMarkResponse: function() {
+		console.log(this.ajaxPutmarkResponse);
+		document.querySelector("#toast1").show();
+		document.getElementById("getmarks").generateRequest();
+	}
+
+	// createGetmarksUrl: function(value) {
+	// 	console.log("http://9.63.15.7:9080/BluetagRegister1/api/markit/marked/" + value)
+	// 	return 'http://9.63.15.7:9080/BluetagRegister1/api/markit/marked/' + value
+
+	// },
+
+	// getMarksResponse: function() {
+	// 	console.log("Get marks response: " + JSON.stringify(this.ajaxGetmarksResponse));
+	// }
+
+});
+</script>
+</dom-module>

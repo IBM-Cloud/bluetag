@@ -1,0 +1,188 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-styles/demo-pages.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+
+
+
+<dom-module name="get-username" id="get-username">
+
+  <style>
+
+    .short {
+        padding-left: 100px;
+        width: 200px;
+    }
+    paper-icon-button {
+        color: var(--paper-red-300);
+        --paper-icon-button-ink-color: var(--paper-red-a100);
+        --iron-icon-width: 17px;
+        --iron-icon-height: 17px;
+        padding: 0px 4px;
+    }
+		paper-button.ripple {
+			   --paper-button-ink-color: var(--paper-pink-a200);
+		}
+		paper-button.blue {
+					color:#ffffff;
+			    background: var(--paper-blue-500);
+		}
+			
+			
+   </style>
+
+  <template>
+
+<div>
+    <h4></h4>
+    <div class="horizontal-section">
+        <paper-progress disabled indeterminate></paper-progress><br>
+        <paper-button class="ripple blue" raised
+            on-click="clickHandler">Submit</paper-button>
+
+        
+        <paper-toast id="toast1" text="Welcome back"></paper-toast>
+        <paper-toast id="toast2" text="Welcome"></paper-toast>
+        
+        <iron-ajax
+            id="register"
+            url="http://bluetagregister1.mybluemix.net/api/register/"
+            content-type='application/json'
+            method="POST"
+            handle-as='json'
+            body='[[generatefullJson(value)]]'
+            last-response="{{ajaxResponse}}"
+            on-response="regResponse">
+        </iron-ajax>
+			
+            
+            
+    </div>
+    
+    
+
+</div>
+            
+            
+</template>
+        
+<script>
+var globalusername;
+Polymer({
+
+  is: "get-username",
+                    
+  properties: {
+						
+			 value: {
+				   type: String,
+					 notify: true
+				}
+						
+		},
+                    
+
+                    
+  ready: function() {
+
+    console.log("get-username is ready.");
+
+  },
+ 
+  generatefullJson: function (value) {
+
+    globalusername = value;
+    console.log("Global user is: " + value);
+    return JSON.stringify({_id: globalusername, name: globalusername});
+
+  },
+					
+	getName: function (value) {
+		return value
+	},
+                    
+  clickHandler: function(e, detail) {
+		
+    document.querySelector('paper-progress').disabled = false;
+    document.querySelector('paper-menu').hidden = false;
+		console.log("inside submit clickHandler");		
+		this.fire("kick", {q: this.value});
+    document.getElementById("register").generateRequest();
+
+   },
+					
+	generateTaggableUrl: function (username) {
+
+		return "http://bluetaggame1.mybluemix.net/api/taggable/" + username;
+
+	},
+	
+	tagListResponse: function () {
+
+		console.log("tag list request response");
+
+	},
+                    
+  generateJsonFromUserInput: function (username) {
+
+    var newusername = document.querySelector("input[is=iron-input]").value;
+    var jsoned = {_id: newusername, name: newusername}
+    console.log(JSON.stringify(jsoned));
+    return JSON.stringify(jsoned)
+  
+  },
+  
+  regResponse: function() {
+  
+    var nameResp = this.ajaxResponse.result;
+    console.log(nameResp);
+
+  
+    if (nameResp == "success"){
+      app.route = "home";
+      document.querySelector('#toast2').show();
+    } else {
+        app.route = "home";
+        document.querySelector('#toast1').show();
+    }
+        document.getElementById("taggable").generateRequest();
+        document.getElementById("tagged").generateRequest();
+        document.getElementById("getmarks").generateRequest();
+   }
+					
+});
+                    
+           
+</script>
+</dom-module>
+
+
+   
