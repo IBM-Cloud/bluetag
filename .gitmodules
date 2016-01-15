@@ -19,3 +19,6 @@
 [submodule "bluetag-shared-libs"]
 	path = bluetag-shared-libs
 	url = git@github.ibm.com:Bluetag/bluetag-shared-libs.git
+[submodule "bluetag-tag"]
+	path = bluetag-tag
+	url = git@github.ibm.com:Bluetag/bluetag-tag.git
