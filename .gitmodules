@@ -1,0 +1,3 @@
+[submodule "bluetag-search"]
+	path = bluetag-search
+	url = ./../bluetag-search
