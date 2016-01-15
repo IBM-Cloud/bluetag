@@ -7,3 +7,18 @@
 [submodule "bluetag-test"]
 	path = bluetag-test
 	url = git@github.ibm.com:Bluetag/bluetag-test.git
+[submodule "bluetag-tag"]
+	path = bluetag-tag
+	url = git@github.ibm.com:Bluetag/bluetag-tag.git
+[submodule "bluetag-models"]
+	path = bluetag-models
+	url = git@github.ibm.com:Bluetag/bluetag-models.git
+[submodule "bluetag-location"]
+	path = bluetag-location
+	url = git@github.ibm.com:Bluetag/bluetag-location.git
+[submodule "bluetag-register"]
+	path = bluetag-register
+	url = git@github.ibm.com:Bluetag/bluetag-register.git
+[submodule "bluetag-shared-libs"]
+	path = bluetag-shared-libs
+	url = git@github.ibm.com:Bluetag/bluetag-shared-libs.git
