@@ -15,4 +15,4 @@ The top-level Cordova project contains the following directory structure:
 	-www
 	config.xml
 
-Clone this directory and run the following to deploy a native Bluetag application to your mobile device.
+Clone this directory and run the following Cordova commands to deploy a native Bluetag application to your mobile device.
