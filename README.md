@@ -44,7 +44,7 @@ This sample demonstrates how Bluemix allows you to easily bring together and dep
 
 2. Download and install the [Cloud-foundry CLI][cloud_foundry_url] tool
 
-3. Clone the app to your local environment. Since Bluetag is a micro-service sample, all the services have their own github repositories.  
+3. Clone the app to your local environment. Since Bluetag is a micro-service sample, all the services have their own github repositories.  All the services are defined as submodules of bluetag. 
 From your terminal using the following commands:
 
 
@@ -53,8 +53,60 @@ From your terminal using the following commands:
   cd myBluetag
   git clone --recursive git@github.ibm.com:Bluetag/bluetag.git
   ```
+  
+4. Connect to Bluemix in the command line tool and follow the prompts to log in.
 
-4. cd into this newly created directory
+  ```
+  $ cf api https://api.ng.bluemix.net
+  $ cf login
+  ```
+  
+5. Create a Cloudant NoSQL DB service in Bluemix.
+
+  ```
+  $ cf create-service cloudantNoSQLDB Standard bluetag-cloudant
+  ```
+
+6. Push the Java applications to Bluemix.
+
+   ```
+   $ cd bluetag-register
+   $ cf push bluetag-register -p defaultServer/
+
+   $ cd ../bluetag-location
+   $ cf push bluetag-location -p defaultServer/
+
+   $ cd ../bluetag-engine
+   $ cf push bluetag-engine -p defaultServer/
+
+   $ cd ../bluetag-tag
+   $ cf push bluetag-tag -p defaultServer/
+   
+   $ cd ../bluetag-search
+   $ cf push bluetag-search -p defaultServer/
+   ```
+   
+7. Bind the Java applications with the Cloudant service.
+
+  ```
+  $ cf bind-service bluetag-register bluetag-cloudant
+  $ cf bind-service bluetag-location bluetag-cloudant
+  $ cf bind-service bluetag-engine bluetag-cloudant
+  $ cf bind-service bluetag-tag bluetag-cloudant
+  $ cf bind-service bluetag-search bluetag-cloudant  
+  ```
+  
+8. Restage the applications to pick up the cloudant environment variables.
+
+   ```
+   $ cf restage bluetag-register  
+   $ cf restage bluetag-location
+   $ cf restage bluetag-engine
+   $ cf restage bluetag-tag
+   $ cf restage bluetag-search
+   ```
+   
+Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!
 
 ### Troubleshooting
 
