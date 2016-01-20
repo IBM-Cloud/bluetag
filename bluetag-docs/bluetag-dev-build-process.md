@@ -1,17 +1,12 @@
-#Introduction to Bluetag
+# Bluetag development overview
 
-BlueTag is a fun mobile application that aims to connect professionals based on skills and geolocation.  The app can be used at conferences, work places, and meetups to identify people with the skills you are interested in and connect with them.  The application is built using a host of modern development technologies and tools.
+To find out more about the Bluetag application and to access a live demo please visit the [Bluetag overview](../README.md) page.  This document talks about how to setup a local development enviroment that can be used to tweak and deploy the application.
 
-The frontend of the application was developed using the Polymer Web Components Framework.  The Polymer framework's web components are used to create a simple and consistent UI.  The application is structured to work Apache Cordova.  Cordova enables mobile applications to be written using HTML, Javascript, and can use Cordova API's to access native functions.  Cordova lets developers write mobile applications for almost any mobile platform using a single code base and significantly reduces the cost and development time of mobile applications.  The backend services are broken up as microservices running on the WebSphere Liberty Profile on Bluemix and rely on a Cloudant nosql database also deployed via Bluemix.
-
-What makes this application a good sample?  This sample demonstrates how to bring together many modern technologies like Cordova and Polymer for mobile development, Java runtimes in the cloud, Web sockets, REST services, microservices, NoSQL databases, location services and many more.  The current sample is the alpha version of our vision for the BlueTag application.
-
-The source code for both the frontend and backend are hosted on GitHub.  We would love for you to join the project and contribute!
+The source code for both the frontend and backend services are hosted on GitHub.  We would love for you to join the project and contribute!
 
 # Download the BlueTag code
 
-Clone the app to your local environment.  Since Bluetag is a micro-service sample, all the services have their own github repositories.  All the services are defined as submodules of bluetag. 
-From your terminal using the following commands:
+All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag is a micro-service sample, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
 
   ```
   mkdir myBluetag
@@ -23,16 +18,16 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 
 # Setting up a dev environment for the microservices in Eclipse
 
-1. In Eclipse, import the cloned projects into your workspace.
+* In Eclipse, import the cloned projects into your workspace.
 	- Goto File > Import and select General > Existing Projects into Workspace.
 	- Select the bluetag directory and it will import all the submodules as projects to your workspace.
 	
-2. To get the projects to build, we have to update the build paths.
+* To get the projects to build, we have to update the build paths.
 	- Right click on each project and select "Build Path" > "Configure Build Path".
 	- In the panel that pops up (Java Build Path), switch to the "Libraries" tab and double click on "JRE System Library".
 	- Update it to point the "Workspace default JRE" option.
 
-3. Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Inlucde link here).
+* Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Inlucde link here).
 	- In the Server view, right click and select New > Server.
 	- Select IBM > WebSphere Application Server Liberty and click Next.
 	- In the "Choose an existing installation" selection, Browse and point to the wlp directory of the install you downloaded earlier.
@@ -41,17 +36,17 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 	
 You should have a workspace that's ready to build the BlueTag backend services now!
 
-# Building and testing the frontend
+# Building and testing the frontend locally
 
-1. The bluetag-frontend project is structured to work with Cordova and is written using HTML5 and javascript.
+* The bluetag-frontend project is structured to work with Cordova and is written using HTML5 and javascript.
 
-2. To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules
+* To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules
 
    ```
    npm install
    ```
    
-3. To build and start a webserver to host the application locally run the following command
+* To build and start a webserver to host the application locally run the following command
 
    ```
    gulp serve
