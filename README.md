@@ -67,43 +67,62 @@ From your terminal using the following commands:
   $ cf create-service cloudantNoSQLDB Standard bluetag-cloudant
   ```
 
-6. Push the Java applications to Bluemix.
+6. Go into the bluetag-frontend/www directory and edit the `manifest.yml` file and change the `name` and `host` attributes to something unique.
+
+  ```
+  applications:
+  - name: <prefix>-bluetag
+    framework: node
+    runtime: node12
+    memory: 128M
+    instances: 1
+    host: <prefix>-bluetag
+  ```
+  The host you use will determinate your application url initially, e.g. `<host>.mybluemix.net`.
+  
+7. Push the node application to Bluemix.  
 
    ```
-   $ cd bluetag-register
-   $ cf push bluetag-register -p defaultServer/
+   $ cf push
+   ```
+
+6. Push the Java applications to Bluemix.  Replace the prefix to give your application a globally uniqiue name and host.
+
+   ```
+   $ cd ../bluetag-register
+   $ cf push <prefix>-bluetag-register -p defaultServer/
 
    $ cd ../bluetag-location
-   $ cf push bluetag-location -p defaultServer/
+   $ cf push <prefix>-bluetag-location -p defaultServer/
 
    $ cd ../bluetag-engine
-   $ cf push bluetag-engine -p defaultServer/
+   $ cf push <prefix>-bluetag-engine -p defaultServer/
 
    $ cd ../bluetag-tag
-   $ cf push bluetag-tag -p defaultServer/
+   $ cf push <prefix>-bluetag-tag -p defaultServer/
    
    $ cd ../bluetag-search
-   $ cf push bluetag-search -p defaultServer/
+   $ cf push <prefix>-bluetag-search -p defaultServer/
    ```
    
 7. Bind the Java applications with the Cloudant service.
 
   ```
-  $ cf bind-service bluetag-register bluetag-cloudant
-  $ cf bind-service bluetag-location bluetag-cloudant
-  $ cf bind-service bluetag-engine bluetag-cloudant
-  $ cf bind-service bluetag-tag bluetag-cloudant
-  $ cf bind-service bluetag-search bluetag-cloudant  
+  $ cf bind-service <prefix>-bluetag-register bluetag-cloudant
+  $ cf bind-service <prefix>-bluetag-location bluetag-cloudant
+  $ cf bind-service <prefix>-bluetag-engine bluetag-cloudant
+  $ cf bind-service <prefix>-bluetag-tag bluetag-cloudant
+  $ cf bind-service <prefix>-bluetag-search bluetag-cloudant  
   ```
   
 8. Restage the applications to pick up the cloudant environment variables.
 
    ```
-   $ cf restage bluetag-register  
-   $ cf restage bluetag-location
-   $ cf restage bluetag-engine
-   $ cf restage bluetag-tag
-   $ cf restage bluetag-search
+   $ cf restage <prefix>-bluetag-register  
+   $ cf restage <prefix>-bluetag-location
+   $ cf restage <prefix>-bluetag-engine
+   $ cf restage <prefix>-bluetag-tag
+   $ cf restage <prefix>-bluetag-search
    ```
    
 Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!
