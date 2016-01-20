@@ -1,0 +1,7 @@
+  applications:
+  - name: <prefix>-bluetag
+    framework: node
+    runtime: node12
+    memory: 128M
+    instances: 1
+    host: <prefix>-bluetag
