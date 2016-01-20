@@ -23,6 +23,24 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 
 # Setting up a dev environment for the microservices in Eclipse
 
+1. In Eclipse, import the cloned projects into your workspace.
+	- Goto File > Import and select General > Existing Projects into Workspace.
+	- Select the bluetag directory and it will import all the submodules as projects to your workspace.
+	
+2. To get the projects to build, we have to update the build paths.
+	- Right click on each project and select "Build Path" > "Configure Build Path".
+	- In the panel that pops up (Java Build Path), switch to the "Libraries" tab and double click on "JRE System Library".
+	- Update it to point the "Workspace default JRE" option.
+
+3. Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Inlucde link here).
+	- In the Server view, right click and select New > Server.
+	- Select IBM > WebSphere Application Server Liberty and click Next.
+	- In the "Choose an existing installation" selection, Browse and point to the wlp directory of the install you downloaded earlier.
+	- In the next panel, click "New" and create a server with a name like BlueTag and hit Finish.
+	- Clean and rebuild all the projects.
+	
+You should have a workspace that's ready to build the BlueTag backend services now!
+
 # Building and testing the frontend
 
 1. The bluetag-frontend project is structured to work with Cordova and is written using HTML5 and javascript.
@@ -61,3 +79,5 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 	[PSK] Serving files from: .tmp
 	[PSK] Serving files from: app
 	```
+
+You are now ready to tweak the bluetag frontend code and test it!
