@@ -81,3 +81,65 @@ You should have a workspace that's ready to build the BlueTag backend services n
 	```
 
 You are now ready to tweak the bluetag frontend code and test it!
+
+# Building a native application
+
+If you want to transform bluetag from a browser based web application to a native mobile application, you can quickly do that without any additional code using Cordova.
+
+To get started, let's get Cordova setup first.  Install NPM first by following instructions at https://docs.npmjs.com/getting-started/installing-node and then run 
+
+   ```
+   npm install -g cordova
+   ```
+   
+to install Cordova.  You can find specific instructions on how to do that over here: https://cordova.apache.org/#getstarted
+
+* Create a directory called BlueTag.  This will be the root directory that will contain all the BlueTag projects.
+
+* To create a new Cordova project, you can just run the following command: cordova create <path>
+
+* In this case, you can just cd into BlueTag and download the existing BlueTagFrontEnd project from the GIT repo by running:
+
+   ```
+   git clone https://hub.jazz.net/git/arshadmu/BlueTagPolymer
+   ```
+   
+* Next, we need to get the SDKs to build the application for the platforms we want.  
+
+    TIP: Android SDK will not work with the IBM JDK.  Please make sure the Orcale JDK is your default JDK.
+
+	For Android, you can download them from: https://developer.android.com/sdk/index.html#Other
+	After installing in the SDK Manager, make sure to download the SDK for API22 (Android 5.1.1)
+	
+	For iOS, you can download the SDK from https://developer.apple.com/support/pre-release-software/.  NOTE: This will only work on Macs.  
+
+* (Only for Android) Export the variable ANDROID_HOME with the value of the path of the SDK directory.
+
+	for example: export ANDROID_HOME="/usr/home/Android/android-sdk" on Linux
+	
+	or setx ANDROID_HOME "C:\Program Files (x86)\Android\android-sdk" on Windows.
+	
+* Next, tell Cordova about the platforms you will be building on by running:
+
+	cordova platform add <platform name>
+	
+	Example platform names are android and ios.
+	
+* Now we are ready to build the application for the platforms we want to deploy the app to! To just build the application without deploying to a physical device or emulator you can run:
+
+	cordova build <platform name>
+
+* To build and run the application, you can run:
+ 	
+	cordova run <platform name>
+	
+	This will deploy to the connected device or start an emulator if no device is found.
+
+	TIP: To be able to deploy and test on an Android device:
+		* Plug Android phone into USB port on laptop
+        * Enable developer options:
+        * Go to Settings -> About phone.  Click 7 times on build number.
+		* The Developer Options panel should appear.
+		* Select "enable USB debugging".
+
+You are now test out the Bluetag app on your iPhone or Android device!
