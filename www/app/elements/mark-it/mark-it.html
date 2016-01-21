@@ -64,7 +64,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <iron-ajax
   id='putmark'
   content-type='application/json'
-  url='http://bluetagregister1.mybluemix.net/api/markit/newmark'
+  url='[[url]]'
   method='PUT'
   body='[[newMarkitPutBody(value, newlocation)]]'
   handle-as='json'
@@ -89,6 +89,10 @@ Polymer({
 
 		newlocation: {
 			type: String
+		},
+		url: {
+			type: String,
+			notify: true
 		}
 	},
 
@@ -137,16 +141,6 @@ Polymer({
 		document.querySelector("#toast1").show();
 		document.getElementById("getmarks").generateRequest();
 	}
-
-	// createGetmarksUrl: function(value) {
-	// 	console.log("http://9.63.15.7:9080/BluetagRegister1/api/markit/marked/" + value)
-	// 	return 'http://9.63.15.7:9080/BluetagRegister1/api/markit/marked/' + value
-
-	// },
-
-	// getMarksResponse: function() {
-	// 	console.log("Get marks response: " + JSON.stringify(this.ajaxGetmarksResponse));
-	// }
 
 });
 </script>

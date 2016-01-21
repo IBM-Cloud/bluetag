@@ -28,17 +28,13 @@ No license info provided
                 },
                 url: {
                     type: String,
-                    value: "ws://bluetagsearch1.mybluemix.net/SearchWS"
+                    //value: "ws://bluetagsearch1.mybluemix.net/SearchWS"
                 }
             },
             ready: function () {
                 //ws://bluetaglocation1.mybluemix.net/wsLocationResource
                 //TODO we don't need protocol for now this.socket = new WebSocket(this.url, this.protocol);
-                this.socket = new WebSocket(this.url);
-                console.log("opened socket");
-                this.socket.onerror = this.onError.bind(this);
-                this.socket.onopen = this.onOpen.bind(this);
-                this.socket.onmessage = this.onMessage.bind(this);
+
             },
             onError: function (error) {
                 this.fire('onerror', error);
@@ -55,6 +51,14 @@ No license info provided
             },
             close: function () {
                 this.socket.close();
+            },
+            
+            open: function () {
+                this.socket = new WebSocket(this.url);
+                console.log("opened socket");
+                this.socket.onerror = this.onError.bind(this);
+                this.socket.onopen = this.onOpen.bind(this);
+                this.socket.onmessage = this.onMessage.bind(this);
             }
         })
 	})();

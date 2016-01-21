@@ -207,7 +207,11 @@ Polymer({
 		value: {
 			type: String,
 			notify: true
-		}
+		},
+    url: {
+      type: String,
+      notify: true
+    }
 
 	},
 
@@ -216,9 +220,7 @@ Polymer({
 	},
 
 	createGetmarksUrl: function(value) {
-		console.log("http://bluetagregister1.mybluemix.net/api/markit/marked/" + value)
-		return 'http://bluetagregister1.mybluemix.net/api/markit/marked/' + value
-
+		return this.url + value
 	},
 
 	getMarksResponse: function() {

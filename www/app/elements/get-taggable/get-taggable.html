@@ -206,23 +206,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 			on-response="tagListResponse"
 			></iron-ajax> 
 			
-<!-- 			<iron-list items="{{ajaxResponse.taggable}}" as="item">
-			<template>
-				<div>
-					<div class="item">
-						<div style="padding-top: 10px">[[item]]</div>
-						<div>[[item.distance]]</div>
-							
-							<div style="padding-left: 150px"><paper-button tabindex="0" raised class="colorful" on-click="tagclick" data-name="{{value}}">Tag</paper-button></div>
-						
-						
-					</div>
-
-				</div>
-				</template>
-			</iron-list> -->
-
-
 
 		<div class="flex horizontal layout">
 		<div class="flex vertical layout">
@@ -261,7 +244,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 	  <iron-ajax
 		id="tag"
 		content-type="application/json"
-		url="http://bluetagtag1.mybluemix.net/api/tag/"
+		url="[[tagUrl]]"
 		method="PUT"
 		handle-as="json"
 		last-response="{{ajaxTagResponse}}"
@@ -290,47 +273,28 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 				value: {
 					type: String,
 					notify: true
+				},
+
+				url: {
+					type: String,
+					notify: true
+				},
+				tagUrl: {
+					type: String,
+					notify: true
 				}
-				
-				//userURL: {
-				//	type: String,
-				//	value: function() {
-						//var value = document.querySelector("username").value;
-						//console.log("Taggable URL: http://bluetaggame1.mybluemix.net/api/taggable/martin");
-						
-				//		return "http://bluetaggame1.mybluemix.net/api/taggable/martin"
-				//	}
-					//computed: 'getUserURL()'
-					//computed: function () {
-					//	var url = "http://bluetaggame1.mybluemix.net/api/taggable/martin"
-					//	return url;
-					//}
-					//}
-				
 			},
 			
 			ready: function() {
-				console.log("get-taggable is ready.")
-				
-
+				console.log("get-taggable is ready.");
 			},
-			
+
 			tagListResponse: function(response) {
-
-
-
 				console.log("There are " + this.ajaxResponse.taggable.length + " people around you: " + this.ajaxResponse.taggable);
 				this.fire('iron-signal', {name: 'tagnum', data: this.ajaxResponse.taggable.length});
-
-
-
-
-				//console.log(response);
-				
-
 			},
+
 			tagResponse: function (response) {
-				//console.log(response);
 				var tagResponse = this.ajaxTagResponse.result;
 				console.log(tagResponse);
 				
@@ -342,10 +306,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 					document.querySelector('#tagfailtoast').show();
 				}
 			},
-			getTaggableUrl: function (value) {
-				console.log("Taggable url is : http://bluetaggame1.mybluemix.net/api/taggable/" + value);
-				
-				return "http://bluetaggame1.mybluemix.net/api/taggable/" + value;
+			getTaggableUrl: function (value) {	
+				return this.url + "api/taggable/" + value;
 			},
 			
 			tagclick: function(e) {
@@ -365,13 +327,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 			getusername: function (value) {
 				console.log(value);
 				return value;
-			},
-			
-			getUserURL: function() {
-				//var value = document.querySelector("input[is=iron-input]").value;
-				//console.log("Taggable URL: http://bluetaggame1.mybluemix.net/api/taggable/martin");
-				
-				return "http://bluetaggame1.mybluemix.net/api/taggable/martin" 
 			},
 
 			locUpdate: function() {

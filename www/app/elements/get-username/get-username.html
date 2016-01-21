@@ -31,8 +31,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
-
-
 <dom-module name="get-username" id="get-username">
 
   <style>
@@ -74,7 +72,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         
         <iron-ajax
             id="register"
-            url="http://bluetagregister1.mybluemix.net/api/register/"
+            url='[[url]]'
             content-type='application/json'
             method="POST"
             handle-as='json'
@@ -105,7 +103,11 @@ Polymer({
 			 value: {
 				   type: String,
 					 notify: true
-				}
+				},
+        url: {
+          type: String,
+          notify: true
+        }
 						
 		},
                     
@@ -138,12 +140,6 @@ Polymer({
     document.getElementById("register").generateRequest();
 
    },
-					
-	generateTaggableUrl: function (username) {
-
-		return "http://bluetaggame1.mybluemix.net/api/taggable/" + username;
-
-	},
 	
 	tagListResponse: function () {
 

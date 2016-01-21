@@ -207,16 +207,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         </div>
 
 
-<!-- 		<iron-list items="{{ajaxTaggedResponse.tagged}}" as="taggeditem">
-		<template>
-			<div>
-				<div class="item">
-					<div style="padding-top: 10px">[[taggeditem]]</div>
-				</div>
-			</div>
-			</template>
-		</iron-list> -->
-
 		<iron-signals on-iron-signal-tagsuccess="updateTagged">
 	</template>
 	
@@ -234,7 +224,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 			value: {
 				type: String,
 				notify: true
-			}
+			},
+
+      url: {
+        type: String,
+        notify: true
+      }
 		},
 		
 		ready: function() {
@@ -242,7 +237,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 		},
 		
 		getTaggedUrl: function(value) {
-			return "http://bluetagtag1.mybluemix.net/api/query/tagged/" + value
+      return this.url + 'api/query/tagged/' + value;
 		},
 		
 		taggedListResponse: function() {

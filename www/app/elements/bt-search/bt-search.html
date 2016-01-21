@@ -38,7 +38,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
             placeholder="Enter user name to search for" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5">
         </paper-input>
 
-        <ws-element url={{searchValue}} protocol="echo-protocol"></ws-element>
+        <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
     
         <div>Results: </div>
         <template is="dom-repeat" items="{{searchResults}}">
@@ -57,6 +57,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
       searchResults: {
         type: Array,
+        notify: true
+      },
+
+      url: {
+        type: String,
         notify: true
       }
     },

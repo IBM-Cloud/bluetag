@@ -145,11 +145,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
+            <url-service></url-service>
 
           <section data-route="splash">
               <div align="center">Welcome</div>
-
-                  <div>
             <h4></h4>
             <div class="horizontal-section">
                 
@@ -164,18 +163,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <section data-route="home">
 
               <paper-material elevation="1" class="paper-font-body2">
-
-                
 				        <my-map value="{{username}}"></my-map>
-				
               </paper-material>
 			  
 			  
               <paper-material elevation="1" class="paper-font-body2">
-			  
                 <p class="paper-font-subhead">Use the navigation menu to:</p>
                 <my-list></my-list>
-                
               </paper-material>
 
           </section>
@@ -246,7 +240,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"></script>
+  <script src="bundle.js"></script>
+  <!-- app.js is included in bundle.js. bundle.js was produced using browserify (https://github.com/substack/node-browserify)
+  browserify lets you require node modules in the browser by bundling module dependencies with app code. This is written to
+  bundle.js (includes app code and dependencies). Therefore, no need to include app.js
+  <script src="scripts/app.js"></script> -->
+
   <!-- endbuild-->
 </body>
 
