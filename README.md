@@ -61,21 +61,23 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 * Create a Cloudant NoSQL DB service in Bluemix.
 
   ```
-  $ cf create-service cloudantNoSQLDB Standard bluetag-cloudant
+  $ cf create-service cloudantNoSQLDB Shared bluetag-cloudant
   ```
 
-* Go into the bluetag-frontend/www directory and edit the `manifest.yml` file and change the `name` and `host` attributes to something unique.
+  The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
+
+* Go into the bluetag-frontend/www directory and edit the `manifest.yml` file and change the `host` attributes to something unique.
 
   ```
   applications:
-  - name: <prefix>-bluetag
+  - name: bluetag-frontend
     framework: node
     runtime: node12
     memory: 128M
     instances: 1
     host: <prefix>-bluetag
   ```
-  The host you use will determinate your application url initially, e.g. `<host>.mybluemix.net`.
+  The host will determine your application url initially, e.g. `<host>.mybluemix.net`.
   
 * Push the node application to Bluemix.  
 
@@ -83,7 +85,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
-* Push the Java applications to Bluemix.  Replace the prefix to give your application a globally uniqiue name and host.
+* Push the Java based services to Bluemix.  Replace the prefix to give your application a globally uniqiue name and host.
 
    ```
    $ cd ../bluetag-register
