@@ -10,11 +10,11 @@ We would love for you to join the project and contribute!
 
 ## How it works - live demo service
 
-1. Go to the [live Bluetag demo][BluetagURL] and enter any name to get started. 
+* Go to the [live Bluetag demo][BluetagURL] and enter any name to get started. 
 
-2. The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
+* The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
 
-3. You can use the navigation links on the left to do the following:
+* You can use the navigation links on the left to do the following:
 
 **Near me:**  Lists users who are within 10 meters of you.  Press TAG and the user will be added to your contacts.
 
@@ -33,7 +33,7 @@ We would love for you to join the project and contribute!
 
 ## Download the BlueTag code
 
-All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag is a micro-service sample, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
+All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a micro-service architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
 
   ```
   mkdir myBluetag
@@ -254,7 +254,7 @@ To troubleshoot your Bluemix app the main useful source of information is the lo
   ```
   $ cf logs <application-name> --recent
   ```
-## Useful links
+Useful links
 
 [BluetagURL]: http://bluetag.mybluemix.net/
 [bluemix_signup_url]: https://console.ng.bluemix.net/?cm_mmc=Display-GitHubReadMe-_-BluemixSampleApp-PersonalityBox-_-Node-Box-_-BM-DevAd
