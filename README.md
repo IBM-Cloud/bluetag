@@ -10,7 +10,7 @@ We would love for you to join the project and contribute!
 
 ## How it works - live demo service
 
-* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/)and enter any name to get started. 
+* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/) and enter any name to get started. 
 
 * The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
 
@@ -47,9 +47,9 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 
 * Create a Bluemix Account
 
-    [Sign up][bluemix_signup_url] for Bluemix, or use an existing account.
+    [Sign up](http://www.bluemix.com) for Bluemix, or use an existing account.
 
-* Download and install the [Cloud-foundry CLI][cloud_foundry_url] tool
+* Download and install the [Cloud-foundry CLI](https://github.com/cloudfoundry/cli) tool
 
 * Connect to Bluemix in the command line tool and follow the prompts to log in.
 
@@ -122,7 +122,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf restage <prefix>-bluetag-search
    ```
    
-Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!
+Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://<prefix>-bluetag.mybluemix.net.
 
 ## Setting up a dev environment for the microservices in Eclipse
 
@@ -197,15 +197,9 @@ To get started, let's get Cordova setup first.  Install NPM first by following i
    
 to install Cordova.  You can find specific instructions on how to do that over here: https://cordova.apache.org/#getstarted
 
-* Create a directory called BlueTag.  This will be the root directory that will contain all the BlueTag projects.
-
 * To create a new Cordova project, you can just run the following command: cordova create <path>
 
-* In this case, you can just cd into BlueTag and download the existing BlueTagFrontEnd project from the GIT repo by running:
-
-   ```
-   git clone https://hub.jazz.net/git/arshadmu/BlueTagPolymer
-   ```
+* In this case, you can just cd into myBlueTag/bluetag-frontend to access the Bluetag Cordova project.
    
 * Next, we need to get the SDKs to build the application for the platforms we want.  
 
@@ -224,17 +218,23 @@ to install Cordova.  You can find specific instructions on how to do that over h
 	
 * Next, tell Cordova about the platforms you will be building on by running:
 
+	```
 	cordova platform add <platform name>
+	```
 	
 	Example platform names are android and ios.
 	
 * Now we are ready to build the application for the platforms we want to deploy the app to! To just build the application without deploying to a physical device or emulator you can run:
 
+	```
 	cordova build <platform name>
-
+	```
+	
 * To build and run the application, you can run:
  	
+	```
 	cordova run <platform name>
+	```
 	
 	This will deploy to the connected device or start an emulator if no device is found.
 
@@ -254,9 +254,3 @@ To troubleshoot your Bluemix app the main useful source of information is the lo
   ```
   $ cf logs <application-name> --recent
   ```
-Useful links
-
-[BluetagURL]: http://bluetag.mybluemix.net/
-[bluemix_signup_url]: https://console.ng.bluemix.net/?cm_mmc=Display-GitHubReadMe-_-BluemixSampleApp-PersonalityBox-_-Node-Box-_-BM-DevAd
-[cloud_foundry_url]: https://github.com/cloudfoundry/cli
-[download_node_url]: https://nodejs.org/download/
