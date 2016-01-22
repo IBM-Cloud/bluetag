@@ -10,7 +10,7 @@ We would love for you to join the project and contribute!
 
 ## How it works - live demo service
 
-* Go to the [live Bluetag demo][BluetagURL] and enter any name to get started. 
+* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/)and enter any name to get started. 
 
 * The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
 
