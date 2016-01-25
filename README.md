@@ -31,10 +31,6 @@ We would love for you to join the project and contribute!
 
 <img src="./bluetag-services.png" width="650px"><br>This an architectural overview of the components that make this app run.<br>
 
-## Prereqs
-
-
-
 ## Download the BlueTag code
 
 All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a micro-service architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
@@ -67,29 +63,10 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   ```
   $ cf create-service cloudantNoSQLDB Shared bluetag-cloudant
   ```
-
-  The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
-
-* Go into the bluetag-frontend/www directory and edit the `manifest.yml` file and change the `host` attributes to something unique.
-
-  ```
-  applications:
-  - name: bluetag-frontend
-    framework: node
-    runtime: node12
-    memory: 128M
-    instances: 1
-    host: <prefix>-bluetag
-  ```
-  The host will determine your application url initially, e.g. `<host>.mybluemix.net`.
   
-* Push the node application to Bluemix.  
-
-   ```
-   $ cf push
-   ```
-
-* Push the Java based services to Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
+*  TODO: Remove this line once Muneeb checks in his fix to create these in the code automatically.  For now manually create these 4 databases in Cloudant: info, tag, location, markedlocation
+ 
+* Next let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
 
    ```
    $ cd ../bluetag-register
@@ -112,6 +89,30 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    Update <prefix> in manifest.yml
    $ cf push
    ```
+
+* The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
+   
+* Update the contents of the env-config.json file under the bluetag-frontend/www/app directory to reflect the back end service URLs that were created in the previous step.
+ 
+* Go into the bluetag-frontend/www directory and edit the `manifest.yml` file and change the `host` attributes to something unique.
+
+  ```
+  applications:
+  - name: bluetag-frontend
+    framework: node
+    runtime: node12
+    memory: 128M
+    instances: 1
+    host: <prefix>-bluetag
+  ```
+  The host will determine your application url initially, e.g. `<host>.mybluemix.net`.
+ 
+* Push the node application to Bluemix.  
+
+   ```
+   $ cf push
+   ```
+   
    
 Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://<prefix>-bluetag.mybluemix.net.
 
@@ -139,7 +140,7 @@ You should have a workspace that's ready to build the BlueTag backend services n
 
 * The bluetag-frontend project is structured to work with Cordova and is written using HTML5 and javascript.
 
-* To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules
+* To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules.  If you don't have npm installed, you can install it by following the instructions at https://docs.npmjs.com/getting-started/installing-node 
 
    ```
    npm install
@@ -174,19 +175,19 @@ You should have a workspace that's ready to build the BlueTag backend services n
 	[PSK] Serving files from: app
 	```
 
-You are now ready to tweak the bluetag frontend code and test it!
+You are now ready to tweak the bluetag frontend code and test it locally!
 
 ## Building a native application
 
 If you want to transform bluetag from a browser based web application to a native mobile application, you can quickly do that without any additional code using Cordova.
 
-To get started, let's get Cordova setup first.  Install NPM first by following instructions at https://docs.npmjs.com/getting-started/installing-node and then run 
+To get started, let's get Cordova setup first by running the following command 
 
    ```
    npm install -g cordova
    ```
    
-to install Cordova.  You can find specific instructions on how to do that over here: https://cordova.apache.org/#getstarted
+You can find specific Cordova installation instructions at https://cordova.apache.org/#getstarted
 
 * To create a new Cordova project, you can just run the following command: cordova create <path>
 
