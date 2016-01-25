@@ -1,0 +1,8 @@
+  applications:
+  - name: bluetag-register
+    memory: 512M
+    instances: 1
+    path: defaultServer
+    services: 
+     - bluetag-cloudant
+    host: <prefix>-bluetag-register
