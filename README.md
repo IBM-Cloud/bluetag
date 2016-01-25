@@ -27,9 +27,13 @@ We would love for you to join the project and contribute!
 **Settings:**  You can prevent location updates from sending updates to the location service and you can toggle logging in the debug console.
 
 
-### Architecture Diagram
+## Architecture Diagram
 
 <img src="./bluetag-services.png" width="650px"><br>This an architectural overview of the components that make this app run.<br>
+
+## Prereqs
+
+
 
 ## Download the BlueTag code
 
@@ -85,43 +89,28 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
-* Push the Java based services to Bluemix.  Replace the prefix to give your application a globally uniqiue name and host.
+* Push the Java based services to Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
 
    ```
    $ cd ../bluetag-register
-   $ cf push <prefix>-bluetag-register -p defaultServer/
+   Update <prefix> in manifest.yml
+   $ cf push
 
    $ cd ../bluetag-location
-   $ cf push <prefix>-bluetag-location -p defaultServer/
+   Update <prefix> in manifest.yml
+   $ cf push
 
    $ cd ../bluetag-engine
-   $ cf push <prefix>-bluetag-engine -p defaultServer/
+   Update <prefix> in manifest.yml
+   $ cf push
 
    $ cd ../bluetag-tag
-   $ cf push <prefix>-bluetag-tag -p defaultServer/
+   Update <prefix> in manifest.yml
+   $ cf push
    
    $ cd ../bluetag-search
-   $ cf push <prefix>-bluetag-search -p defaultServer/
-   ```
-   
-* Bind the Java applications with the Cloudant service.
-
-  ```
-  $ cf bind-service <prefix>-bluetag-register bluetag-cloudant
-  $ cf bind-service <prefix>-bluetag-location bluetag-cloudant
-  $ cf bind-service <prefix>-bluetag-engine bluetag-cloudant
-  $ cf bind-service <prefix>-bluetag-tag bluetag-cloudant
-  $ cf bind-service <prefix>-bluetag-search bluetag-cloudant  
-  ```
-  
-* Restage the applications to pick up the cloudant environment variables.
-
-   ```
-   $ cf restage <prefix>-bluetag-register  
-   $ cf restage <prefix>-bluetag-location
-   $ cf restage <prefix>-bluetag-engine
-   $ cf restage <prefix>-bluetag-tag
-   $ cf restage <prefix>-bluetag-search
+   Update <prefix> in manifest.yml
+   $ cf push
    ```
    
 Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://<prefix>-bluetag.mybluemix.net.
