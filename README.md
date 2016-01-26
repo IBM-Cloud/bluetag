@@ -9,6 +9,7 @@ For more implementation details please refer to the [design documention](../../.
 GET TAGGABLE
 Get list of people who are in a 10 meter radius around the user.
 
+```
 url: <prefix>-bluetag-engine.mybluemix.net/api/taggable/{username}
 method: GET
 response:
@@ -16,5 +17,6 @@ response:
 		"taggable": ["user1", "user2", …],
 		“distances”:[“user1distance”, “user2distance”, …]
 	}
+```
 
 If something is wrong with database, will send back JSON payload from database.
