@@ -93,7 +93,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
-#### Deploy the frontend service
+* #### Deploy the frontend service
 * The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
    
 * Update the contents of the env-config.json file under the bluetag-frontend/www/app directory to reflect the back end service URLs that were created in the previous step.
