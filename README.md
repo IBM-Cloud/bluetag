@@ -57,6 +57,8 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   $ cf api https://api.ng.bluemix.net
   $ cf login
   ```
+
+#### Setup database
   
 * Create a Cloudant NoSQL DB service in Bluemix.
 
@@ -66,7 +68,8 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   
 *  TODO: Remove this line once Muneeb checks in his fix to create these in the code automatically.  For now manually create these 4 databases in Cloudant: info, tag, location, markedlocation
  
-* Next let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
+#### Deploy backend services
+* Let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
 
    ```
    $ cd ../bluetag-register
@@ -90,6 +93,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
+#### Deploy the frontend service
 * The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
    
 * Update the contents of the env-config.json file under the bluetag-frontend/www/app directory to reflect the back end service URLs that were created in the previous step.
@@ -102,7 +106,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
     framework: node
     runtime: node12
     memory: 128M
-    instances: 1
+`    instances: 1
     host: <prefix>-bluetag
   ```
   The host will determine your application url initially, e.g. `<host>.mybluemix.net`.
@@ -195,7 +199,7 @@ You can find specific Cordova installation instructions at https://cordova.apach
    
 * Next, we need to get the SDKs to build the application for the platforms we want.  
 
-    TIP: Android SDK will not work with the IBM JDK.  Please make sure the Orcale JDK is your default JDK.
+    TIP: Android SDK will not work with the IBM JDK.  Please make sure the Oracle JDK is your default JDK.
 
 	For Android, you can download them from: https://developer.android.com/sdk/index.html#Other
 	After installing in the SDK Manager, make sure to download the SDK for API22 (Android 5.1.1)
