@@ -24,6 +24,7 @@ var historyApiFallback = require('connect-history-api-fallback');
 var packageJson = require('./package.json');
 var crypto = require('crypto');
 var ensureFiles = require('./tasks/ensure-files.js');
+var browserify = require('browserify');
 
 // var ghPages = require('gulp-gh-pages');
 
@@ -237,7 +238,7 @@ gulp.task('clean', function() {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', [/* Disable lint task for now - failing because of formatting violations'lint',*/ 'styles', 'elements'], function() {
+gulp.task('serve', [/* Disable lint task for now - failing because of formatting violations'lint',*/ 'styles', 'elements', 'browserify'], function() {
   browserSync({
     port: 5000,
     notify: false,
@@ -263,7 +264,7 @@ gulp.task('serve', [/* Disable lint task for now - failing because of formatting
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['lint']);
+  gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['browserify'/*,'lint'*/]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -296,7 +297,7 @@ gulp.task('default', ['clean'], function(cb) {
   runSequence(
     ['copy', 'styles'],
     'elements',
-    [/*'lint',*/ 'images', 'fonts', 'html'],
+    [/*'lint',*/ 'browserify', 'images', 'fonts', 'html'],
     'vulcanize', 'cache-config',
     cb);
 });
@@ -320,6 +321,12 @@ gulp.task('deploy-gh-pages', function() {
       branch: 'gh-pages'
     }), $.ghPages()));
 });
+
+gulp.task('browserify', function() {
+      return browserify(['app/scripts/app.js']).bundle()
+        .pipe(fs.createWriteStream('app/scripts/bundle.js'));
+  });
+
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`

@@ -1,0 +1,8 @@
+{
+	"register": "http://bluetag-register.mybluemix.net/" ,
+	"game": "http://bluetag-engine.mybluemix.net/",
+	"location": "ws://bluetag-location.mybluemix.net/",
+	"search": "ws://bluetag-search.mybluemix.net/",
+	"tag": "http://bluetag-tag.mybluemix.net/"
+
+}
