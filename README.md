@@ -1,15 +1,36 @@
-#BluetagLocation Service - Handle Location Updates#
+#bluetag-location service
 
-###Available APIs###
+This service is responsible for interacting with the frontend device to process the location data of a user over a websocket connection.
 
+For more implementation details please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application, please refer to the [overview documentaion](../../../bluetag/blob/master/README.md).
 
+#APIs exposed by service
 
-###Running local###
+bluetag-location exposes a REST service that can be used to pass the location data of a user and store it in a database.
 
-Set the following environment variables to allow a service running locally to be able to communicate with a remote Cloudant Database running in Bluemix. 
+Service details:
 
-	dbUsername=(Cloudant username)
-	dbPassword=(Cloudant password)
-	dbURI=(Cloudant URL)
+```
+method: PUT
+url (REST): <bluetag-location service url>/api/location
+url (WS)  : ws://<bluetag-location service url>/wsLocationResource
 
-Deploy a Cloudant instance in Bluemix and bind to a running service. Click on the service to which Cloudant is bound and select 'Environment Variables' from the left hand panel. Under VCAP_SERVICES, look at the JSON section labeled 'cloudantNoSQLDB'. You should see fields named "username", "password" and "url". Assign these values as local environment variables to "dbUsername", "dbPassword" and "dbURI" - no parentheses. Your local service should now be able to communicate with your Cloudant instance.
+example url: bluetag-location.mybluemix.net/api/location
+
+payload: 
+	{
+		"_id": "username",
+		"longitude": a number (no quotes),
+		"latitude": a number (no quotes),
+		"altitude": a number (no quotes)
+	}
+	
+response if success:
+	{
+		"result": "success"
+	}
+response if failure:
+	{	
+		"result": "something has gone horribly wrong. Please try again"
+	}
+```
