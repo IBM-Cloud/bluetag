@@ -58,7 +58,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   $ cf login
   ```
 
-#### Setup database
+##### Setup database
   
 * Create a Cloudant NoSQL DB service in Bluemix.
 
@@ -68,7 +68,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   
 *  TODO: Remove this line once Muneeb checks in his fix to create these in the code automatically.  For now manually create these 4 databases in Cloudant: info, tag, location, markedlocation
  
-#### Deploy backend services
+##### Deploy backend services
 * Let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
 
    ```
@@ -93,7 +93,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
-* #### Deploy the frontend service
+##### Deploy the frontend service
 * The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
    
 * Update the contents of the env-config.json file under the bluetag-frontend/www/app directory to reflect the back end service URLs that were created in the previous step.
