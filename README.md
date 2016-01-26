@@ -6,9 +6,9 @@ For more implementation details please refer to the [design documention](../../.
 
 #APIs exposed by service
 
-GET TAGGABLE
-Get list of people who are in a 10 meter radius around the user.
+bluetag-engine exposes a REST service to get a list of people who are in a 10 meter radius of the user passed in.
 
+Accessing the service:
 ```
 url: <prefix>-bluetag-engine.mybluemix.net/api/taggable/{username}
 method: GET
