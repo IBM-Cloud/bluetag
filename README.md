@@ -1,15 +1,64 @@
-#BluetagTag Service#
+#bluetag-tag service
 
-###Available APIs###
+This service is responsible for handling the tag aspects of the application.  This includes the tagging of both users and locations as well as retriving the list of tagged users and locations.
 
+For more implementation details please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application, please refer to the [overview documentaion](../../../bluetag/blob/master/README.md).
 
+#APIs exposed by service
 
-###Running local###
+bluetag-tag exposes REST services that can be used to tag and retrive users and locations.
 
-Set the following environment variables to allow a service running locally to be able to communicate with a remote Cloudant Database running in Bluemix. 
+```
+Tagged users query API: Returns a list of users the user has tagged.
 
-	dbUsername=(Cloudant username)
-	dbPassword=(Cloudant password)
-	dbURI=(Cloudant URL)
+Method: GET
+URL: <bluetag-search service url>/api/query/tagged/{username}
+Example URL: bluetag-register.mybluemix.net/api/query/tagged/John
 
-Deploy a Cloudant instance in Bluemix and bind to a running service. Click on the service to which Cloudant is bound and select 'Environment Variables' from the left hand panel. Under VCAP_SERVICES, look at the JSON section labeled 'cloudantNoSQLDB'. You should see fields named "username", "password" and "url". Assign these values as local environment variables to "dbUsername", "dbPassword" and "dbURI" - no parentheses. Your local service should now be able to communicate with your Cloudant instance.
+Response:
+	{
+		"_id": "username",
+		"_rev": "revision code",
+		"tagged": ["user1", "user2", ...]
+	}
+"_rev" should be ignored by the client side. It is used for synchronization. 
+```
+
+```
+UPDATE TAGGED
+Adds a person to a user's tagged list
+
+url: bluetagtag.mybluemix.net/api/tag
+method: PUT
+payload: 
+	{
+		"_id": "username",
+		"username": "username of person to tag"
+	}
+response if success:
+	{
+		"result": "success"
+	}
+response if failure:
+	{	
+		"result": "something has gone horribly wrong. Please try again"
+	}
+```
+
+```
+GET TAGGED
+Adds a person to a user's tagged list
+
+url: bluetagtag.mybluemix.net/api/tagged/{username}
+method: GET
+response: 
+	{
+  		"_id": “username”,
+  		"_rev": “rev”,
+  		"tagged": [
+  		  “user1”,
+   		  “user2”,
+		  “…”
+  		]
+	}
+```
