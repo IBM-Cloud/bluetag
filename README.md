@@ -8,16 +8,15 @@ For more implementation details please refer to the [design documention](../../.
 
 bluetag-location exposes a REST service that can be used to pass the location data of a user and store it in a database.
 
-Service details:
-
 ```
-method: PUT
-url (REST): <bluetag-location service url>/api/location
-url (WS)  : ws://<bluetag-location service url>/wsLocationResource
+Location API: API to update the location of a user in the database.
 
-example url: bluetag-location.mybluemix.net/api/location
+Method: PUT
+URL (REST): <bluetag-location service url>/api/location
+URL (WS)  : ws://<bluetag-location service url>/wsLocationResource
+Example URL: bluetag-location.mybluemix.net/api/location
 
-payload: 
+Payload: 
 	{
 		"_id": "username",
 		"longitude": a number (no quotes),
@@ -25,11 +24,11 @@ payload:
 		"altitude": a number (no quotes)
 	}
 	
-response if success:
+Response if success:
 	{
 		"result": "success"
 	}
-response if failure:
+Response if failure:
 	{	
 		"result": "something has gone horribly wrong. Please try again"
 	}
