@@ -8,15 +8,14 @@ For more implementation details please refer to the [design documention](../../.
 
 bluetag-engine exposes a REST service to get a list of people who are in a 10 meter radius of the user passed in.
 
-Service details:
-
 ```
-method: GET
-url: <bluetag-engine service url>/api/taggable/{username}
+Taggable API: Get a list of taggable users for a specified user.
 
-example url: bluetag-engine.mybluemix.net/api/taggable/john
+Method: GET
+URL: <bluetag-engine service url>/api/taggable/{username}
+Example URL: bluetag-engine.mybluemix.net/api/taggable/John
 
-response:
+Response:
 	{
 		"taggable": ["user1", "user2", …],
 		“distances”:[“user1distance”, “user2distance”, …]
