@@ -1,15 +1,51 @@
-#BluetagRegister Service - Registration and User queries#
+#bluetag-register service
 
-###Available APIs###
+This service is responsible for handling the user registration / login aspect of the application.
+For more implementation details please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application and instructions on how to download the source code, build, and deploy this service, please refer to the [overview documentaion](../../../bluetag/blob/master/README.md).
 
+#APIs exposed by service
 
+bluetag-register exposes a few APIs to handle user registration and looking up details of a user.
 
-###Running local###
+```
+Registration API: Check if the user passed in already exists in the database. If not, create an entry for that user. 
 
-Set the following environment variables to allow a service running locally to be able to communicate with a remote Cloudant Database running in Bluemix. 
+Method: POST
+URL: <bluetag-search service url>/api/register
+Example URL: bluetag-register.mybluemix.net/api/register
 
-	dbUsername=(Cloudant username)
-	dbPassword=(Cloudant password)
-	dbURI=(Cloudant URL)
+Payload:
+	{
+		"_id": "username"
+		"name": "Actual Name"
+	}
+Response if success:
+	{
+		"result": "success"
+	}
+Response if user already exists:
+	{
+		"result": "user already exists"
+	}
+Response if other failure:
+	{	
+		"result": "something has gone horribly wrong. Please try again"
+	}	
+```
 
-Deploy a Cloudant instance in Bluemix and bind to a running service. Click on the service to which Cloudant is bound and select 'Environment Variables' from the left hand panel. Under VCAP_SERVICES, look at the JSON section labeled 'cloudantNoSQLDB'. You should see fields named "username", "password" and "url". Assign these values as local environment variables to "dbUsername", "dbPassword" and "dbURI" - no parentheses. Your local service should now be able to communicate with your Cloudant instance.
+```
+User query API: Get info about the user from the database.
+
+Method: GET
+URL: <bluetag-search service url>/api/query/{username}
+Example URL: bluetag-register.mybluemix.net/api/query/John
+
+Response: 
+	{
+		"_id": "username",
+		"_rev": "revision code",
+		"name": "Actual Name"
+	}
+	
+"_rev" should be ignored by the client side. It is used for synchronization. 
+```
