@@ -27,6 +27,7 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
+
 var env = require('../env-config.json');
 (function(document) {
     'use strict';
@@ -168,11 +169,11 @@ var env = require('../env-config.json');
 	    var urls = document.querySelector('#meta-config').getAttribute('value');
 	    
 	    document.querySelector('get-username').url = JSON.parse(urls).register + 'api/register/';
-	    document.querySelector('get-taggable').url = JSON.parse(urls).game;
+	    document.querySelector('get-taggable').url = JSON.parse(urls).engine;
 	    document.querySelector('get-taggable').tagUrl = JSON.parse(urls).tag + 'api/tag/';
 	    document.querySelector('get-tagged').url = JSON.parse(urls).tag;
-	    document.querySelector('mark-it').url = JSON.parse(urls).register + 'api/markit/newmark/';
-	    document.querySelector('my-places').url = JSON.parse(urls).register + 'api/markit/marked/';
+	    document.querySelector('mark-it').url = JSON.parse(urls).tag + 'api/markit/newmark/';
+	    document.querySelector('my-places').url = JSON.parse(urls).tag + 'api/markit/marked/';
 	    document.querySelector('bt-search').url = JSON.parse(urls).search + 'SearchWS/';
 
 	    document.querySelector('ws-element').open(); //opening search socket after url is known - need to change this to work within bt-search
