@@ -2,26 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/bluetag-models-1.0.jar"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/gson-2.3.1.jar"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/httpclient-4.5.jar"/>
-	<classpathentry kind="lib" path="/BluetagSharedLibs/lib/httpcore-4.4.1.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/WebSphere Application Server Liberty Profile">
-		<attributes>
-			<attribute name="owner.project.facets" value="jst.web;#system#"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_45]">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/WebSphere Application Server Liberty"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/bluetag-models-1.0.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/httpclient-4.5.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/httpcore-4.4.1.jar"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>
