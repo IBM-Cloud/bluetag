@@ -21,7 +21,6 @@ public class QueryService {
 	private String contentHeaderValue = "application/json";
 	
 	CloudantCredential cc = new CloudantCredential();
-	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
 	private String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
 	private String cloudantURI = cc.getCloudantURI();
 	
