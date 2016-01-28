@@ -77,7 +77,7 @@ public class RegisterService {
 				return createUserEntity;
 			}
 			httpclient.close();
-			
+
 			// create tagged entry
 			HttpPost createTaggedPost = new HttpPost(cloudantURI + "/tag");
 			createTaggedPost.addHeader(authHeaderKey, authHeaderValue);
