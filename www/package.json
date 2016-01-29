@@ -36,6 +36,7 @@
     "web-component-tester": "^4.0.0"
   },
   "dependencies": {
+    "cf-deployment-tracker-client": "0.0.8",
     "cfenv": "1.0.x",
     "express": "3.4.4"
   },

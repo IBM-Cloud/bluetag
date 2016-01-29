@@ -62,3 +62,5 @@ console.log('App started on ' + appEnv.bind + ':' + appEnv.port);
 //http.createServer(app).listen(app.get('port'), function(){
 //  console.log('Kibana server listening on port ' + app.get('port'));
 //});
+
+require("cf-deployment-tracker-client").track();
