@@ -2,7 +2,7 @@
 
 This service is responsible for handling the tag aspects of the application.  This includes the tagging of both users and locations as well as retriving the list of tagged users and locations.
 
-For more implementation details please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application, please refer to the [overview documentaion](../../../bluetag/blob/master/README.md).
+For implementation and design details, please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../../../bluetag/blob/master/README.md).
 
 #APIs exposed by service
 
