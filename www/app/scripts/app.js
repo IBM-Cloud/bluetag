@@ -75,7 +75,12 @@ var env = require('../env-config.json');
 
 		    console.log('Sending location update over socket: ' + JSON.stringify(userloc));
 		    //TODO - this socket will timeout if location data is not flowing - need to add error checking
-		    locationSocket.send(JSON.stringify(userloc));				  
+            if(locationSocket.readyState === 1){
+                locationSocket.send(JSON.stringify(userloc));
+            } else {
+                locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                locationSocket.send(JSON.stringify(userloc));
+            }				  
 	    }
     }); // end addEventListener()
 	           
@@ -138,15 +143,17 @@ var env = require('../env-config.json');
 						latitude: latitude};																		
                     try {
                         console.log('Trying to send through socket: ' + JSON.stringify(userloc));
-						locationSocket.send(JSON.stringify(userloc));
+
+                        //readyState means socket is open and ready to communicate. If state is 2 (Closing) or 3 (Closed) try to re-open
+                        //the socket before sending location again
+                        if(locationSocket.readyState === 1){
+						  locationSocket.send(JSON.stringify(userloc));
+                        } else {
+                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                            locationSocket.send(JSON.stringify(userloc));
+                        }
                     } catch(err) {
                         console.log('Failed because: ' + err.message);
-
-                        //locationSocket = new WebSocket('ws://bluetaglocation1.mybluemix.net/wsLocationResource');
-                        locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                        locationSocket.onopen = function(msg) {console.log('Socket Open')};
-                        locationSocket.onmessage = function(msg) {console.log('Server says: ' + JSON.stringify(msg) )};
-                        locationSocket.send(JSON.stringify(userloc));
                     }
 					document.getElementById('taggable').generateRequest();
 				}
@@ -243,15 +250,14 @@ var env = require('../env-config.json');
             
             try {
                 console.log('Trying to send through socket: ' + JSON.stringify(userloc));
-                locationSocket.send(JSON.stringify(userloc));
+                if(locationSocket.readyState === 1){
+                    locationSocket.send(JSON.stringify(userloc));
+                } else {
+                    locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                    locationSocket.send(JSON.stringify(userloc));
+                }
             } catch(err) {
                 console.log('Failed because: ' + err.message);
-
-                //locationSocket = new WebSocket('ws://bluetaglocation1.mybluemix.net/wsLocationResource');
-                locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                locationSocket.onopen = function(msg) {console.log('Socket Open')};
-                locationSocket.onmessage = function(msg) {console.log('Server says: ' + JSON.stringify(msg) )};
-                locationSocket.send(JSON.stringify(userloc));
             }
             document.getElementById('taggable').generateRequest();
         }

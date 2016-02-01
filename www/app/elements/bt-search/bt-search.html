@@ -73,12 +73,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     },
 
         handleMsg: function(message) {
-          console.log("handleMsg:" + message.detail);
+          console.log('handleMsg:' + message.detail);
 
           if (message.detail.indexOf('{') === 0) {
           this.searchResults = JSON.parse(message.detail).processedSearchResults;
 
-          console.log("handleMsg: array of names:" + searchResults);
+          console.log('handleMsg: array of names:' + searchResults);
           
           //set searchResults inthe bt-search object.  this.searchResults is not part of bt-search
           document.querySelector('bt-search').searchResults = searchResults;
@@ -90,23 +90,25 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
           //listen for search results from ws-element          
           addEventListener('onmessage', this.handleMsg );
-          console.log("bt-search is ready.");
+          console.log('bt-search is ready.');
         },
 
         doSearch: function(searchValue) {
-            console.log("doSearch value entered: " + this.searchValue);
-            var wsElement = document.querySelector("ws-element");
+            console.log('doSearch value entered: ' + this.searchValue);
+            var wsElement = document.querySelector('ws-element');
 
             if (this.searchValue != "") {
-                wsElement.send(this.searchValue);
-            }
+                console.log('search socketState is: ' + wsElement.readyState());
 
-           //document.querySelector("ws-element").addEventListener('onmessage', function(message) {
-           //console.log("message recieved:" + message.detail);
-           //console.log("message recieved:" + message.detail.processedSearchResults);
-           //console.log("message recieved:" + JSON.parse(message.detail).processedSearchResults);
-           //this.searchResults = JSON.parse(message.detail).processedSearchResults; 
-          //});
+                if (wsElement.readyState() === 1) {
+                  wsElement.send(this.searchValue);
+                } else {
+                  console.log('Search socket closed. Re-establishing.');
+                    wsElement.open();
+                    wsElement.send(this.searchValue);
+                }
+              
+            }
         }
 
       });
