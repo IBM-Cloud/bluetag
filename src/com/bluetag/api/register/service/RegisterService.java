@@ -1,6 +1,7 @@
 package com.bluetag.api.register.service;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -8,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -31,6 +33,8 @@ public class RegisterService {
 	private String contentHeaderKey = "Content-Type";
 	private String contentHeaderValue = "application/json";
 	
+	private static final Logger LOGGER = Logger.getLogger(CloudantCredential.class.getName());
+	
 	
 	CloudantCredential cc = new CloudantCredential();
 	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
@@ -47,6 +51,61 @@ public class RegisterService {
 			Gson gson = new Gson();
 			UserModel user = gson.fromJson(userInfo, UserModel.class);
 			String userID = user.get_id();
+			
+			//check if DBs exist in cloudant service
+			String checkDbExistsUri = cloudantURI + "/_all_dbs";
+			HttpGet checkDbExistsGet = new HttpGet(checkDbExistsUri);
+			checkDbExistsGet.addHeader(authHeaderKey, authHeaderValue);
+			checkDbExistsGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+			checkDbExistsGet.addHeader(contentHeaderKey, contentHeaderValue);
+			HttpResponse checkExistsDbResp = httpclient.execute(checkDbExistsGet);
+			String resp = EntityUtils.toString(checkExistsDbResp.getEntity());
+			
+			LOGGER.info("DBs are: " + resp);
+			
+			if (!resp.contains("info") && !resp.contains("location") && !resp.contains("markedlocations") && !resp.contains("tag")) {
+				LOGGER.info("One or more dbs do not exist. Creating info, location, markedlocations and tag");
+				
+				HttpPut createInfoDbPut = new HttpPut(cloudantURI + "/info");
+				createInfoDbPut.addHeader(authHeaderKey, authHeaderValue);
+				createInfoDbPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				createInfoDbPut.addHeader(contentHeaderKey, contentHeaderValue);
+				HttpResponse createInfoDbResp = httpclient.execute(createInfoDbPut);
+				LOGGER.info(EntityUtils.toString(createInfoDbResp.getEntity()));
+				//httpclient.close();
+				
+				LOGGER.info("Created info db");
+				
+				HttpPut createLocationDbPut = new HttpPut(cloudantURI + "/location");
+				createLocationDbPut.addHeader(authHeaderKey, authHeaderValue);
+				createLocationDbPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				createLocationDbPut.addHeader(contentHeaderKey, contentHeaderValue);
+				HttpResponse createLocationsDbResp = httpclient.execute(createLocationDbPut);
+				LOGGER.info(EntityUtils.toString(createLocationsDbResp.getEntity()));
+				//httpclient.close();
+				
+				LOGGER.info("Created locations db");
+				
+				HttpPut createMarkedLocationsDbPut = new HttpPut(cloudantURI + "/markedlocations");
+				createMarkedLocationsDbPut.addHeader(authHeaderKey, authHeaderValue);
+				createMarkedLocationsDbPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				createMarkedLocationsDbPut.addHeader(contentHeaderKey, contentHeaderValue);
+				HttpResponse createMarkedLocationsDbResp = httpclient.execute(createMarkedLocationsDbPut);
+				LOGGER.info(EntityUtils.toString(createMarkedLocationsDbResp.getEntity()));
+				//httpclient.close();
+				
+				LOGGER.info("Created markedlocations db");
+				
+				HttpPut createTagDbPut = new HttpPut(cloudantURI + "/tag");
+				createTagDbPut.addHeader(authHeaderKey, authHeaderValue);
+				createTagDbPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				createTagDbPut.addHeader(contentHeaderKey, contentHeaderValue);
+				HttpResponse createTagDbResp = httpclient.execute(createTagDbPut);
+				LOGGER.info(EntityUtils.toString(createTagDbResp.getEntity()));
+				//httpclient.close();
+				
+				LOGGER.info("Created tag db");
+			}
 
 			// check if userID already exists in database
 			String checkExistsUri = cloudantURI + "/info/" + userID;
