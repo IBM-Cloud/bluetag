@@ -1,16 +1,16 @@
-# Overview
+## Overview
 
 BlueTag is a mobile application that aims to connect people based on skills and geolocation. The app can be used at conferences, work places, and meetups to help a user locate people based on common skills and geo-location.  
 
-As a sample, Bluetag showcases how you can build a set of backend micro-services coupled with an HTML5 mobile enabled front-end application. The backend is comprised of a set of micro-services that run on node.js and Liberty Java runtimes that interact with the front-end application and a Cloudant database via REST and Web Socket APIs. The frontend is based on HTML5 Web Components and will run in any modern browser, in a laptop, or on a mobile device. It can also be deployed as a native Android or iOS app using Apache Cordova.
+As a sample, Bluetag showcases how you can build a set of back-end microservices coupled with an HTML5 mobile enabled front-end application. The back-end is comprised of a set of microservices that run on Liberty Java runtimes that interact with the front-end application and a Cloudant database via REST and Web Socket APIs. The frontend is based on HTML5 Web Components and can be deployed as a native application using Apache Cordova or as a web application running on any web server. The application will run in any modern browser on a laptop or mobile device and can also be deployed as a native application running on Android or iOS.
 
-What makes this application a good sample? This sample demonstrates how Bluemix allows you to easily bring together and deploy many modern technologies like Cordova and Polymer for mobile development, Java and Node.js runtimes in the cloud, Web sockets, REST services, micro services, NoSQL databases, location services and many more technologies.  The current sample is the alpha version of our vision for the Bluetag application.
+What makes this application a good sample? Bluetag demonstrates many aspects of mobile and web application and highlights how the cloud based services in Bluemix allows you to easily compose your back-end microservices to interact with the front-end. The sample showcases many modern technologies like Cordova and Polymer for mobile development, Java and Node.js runtimes in the cloud, Web sockets, REST services, Microservices, NoSQL databases, location services and many more technologies.  The current sample is the alpha version of our vision for the Bluetag application.
 
 We would love for you to join the project and contribute!
 
-## How it works - live demo service
+## Live demo
 
-* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com) and enter any name to get started. 
+* You can try out Bluetag easily by going to the [live Bluetag demo](http://bluetag.mybluemix.net/?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com).  Enter any name to get started. 
 
 * The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
 
@@ -29,6 +29,7 @@ We would love for you to join the project and contribute!
 
 ## Architecture Diagram
 
+Below is a high level architecture diagram of the Bluetag application.  For technical details of the services please review the design and implementation detail docs under [bluetag-docs](bluetag-docs).
 <img src="./bluetag-services.png" width="650px"><br>This an architectural overview of the components that make this app run.<br>
 
 ## Download the BlueTag code
