@@ -2,7 +2,7 @@
 
 BlueTag is a mobile application that aims to connect people based on skills and geolocation. The app can be used at conferences, work places, and meetups to help a user locate people based on common skills and geo-location.  
 
-As a sample, Bluetag showcases how you can build a set of backend micro-services coupled with an HTML5 mobile enabled front-end application. The backend is comprised of a set of micro-services that run on node.js and Liberty Java runtimes that interact with the front-end application and a Cloudant datbase via REST and Web Socket APIs. The frontend is based on HTML5 Web Components and will run in any modern browser, in a laptop, or on a mobile device. It can also be deployed as a native Android or iOS app using Apache Cordova.
+As a sample, Bluetag showcases how you can build a set of backend micro-services coupled with an HTML5 mobile enabled front-end application. The backend is comprised of a set of micro-services that run on node.js and Liberty Java runtimes that interact with the front-end application and a Cloudant database via REST and Web Socket APIs. The frontend is based on HTML5 Web Components and will run in any modern browser, in a laptop, or on a mobile device. It can also be deployed as a native Android or iOS app using Apache Cordova.
 
 What makes this application a good sample? This sample demonstrates how Bluemix allows you to easily bring together and deploy many modern technologies like Cordova and Polymer for mobile development, Java and Node.js runtimes in the cloud, Web sockets, REST services, micro services, NoSQL databases, location services and many more technologies.  The current sample is the alpha version of our vision for the Bluetag application.
 
@@ -10,7 +10,7 @@ We would love for you to join the project and contribute!
 
 ## How it works - live demo service
 
-* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/) and enter any name to get started. 
+* Go to the [live Bluetag demo](http://bluetag.mybluemix.net/?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com) and enter any name to get started. 
 
 * The map should display with a marker on your current location.  As you move around, the marker and map dynamically adjust to your location.
 
@@ -33,7 +33,7 @@ We would love for you to join the project and contribute!
 
 ## Download the BlueTag code
 
-All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a micro-service architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
+All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a microservice architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
 
   ```
   mkdir myBluetag
@@ -47,7 +47,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 
 * Create a Bluemix Account
 
-    [Sign up](http://www.bluemix.com) for Bluemix, or use an existing account.
+    [Sign up](http://www.bluemix.com?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com) for Bluemix, or use an existing account.
 
 * Download and install the [Cloud-foundry CLI](https://github.com/cloudfoundry/cli) tool
 
@@ -69,7 +69,7 @@ This will pull in the master bluetag repository and a bunch of submodules that c
 *  TODO: Remove this line once Muneeb checks in his fix to create these in the code automatically.  For now manually create these 4 databases in Cloudant: info, tag, location, markedlocation
  
 ##### Deploy backend services
-* Let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally uniqiue hostname.
+* Let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally unique hostname.
 
    ```
    $ cd ../bluetag-register
@@ -125,13 +125,8 @@ Congratulations! You now have a live instance of the Bluetag application running
 * In Eclipse, import the cloned projects into your workspace.
 	- Goto File > Import and select General > Existing Projects into Workspace.
 	- Select the bluetag directory and it will import all the submodules as projects to your workspace.
-	
-* To get the projects to build, we have to update the build paths.
-	- Right click on each project and select "Build Path" > "Configure Build Path".
-	- In the panel that pops up (Java Build Path), switch to the "Libraries" tab and double click on "JRE System Library".
-	- Update it to point the "Workspace default JRE" option.
 
-* Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Inlucde link here).
+* Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Include link here).
 	- In the Server view, right click and select New > Server.
 	- Select IBM > WebSphere Application Server Liberty and click Next.
 	- In the "Choose an existing installation" selection, Browse and point to the wlp directory of the install you downloaded earlier.
@@ -144,7 +139,7 @@ You should have a workspace that's ready to build the BlueTag backend services n
 
 * The bluetag-frontend project is structured to work with Cordova and is written using HTML5 and javascript.
 
-* To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules.  If you don't have npm installed, you can install it by following the instructions at https://docs.npmjs.com/getting-started/installing-node 
+* To test the code locally from the bluetag-frontend/www directory run the following command to download the gulp node modules.  If you don't have npm installed, you can install it by following the instructions at https://docs.npmjs.com/getting-started/installing-node.  npm will download some gulp modules that have some OS specific prereqs.  Please visit the installation section at https://github.com/nodejs/node-gyp and install the OS specific prereqs before running the npm command below.
 
    ```
    npm install
@@ -179,7 +174,7 @@ You should have a workspace that's ready to build the BlueTag backend services n
 	[PSK] Serving files from: app
 	```
 
-You are now ready to tweak the bluetag frontend code and test it locally!
+You are now ready to tweak the Bluetag frontend code and test it locally!
 
 ## Building a native application
 
@@ -250,3 +245,18 @@ To troubleshoot your Bluemix app the main useful source of information is the lo
   ```
   $ cf logs <application-name> --recent
   ```
+  
+##Privacy Notice
+
+The Bluetag application includes code to track deployments to Bluemix and other Cloud Foundry platforms. The following information is sent to a Deployment Tracker service on each deployment:
+
+    Application Name (application_name)
+    Space ID (space_id)
+    Application Version (application_version)
+    Application URIs (application_uris)
+
+This data is collected from the VCAP_APPLICATION environment variable in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
+
+##Disabling Deployment Tracking
+
+Deployment tracking can be disabled by removing require("cf-deployment-tracker-client").track(); from the beginning of the server.js file in the bluetag-frontend/www directory.
