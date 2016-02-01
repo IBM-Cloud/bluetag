@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import com.bluetag.api.register.resources.CloudantCredential;
 import com.bluetag.model.LocationModel;
 import com.bluetag.model.MarkitModel;
+import com.bluetag.model.SearchIndexModel;
 import com.bluetag.model.TagModel;
 import com.bluetag.model.UserModel;
 import com.google.gson.Gson;
@@ -66,6 +67,8 @@ public class RegisterService {
 			if (!resp.contains("info") && !resp.contains("location") && !resp.contains("markedlocations") && !resp.contains("tag")) {
 				LOGGER.info("One or more dbs do not exist. Creating info, location, markedlocations and tag");
 				
+				
+				//PUT request to create info
 				HttpPut createInfoDbPut = new HttpPut(cloudantURI + "/info");
 				createInfoDbPut.addHeader(authHeaderKey, authHeaderValue);
 				createInfoDbPut.addHeader(acceptHeaderKey, acceptHeaderValue);
@@ -74,7 +77,17 @@ public class RegisterService {
 				LOGGER.info(EntityUtils.toString(createInfoDbResp.getEntity()));
 				//httpclient.close();
 				
-				LOGGER.info("Created info db");
+				//PUT request to create search index on info
+				SearchIndexModel sim = new SearchIndexModel();
+				HttpPut createSearchIndexPut = new HttpPut(cloudantURI + "/info/_design/info/");
+				createSearchIndexPut.addHeader(authHeaderKey, authHeaderValue);
+				createSearchIndexPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				createSearchIndexPut.addHeader(contentHeaderKey, contentHeaderValue);
+				createSearchIndexPut.setEntity( new StringEntity(gson.toJson(sim)));
+				HttpResponse createSearchIndexPutResp = httpclient.execute(createSearchIndexPut);
+				LOGGER.info(EntityUtils.toString(createSearchIndexPutResp.getEntity()));
+				
+				LOGGER.info("Created info db with search index");
 				
 				HttpPut createLocationDbPut = new HttpPut(cloudantURI + "/location");
 				createLocationDbPut.addHeader(authHeaderKey, authHeaderValue);
