@@ -27,12 +27,12 @@ We would love for you to join the project and contribute!
 **Settings:**  You can prevent location updates from sending updates to the location service and you can toggle logging in the debug console.
 
 
-## Architecture Diagram
+## Architecture and implementation details
 
-Below is a high level architecture diagram of the Bluetag application.  For technical details of the services please review the design and implementation detail docs under [bluetag-docs](bluetag-docs).
-<img src="./bluetag-services.png" width="650px"><br>This an architectural overview of the components that make this app run.<br>
+Below is a high level architecture diagram of the Bluetag application.  For more details of the services, please review the design and implementation detail docs under [bluetag-docs](bluetag-docs).
+<img src="./bluetag-services.png" width="650px"/>
 
-## Download the BlueTag code
+## Download the Bluetag code
 
 All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a microservice architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
 
@@ -42,13 +42,11 @@ All the code for Bluetag is housed in git repositories.  Let's clone these repos
   git clone --recursive git@github.ibm.com:Bluetag/bluetag.git
   ```
 
-This will pull in the master bluetag repository and a bunch of submodules that contain the code for the frontend, backend microservices, and shared code.
+This will pull in the master bluetag repository and all the submodules that contain the code for the front-end, back-end microservices, and shared code.
 
 ## Running the app on Bluemix
 
-* Create a Bluemix Account
-
-    [Sign up](http://www.bluemix.com?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com) for Bluemix, or use an existing account.
+* If you have an existing Bluemix account please skip to the next step.  If not you can [sign up](http://www.bluemix.com?cm_mmc=Display-SampleAppLink-_-BluemixSampleApp-Bluetag-_-Node-Cloudant-_-BM-arshadmu@us.ibm.com) a free Bluemix trial.
 
 * Download and install the [Cloud-foundry CLI](https://github.com/cloudfoundry/cli) tool
 
@@ -59,17 +57,15 @@ This will pull in the master bluetag repository and a bunch of submodules that c
   $ cf login
   ```
 
-##### Setup database
+## Setup database service on Bluemix
   
 * Create a Cloudant NoSQL DB service in Bluemix.
 
   ```
   $ cf create-service cloudantNoSQLDB Shared bluetag-cloudant
   ```
-  
-*  TODO: Remove this line once Muneeb checks in his fix to create these in the code automatically.  For now manually create these 4 databases in Cloudant: info, tag, location, markedlocation
- 
-##### Deploy backend services
+
+## Deploy backend services to Bluemix
 * Let's deploy the backend services to Liberty servers on Bluemix.  Replace the prefix in the host attribute in the manifest.yml file in each of the projects below to give it a globally unique hostname.
 
    ```
@@ -94,8 +90,8 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
 
-##### Deploy the frontend service
-* The Bluetag frontend is hosted on a node.js service.  Next we will deploy the bluetag-frontend node service. 
+## Deploy the frontend service to Bluemix
+* The Bluetag front-end is hosted on a node.js service.  Next let's deploy the bluetag-frontend node service. 
    
 * Update the contents of the env-config.json file under the bluetag-frontend/www/app directory to reflect the back end service URLs that were created in the previous step.
  
@@ -118,7 +114,6 @@ This will pull in the master bluetag repository and a bunch of submodules that c
    $ cf push
    ```
    
-   
 Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://<prefix>-bluetag.mybluemix.net.
 
 ## Setting up a dev environment for the microservices in Eclipse
@@ -127,14 +122,15 @@ Congratulations! You now have a live instance of the Bluetag application running
 	- Goto File > Import and select General > Existing Projects into Workspace.
 	- Select the bluetag directory and it will import all the submodules as projects to your workspace.
 
-* Next we need to install a local instance of the Liberty app server.  We need this to resolve some build dependencies and will also be using this to test our microservices locally before pushing to Bluemix.  Download the latest JavaEE version of the Liberty appserver from wasdev.net (Include link here).
+* Next we need to install a local instance of the Liberty app server to resolve some build dependencies. 
 	- In the Server view, right click and select New > Server.
 	- Select IBM > WebSphere Application Server Liberty and click Next.
-	- In the "Choose an existing installation" selection, Browse and point to the wlp directory of the install you downloaded earlier.
-	- In the next panel, click "New" and create a server with a name like BlueTag and hit Finish.
+	- In the "Install Runtime Environment" panel, select "Download and install a new runtime environment from ibm.com".
+	- Select "Liberty Repository" and "WAS Liberty V8.5.5.x with Java EE Full Platform" in the choices below and click Next.
+	- In the next panel, click "New" and create a server with a name like Bluetag and hit Finish.
 	- Clean and rebuild all the projects.
 	
-You should have a workspace that's ready to build the BlueTag backend services now!
+You should have a workspace that's ready to build the Bluetag back-end services now!
 
 ## Building and testing the frontend locally
 
