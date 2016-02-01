@@ -31,18 +31,24 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       :host {
         display: block;
       }
+      paper-material {
+        background: white;
+        box-sizing: border-box;
+        margin: 4px;
+        padding: 16px;
+        border-radius: 2px;
+      }
     </style>
     
     <template>
         <paper-input type="bt-search"
             placeholder="Enter user name to search for" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5">
         </paper-input>
-
         <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
-    
-        <div>Results: </div>
         <template is="dom-repeat" items="{{searchResults}}">
-            <div><span>{{item}}</span></div>
+           
+            <paper-material elevation="1"> <span>{{item}}</span> </paper-material>
+            
         </template>
     </template> 
  
