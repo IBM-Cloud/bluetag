@@ -171,7 +171,7 @@ You should have a workspace that's ready to build the Bluetag back-end services 
 	[PSK] Serving files from: app
 	```
 
-You are now ready to tweak the Bluetag frontend code and test it locally!
+You can view the application in your browser using the UI link above and you are now ready to tweak and test the Bluetag frontend code!
 
 ## Building a native application
 
