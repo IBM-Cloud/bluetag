@@ -21,6 +21,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
 
 <dom-module id="my-places" name="my-places">
@@ -146,6 +147,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         padding: 16px;
         border-radius: 2px;
       }
+    iron-icon {
+        --iron-icon-fill-color: var(--paper-green-300);
+    }
 </style>
 
 <template>
@@ -172,15 +176,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   <paper-material>
                     <div class="primary">
                     
-                      <span>[[item.locname]]</span>
+                      <span>[[item.locname]]</span> <iron-icon icon="maps:my-location" tabindex="0" raised on-click="showmyplaceonmap" data-args$="[[item.latitude]], [[item.longitude]]"></iron-icon>
                      <div class="secondary dim"><span>[[item.latitude]]</span> <span> , </span> <span>[[item.longitude]]</span> </div>
-
-                      
-                      
-
-                      
-
-
                     </div>
                     
                     </paper-material>
@@ -226,7 +223,17 @@ Polymer({
 	getMarksResponse: function() {
 		console.log("Get marks response: " + JSON.stringify(this.ajaxGetmarksResponse));
     this.fire('iron-signal', {name: "listofplaces" , data: this.ajaxGetmarksResponse});
-	}
+	},
+
+  showmyplaceonmap: function(e) {
+    var centeringCoords = e.target.getAttribute('data-args').split(',');
+    console.log('Recenter map for this place');
+
+    document.querySelector('#g-map').latitude = centeringCoords[0];
+    document.querySelector('#g-map').longitude = centeringCoords[1];
+
+    document.querySelector('iron-pages').select('home');
+  }
 })
 </script>
 

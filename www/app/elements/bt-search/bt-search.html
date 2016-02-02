@@ -22,6 +22,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../ws-element/ws-element.html">
 
@@ -38,6 +39,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         padding: 16px;
         border-radius: 2px;
       }
+      iron-icon {
+        --iron-icon-fill-color: var(--paper-green-300);
+      }
     </style>
     
     <template>
@@ -47,7 +51,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
         <template is="dom-repeat" items="{{searchResults}}">
            
-            <paper-material elevation="1"> <span>{{item}}</span> </paper-material>
+            <paper-material elevation="1">
+               <span>{{item}}</span>
+               <div align="right"><iron-icon icon="social:person-add" class="colorful" tabindex="0" raised on-click="addcontact" data-name="{{value}}">Add Contact</iron-icon></div>
+            </paper-material>
             
         </template>
     </template> 
@@ -109,6 +116,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                 }
               
             }
+        },
+
+        addcontact: function(e) {
+          console.log('I dont do anything yet');
         }
 
       });
