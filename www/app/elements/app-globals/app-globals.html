@@ -23,25 +23,22 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
-<dom-module name="url-service">
-	<style>
-	</style>
-
+<dom-module name="app-globals">
 	<template>
-		<iron-meta id="meta-config" key="envconfig" value=""></iron-meta>
+		<iron-meta id="locupdate-center" key="locupdatecenter" value="true"></iron-meta>
 	</template>
 
-	<script>
-	Polymer({
-		is: "url-service",
+	<script> 
+		Polymer({
+			is: "app-globals",
 
-		properties: {
+			properties: {
 
-		},
+			},
 
-		ready: function() {
-			console.log("url-service is ready.");
-		}
-	});
+			ready: function() {
+				console.log('app-globals is ready.');
+			}
+		});
 	</script>
 </dom-module>

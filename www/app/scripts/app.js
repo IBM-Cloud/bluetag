@@ -78,7 +78,9 @@ var env = require('../env-config.json');
             if(locationSocket.readyState === 1){
                 locationSocket.send(JSON.stringify(userloc));
             } else {
-                locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                setTimeout( function () {
+                    locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                }, 500);
                 locationSocket.send(JSON.stringify(userloc));
             }				  
 	    }
@@ -103,7 +105,6 @@ var env = require('../env-config.json');
         document.querySelector('#markitlat').innerHTML = singleLat;
         document.querySelector('#markitlon').innerHTML = singleLon;
     });
-            
 
     var options={enableHighAccuracy: true, timeout: 60000, maximumAge: 10000};
         
@@ -124,13 +125,15 @@ var env = require('../env-config.json');
 				document.querySelector('#latdiv').innerHTML = latitude;
 				document.querySelector('#londiv').innerHTML = longitude;
                 document.querySelector('#distdiv').innerHTML = d;
-              
+                var updatemap = document.querySelector('#locupdate-center').getAttribute('value');
+                console.log('Location update - recenter map? : ' + updatemap);
+              if (updatemap === "true") {
                 document.querySelector('#g-map').latitude = latitude;
                 document.querySelector('#g-map').longitude = longitude;
-                                         
+                                    
                 document.querySelector('#g-mark').latitude = latitude;
                 document.querySelector('#g-mark').longitude = longitude;
-
+            }
                 document.querySelector('#markitlat').innerHTML = latitude;
                 document.querySelector('#markitlon').innerHTML = longitude;
 
@@ -149,7 +152,9 @@ var env = require('../env-config.json');
                         if(locationSocket.readyState === 1){
 						  locationSocket.send(JSON.stringify(userloc));
                         } else {
-                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                            setTimeout( function () {
+                                locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                            }, 500);
                             locationSocket.send(JSON.stringify(userloc));
                         }
                     } catch(err) {
@@ -181,6 +186,7 @@ var env = require('../env-config.json');
 	    document.querySelector('get-taggable').url = JSON.parse(urls).engine;
 	    document.querySelector('get-taggable').tagUrl = JSON.parse(urls).tag + 'api/tag/';
 	    document.querySelector('get-tagged').url = JSON.parse(urls).tag;
+        document.querySelector('get-tagged').findPlayerUrl = (JSON.parse(urls).location + 'api/getlocation/').replace('ws', 'http');
 	    document.querySelector('mark-it').url = JSON.parse(urls).tag + 'api/markit/newmark/';
 	    document.querySelector('my-places').url = JSON.parse(urls).tag + 'api/markit/marked/';
 	    document.querySelector('bt-search').url = JSON.parse(urls).search + 'SearchWS/';

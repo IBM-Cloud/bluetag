@@ -89,6 +89,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       .star {
         width: 24px;
         height: 24px;
+        --iron-icon-fill-color: var(--paper-green-300);
       }
       iron-list {
 			background-color: var(--paper--blue-600);
@@ -192,7 +193,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                       <span>[[item]]</span>
                     </div>
                     <div class="secondary dim">Details about <span>[[item]]</span></div>
-                    <div align="right"><iron-icon icon="info-outline" class="star"></iron-icon></div>
+                    <div align="right"><iron-icon icon="maps:near-me" class="star" on-click="findPlayer" data-args$="[[item]]"></iron-icon></div>
                     </paper-material>
                   </div>
                   
@@ -207,7 +208,16 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         </div>
 
 
-		<iron-signals on-iron-signal-tagsuccess="updateTagged">
+		<iron-signals on-iron-signal-tagsuccess="updateTagged"></iron-signals>
+
+    <iron-ajax
+      id="findplayer"
+      content-type:'application/json'
+      method="GET"
+      handle-as="json"
+      last-response="{{ajaxFindPlayerResponse}}"
+      on-response="findPlayerResponse">
+    </iron-ajax>
 	</template>
 	
 	<script>
@@ -229,6 +239,14 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       url: {
         type: String,
         notify: true
+      },
+      findPlayerUrl: {
+        type: String,
+        notify: true
+      },
+      playerToFind: {
+        type: String,
+        notify: true
       }
 		},
 		
@@ -248,16 +266,34 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 			document.getElementById('tagged').generateRequest();
 		},
 
-        _collapseExpand: function(e) {
-          var list = this.$.list;
-          var index = e.model.index;
-          var isExpanded = list.items[index].expanded;
-          list.set('items.' + index + '.expanded', !isExpanded);
-          list.updateSizeForItem(e.model.index);
-        },
-        getClassForItem: function(item, expanded) {
+    findPlayer: function(e) {
+      
+      this.playerToFind = e.target.getAttribute('data-args');
+      console.log('Updating findplayerURL with this name: ' + this.playerToFind + ' . URL to hit is: ' + this.findPlayerUrl + this.playerToFind);
+      document.getElementById('findplayer').url = this.findPlayerUrl + this.playerToFind;
+      document.getElementById('findplayer').generateRequest();
+    },
+
+    findPlayerResponse: function() {
+      console.log('Response from trying to find a player: ' + JSON.stringify(this.ajaxFindPlayerResponse.latitude));
+      document.querySelector('#find-contact-marker').latitude = this.ajaxFindPlayerResponse.latitude;
+      document.querySelector('#find-contact-marker').longitude = this.ajaxFindPlayerResponse.longitude;
+
+      //This global value is defined by iron-meta in app-globals.html. Setting this to false here
+      //to stop map from re-centering on a location update when user is attemping to view
+      //another area on the map
+      document.querySelector('#locupdate-center').setAttribute('value', 'false');
+
+      document.querySelector('#g-map').latitude = this.ajaxFindPlayerResponse.latitude;
+      document.querySelector('#g-map').longitude = this.ajaxFindPlayerResponse.longitude;
+
+      document.querySelector('iron-pages').select('home');
+    },
+
+    getClassForItem: function(item, expanded) {
           return expanded ? 'item expanded' : 'item';
-        }
+    }
+
 	});
 	</script>
 </dom-module>

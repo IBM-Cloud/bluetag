@@ -64,7 +64,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     <div class="horizontal-section">
         <paper-progress disabled indeterminate></paper-progress><br>
         <paper-button class="ripple blue" raised
-            on-click="clickHandler">Submit</paper-button>
+            on-click="clickHandler">Go</paper-button>
 
         
         <paper-toast id="toast1" text="Welcome back"></paper-toast>
@@ -79,19 +79,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
             body='[[generatefullJson(value)]]'
             last-response="{{ajaxResponse}}"
             on-response="regResponse">
-        </iron-ajax>
-			
-            
-            
+        </iron-ajax>          
     </div>
-    
-    
-
-</div>
-            
-            
+</div>       
 </template>
-        
+
 <script>
 var globalusername;
 Polymer({
@@ -104,27 +96,21 @@ Polymer({
 				   type: String,
 					 notify: true
 				},
+        
         url: {
           type: String,
           notify: true
-        }
-						
+        }	
 		},
-                    
 
-                    
   ready: function() {
-
     console.log("get-username is ready.");
-
   },
  
   generatefullJson: function (value) {
-
     globalusername = value;
     console.log("Global user is: " + value);
     return JSON.stringify({_id: globalusername, name: globalusername});
-
   },
 					
 	getName: function (value) {
@@ -132,7 +118,6 @@ Polymer({
 	},
                     
   clickHandler: function(e, detail) {
-		
     document.querySelector('paper-progress').disabled = false;
     document.querySelector('paper-menu').hidden = false;
 		console.log("inside submit clickHandler");		
@@ -142,26 +127,20 @@ Polymer({
    },
 	
 	tagListResponse: function () {
-
 		console.log("tag list request response");
-
 	},
                     
   generateJsonFromUserInput: function (username) {
-
     var newusername = document.querySelector("input[is=iron-input]").value;
     var jsoned = {_id: newusername, name: newusername}
     console.log(JSON.stringify(jsoned));
     return JSON.stringify(jsoned)
-  
   },
   
   regResponse: function() {
-  
     var nameResp = this.ajaxResponse.result;
     console.log(nameResp);
 
-  
     if (nameResp == "success"){
       app.route = "home";
       document.querySelector('#toast2').show();
@@ -175,8 +154,6 @@ Polymer({
    }
 					
 });
-                    
-           
 </script>
 </dom-module>
 

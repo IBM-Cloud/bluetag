@@ -24,6 +24,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../ws-element/ws-element.html">
 
 <dom-module name="bt-search" id="bt-search">
@@ -57,6 +58,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
             </paper-material>
             
         </template>
+
+        <paper-toast id="comingsoon" text="Coming Soon!"></paper-toast>
     </template> 
  
   <script>
@@ -119,7 +122,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         },
 
         addcontact: function(e) {
-          console.log('I dont do anything yet');
+          document.querySelector('#comingsoon').show();
         }
 
       });

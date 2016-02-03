@@ -229,6 +229,10 @@ Polymer({
     var centeringCoords = e.target.getAttribute('data-args').split(',');
     console.log('Recenter map for this place');
 
+    //This global value is defined by iron-meta in app-globals.html. Setting this to false here
+    //to stop map from re-centering on a location update when user is attemping to view
+    //another area on the map
+    document.querySelector('#locupdate-center').setAttribute('value', 'false');
     document.querySelector('#g-map').latitude = centeringCoords[0];
     document.querySelector('#g-map').longitude = centeringCoords[1];
 
