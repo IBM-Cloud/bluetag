@@ -9,7 +9,8 @@ For implementation and design details, please refer to the [design documention](
 bluetag-tag exposes REST services that can be used to tag and retrive users and locations.
 
 ```
-Tagged users query API: Returns a list of users the user has tagged.
+QUERY TAGGED
+Returns a list of users the user has tagged.
 
 Method: GET
 URL: <bluetag-search service url>/api/query/tagged/{username}
@@ -26,7 +27,7 @@ Response:
 
 ```
 UPDATE TAGGED
-Adds a person to a user's tagged list
+Adds a person to a user's tagged list.
 
 url: bluetagtag.mybluemix.net/api/tag
 method: PUT
@@ -47,7 +48,7 @@ response if failure:
 
 ```
 GET TAGGED
-Adds a person to a user's tagged list
+Gets a list of users tagged by the specified user.
 
 url: bluetagtag.mybluemix.net/api/tagged/{username}
 method: GET
