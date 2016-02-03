@@ -21,8 +21,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.bluetag.api.search.model.SearchModel;
-import com.bluetag.api.search.model.SearchRowModel;
+import com.bluetag.search.model.SearchModel;
+import com.bluetag.search.model.SearchRowModel;
 import com.google.gson.Gson;
 
 

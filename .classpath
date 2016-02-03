@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/BluetagModels"/>
-	<classpathentry kind="lib" path="/BluetagCommon/lib/gson-2.3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/tsee/bt2/liberty/dev/api/spec/com.ibm.ws.javaee.websocket.1.1_1.0.10.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/bluetag-models-1.0.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/com.ibm.ws.javaee.websocket.1.1_1.0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
