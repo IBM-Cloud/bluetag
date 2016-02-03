@@ -114,7 +114,7 @@ This will pull in the master bluetag repository and all the submodules that cont
    $ cf push
    ```
    
-Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://<prefix>-bluetag.mybluemix.net.
+Congratulations! You now have a live instance of the Bluetag application running in your Bluemix account!  You can access the application using at http://%3cprefix%3e-bluetag.mybluemix.net.
 
 ## Setting up a dev environment for the microservices in Eclipse
 
