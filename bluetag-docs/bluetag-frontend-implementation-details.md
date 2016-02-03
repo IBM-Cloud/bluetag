@@ -4,7 +4,7 @@ The Bluetag client is a hybrid mobile application written using HTML5 and javasc
 Web Components based on Polymer are used to develop the UI and make REST service calls to the backend services deployed to Bluemix. 
 It can be deployed as a native Android or iOS application easily using Apache Cordova.
 
-For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../../../bluetag/blob/master/README.md).
+For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../../bluetag/blob/master/README.md).
 
 Let's examine the contents of the application we pulled in earlier from GitHub. 
 The www folder under bluetag-frontend contains the majority of the application code. 
