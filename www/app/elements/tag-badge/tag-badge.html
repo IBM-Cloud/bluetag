@@ -50,7 +50,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 <!-- <paper-badge style="green" id="my-badge" label="{{detail}}"></paper-badge> -->
 
-<paper-badge id="my-badge" label="0"></paper-badge>
+<paper-badge id="my-badge" label="0" on-click="routeToNearMe"></paper-badge>
 
 </template>
 
@@ -60,12 +60,15 @@ Polymer({
 
 	taggableNumber: function(e, detail, sender) {
 		console.log(detail);
-
 		document.querySelector("#my-badge").opacity = 1.0;
 		document.querySelector("#my-badge").label = detail;
-		
+	},
 
-	}
+  routeToNearMe: function() {
+    if (document.querySelector('get-username').value !== "") {
+      document.querySelector('iron-pages').select('users');
+    }
+  }
 
 
 
