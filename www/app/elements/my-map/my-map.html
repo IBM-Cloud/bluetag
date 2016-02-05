@@ -27,9 +27,19 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 <dom-module name="my-map">
 	<style>
+	body, html {
+		height: 100%;
+		width: 100%;
+	}
 	google-map {
-		height: 450px;
+		height: 650px;
 		saturation: -85;
+	}
+	mark-it {
+		display: inline-block;
+		margin-top: 12px;
+		float: right;
+		padding-right: 12px;
 	}
 	</style>
 	
@@ -38,15 +48,16 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <template>
 	
 	<!-- <geo-location watch-pos high-accuracy latitude="{{latitude}}" longitude="{{longitude}}" on-geo-response="locationChange"></geo-location> -->
-    <div>
+    <div id="location-display" hidden>
 
     	lat: <span id="latdiv" latitude={{latitude}}>{{latitude}}</span> , 
     	long: <span id="londiv" longitude={{longitude}}>{{longitude}}</span> , 
     	dist: <span id="distdiv" distance={{distance}}>{{distance}}</span>
-    	<mark-it align="right" value="{{value}}"></mark-it>
+    	
     </div>
 
 	<google-map id="g-map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="19" language="en" styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'>
+		
 		<google-map-marker icon="images/blueanchor.png" id="g-mark" latitude="{{latitude}}" longitude="{{longitude}}"
 		                  title="me"></google-map-marker>
 
@@ -58,7 +69,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 		 <google-map-marker icon="images/person_32.png" id="find-contact-marker" longitude="{{longitude}}" latitude="{{atitude}}" title="{{playerToFind}}"></google-map-marker>
 
-
+		 <mark-it value="{{value}}"></mark-it>
 
 
 

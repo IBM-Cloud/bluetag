@@ -29,15 +29,19 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <dom-module name="mark-it">
 <style>
 	paper-button {
-		background-color: var(--google-grey-300);
+		background-color: var(--paper-green-300);
 		padding: 5px;
+		text-transform: none;
 	}
 	paper-icon-button {
-		color: var(--paper-green-300);
+		color: var(--paper-black-300);
 		--paper-icon-button-ink-color: var(--paper-green-a100);
-		width: 23px;
-		height: 23px;
+		width: 40px;
+		height: 40px;
 		padding: 0px 4px;
+	}
+	paper-dialog {
+		background-color: var(--paper-green-300);
 	}
 /*	paper-dialog {
       position: fixed;
@@ -51,10 +55,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 <template>
 
- <paper-button data-dialog="dropdown" on-click="clickHandler">Mark It</paper-button>
+ <paper-button raised data-dialog="dropdown" on-click="clickHandler">Drop Pin</paper-button>
  <paper-dialog id="dropdown" with-backdrop>
     <h2>Name this location</h2>
-    <span><div id="markitlat"></div> <span> , </span> <div id="markitlon"></div></span>
+    <span><div hidden id="markitlat"></div> <span> </span> <div hidden id="markitlon"></div></span>
     <paper-input id="locname" floating label="Name" value="{{newlocation}}">
     	<iron-icon icon="communication:location-on" prefix></iron-icon>
     	<paper-icon-button suffix on-click="addLocation" icon="check" tabindex="0"></paper-icon-button>

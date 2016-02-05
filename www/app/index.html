@@ -151,41 +151,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <section data-route="splash">
               <div align="center">Welcome</div>
             <h4></h4>
-            <div class="horizontal-section">
-                
+            <div align="center">
+            <paper-material>
               <paper-input floatingLabel name="name" label="enter a name to get started" value="{{username}}" id="userinput" required>
               </paper-input>
               <br>
               <div align="center"> <get-username  id="getusername" value="{{username}}"></get-username></div>
+              </paper-material>
+
+              <paper-material>
+                <iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
+               <div> <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a></div>
+              </paper-material>
+
+              <paper-material>
+                <iron-icon src="images/polymer-logo.png"></iron-icon> 
+               <div> <a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
+              </paper-material>
+
+              <paper-material>
+                <iron-icon src="images/java-liberty-bluemix.png"></iron-icon> <iron-icon src="images/bluemix.png"></iron-icon> 
+               <div> <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> <a href="http://bluemix.net"> Running on Bluemix.</a></div>
+              </paper-material>
           </div>
     
           </section>
 
           <section data-route="home">
-
-              <paper-material elevation="1" class="paper-font-body2">
 				        <my-map value="{{username}}"></my-map>
-              </paper-material>
-			  
-			  
-              <paper-material elevation="1" class="paper-font-body2">
+              <!-- <paper-material elevation="1" class="paper-font-body2">
                 <p class="paper-font-subhead">Use the navigation menu to:</p>
                 <my-list></my-list>
-              </paper-material>
-
+              </paper-material> -->
           </section>
 
             <section data-route="users">
-              
               <get-taggable value={{username}}>get-taggable</get-taggable>
-              
             </section>
 
 
             <section data-route="contact">
-
 				        <get-tagged value="{{username}}"></get-tagged>
-              
             </section>
 
 
@@ -195,20 +201,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
             <section data-route="places">
-              
               <my-places value="{{username}}"></my-places>
-
             </section>
 
             <section data-route="settings">
-              
                 <h2 class="page-title">Settings</h2>
                 <bt-settings value="{{username}}"></bt-settings>
-              
             </section>
 
             <section data-route="help">
-              
                 <game-info></game-info>
             </section>
 
