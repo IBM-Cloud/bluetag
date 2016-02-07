@@ -56,6 +56,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="shared-styles"></style>
+  <style is="custom-style">
+    paper-material.maininput {
+      background-color: #f2f2f2;
+    }
+
+    paper-input.nameinput {
+      background-color: white;     
+    }
+    <!-- --paper-input-container-color: white; 
+         --paper-input-container-input-color: black;   
+         --paper-input-container-focus-color: blue;
+         --paper-input-container-invalid-color: green;        
+        --paper-input-container-underline: white;-->
+    
+    div.reflinks {
+        padding: 10px 20px 10px 20px;
+    }
+</style>
+
 
 </head>
 
@@ -148,30 +167,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <url-service></url-service>
             <app-globals></app-globals>
 
-          <section data-route="splash">
-              <div align="center">Welcome</div>
-            <h4></h4>
+          <section data-route="splash">          
             <div align="center">
-            <paper-material>
-              <paper-input floatingLabel name="name" label="enter a name to get started" value="{{username}}" id="userinput" required>
+            <paper-material class=maininput>
+              <!--p align=center>Welcome</p> -->
+              <paper-input class=nameinput floatingLabel name="name" label="Please enter a name to get started" value="{{username}}" id="userinput" required><div prefix><iron-icon icon="social:people" color=blue prefix></iron-icon></div>prefix>
               </paper-input>
-              <br>
-              <div align="center"> <get-username  id="getusername" value="{{username}}"></get-username></div>
-              </paper-material>
-
-              <paper-material style="margin-top:150px">
-                <iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
-               <div> <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a></div>
-              </paper-material>
-
-              <paper-material>
-                <iron-icon src="images/polymer-logo.png"></iron-icon> 
-               <div> <a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
-              </paper-material>
-
-              <paper-material>
-                <iron-icon src="images/java-liberty-bluemix.png"></iron-icon> <iron-icon src="images/bluemix.png"></iron-icon> 
-               <div> <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> <a href="http://bluemix.net"> Running on Bluemix.</a></div>
+              
+              <div align="center"><get-username  id="getusername" value="{{username}}"></get-username></div>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <div class=reflinks><iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
+               <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a>
+               </div>
+              <div class=reflinks><iron-icon src="images/java-liberty-bluemix.png"></iron-icon> 
+              <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> 
+              </div>              
+              <div class=reflinks><iron-icon src="images/bluemix.png"></iron-icon><a href="http://bluemix.net"> Running on Bluemix.</a>
+              </div>          
+              <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
               </paper-material>
           </div>
     

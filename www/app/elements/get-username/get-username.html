@@ -27,14 +27,13 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-styles/demo-pages.html">
+<!-- link rel="import" href="../../bower_components/paper-styles/demo-pages.html" -->
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
 <dom-module name="get-username" id="get-username">
 
   <style>
-
     .short {
         padding-left: 100px;
         width: 200px;
@@ -53,20 +52,17 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 					color:#ffffff;
 			    background: var(--paper-blue-500);
 		}
-			
-			
-   </style>
+    paper-progress.myprogress {
+      --paper-progress-container-color:#f2f2f2;
+    }
+  </style>
 
-  <template>
-
+<template>
 <div>
-    <h4></h4>
     <div class="horizontal-section">
-        <paper-progress disabled indeterminate></paper-progress><br>
+        <paper-progress class=myprogress disabled indeterminate></paper-progress><br>
         <paper-button class="ripple blue" raised
-            on-click="clickHandler">Go</paper-button>
-
-        
+            on-click="clickHandler">Go</paper-button>        
         <paper-toast id="toast1" text="Welcome back"></paper-toast>
         <paper-toast id="toast2" text="Welcome"></paper-toast>
         
