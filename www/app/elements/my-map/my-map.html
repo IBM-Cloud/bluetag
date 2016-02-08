@@ -28,11 +28,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <dom-module name="my-map">
 	<style>
 	body, html {
-		height: 100%;
-		width: 100%;
+		height: 100vh;
+		margin: 0;
+		padding: 0;
 	}
 	google-map {
-		height: 650px;
+		height: 90vh;
 		saturation: -85;
 	}
 	mark-it {
@@ -40,6 +41,13 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 		margin-top: 12px;
 		float: right;
 		padding-right: 12px;
+	}
+	paper-button {
+		margin-top: 12px;
+		padding: 5px;
+		float: right;
+		background-color: var(--paper-green-200);
+		text-transform: none;
 	}
 	</style>
 	
@@ -70,6 +78,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 		 <google-map-marker icon="images/person_32.png" id="find-contact-marker" longitude="{{longitude}}" latitude="{{atitude}}" title="{{playerToFind}}"></google-map-marker>
 
 		 <mark-it value="{{value}}"></mark-it>
+
+		 <paper-button raised on-click="centerMap"><iron-icon style="color: #00B8D4; height: 16px; width: 16px" icon="maps:my-location"></iron-icon> Find me</paper-button>
 
 
 
@@ -125,6 +135,13 @@ Polymer({
 		console.log("info for markers via ironsignal: " + JSON.stringify(e.detail.marked));
 
 		this.markedlocations = e.detail.marked;
+	},
+
+	centerMap: function() {
+		console.log('Map will center around user on next location update ');
+		document.querySelector('#locupdate-center').setAttribute('value', 'true');
+		document.getElementById('findme').show();
+
 	}
 
 

@@ -56,6 +56,7 @@ var env = require('../env-config.json');
         console.log('Our app is ready to rock!');
 	
 	    document.querySelector('get-username').addEventListener('kick', function(e) {
+        document.querySelector('#searchinput').disabled = false;
 	    console.log('App user is ' + e.detail.q);
 	    appuser = e.detail.q;
 	
@@ -190,8 +191,10 @@ var env = require('../env-config.json');
 	    document.querySelector('mark-it').url = JSON.parse(urls).tag + 'api/markit/newmark/';
 	    document.querySelector('my-places').url = JSON.parse(urls).tag + 'api/markit/marked/';
 	    document.querySelector('bt-search').url = JSON.parse(urls).search + 'SearchWS/';
+        document.querySelector('bt-search').tagUrl = JSON.parse(urls).tag + 'api/tag/';
 
 	    document.querySelector('ws-element').open(); //opening search socket after url is known - need to change this to work within bt-search
+
     });
 
     // Main area's paper-scroll-header-panel custom condensing transformation of
@@ -274,10 +277,19 @@ var env = require('../env-config.json');
         }
     };
 
+    app.showSearchMenu = function() {
+        console.log('Show the search menu');
+        document.querySelector('#search-dropdown').open();
+    };
+
     // Scroll page to top and expand header
     app.scrollPageToTop = function() {
         document.getElementById('mainContainer').scrollTop = 0;
     };
+
+    app.addContactTooltip = function() {
+        app.route = 'contact';
+    }
 
 	function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 	    //var R = 6371; // Radius of the earth in km

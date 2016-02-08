@@ -147,21 +147,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         display: inline-block;
         background: white;
         box-sizing: border-box;
-        margin: 16px;
+        margin-bottom: 4px;
         padding: 16px;
         border-radius: 2px;
-    }
-    .fab {
-        display: inline-block;
-        background: white;
-        box-sizing: border-box;
-        width: 56px;
-        height: 56px;
-        margin: 16px;
-        padding: 16px;
-        border-radius: 50%;
-        text-align: center;
-        cursor: pointer;
     }
 
 	</style>
@@ -180,8 +168,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <div class="flex horizontal layout">
 		<div class="flex vertical layout">
           <!-- Main List for the items -->
-         <div align="center" id="empty-tag-panel">
-           <paper-material>People you tag, or add from search, will be saved here</paper-material>
+         <div align="center" id="empty-tagged-panel">
+           <paper-material>People you tag or add from search will be saved here. Tap <iron-icon icon="maps:near-me" class="star" ></iron-icon> to put them on the map.</paper-material>
          </div>
           <iron-list style="margin-top: 0px" id="list" items="{{ajaxTaggedResponse.tagged}}" as="item">
             <template>

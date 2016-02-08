@@ -44,6 +44,7 @@ No license info provided
             },
             onMessage: function (event) {
                 this.fire('onmessage', event.data);
+                document.querySelector('#searchList').fire('iron-resize');
             },
             onClose: function(event){
                 console.log('search socket closed: ' + event.data);

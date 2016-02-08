@@ -94,15 +94,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Places</span>
           </a>
 
-          <a data-route="search" href="/search" on-click="onDataRouteClick">
+<!--           <a data-route="search" href="/search" on-click="onDataRouteClick">
             <iron-icon icon="search"></iron-icon>
             <span>Search</span>
-          </a>
+          </a> -->
 
-          <a data-route="settings" href="/settings" on-click="onDataRouteClick">
+<!--           <a data-route="settings" href="/settings" on-click="onDataRouteClick">
             <iron-icon icon="settings"></iron-icon>
             <span>Settings</span>
-          </a>
+          </a> -->
 
           <a data-route="help" href="/help" on-click="onDataRouteClick">
             <iron-icon icon="help"></iron-icon>
@@ -123,16 +123,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Toolbar icons -->
 
-          <paper-icon-button id="locationRefresh" icon="refresh" on-click="singleUpdateLocation"></paper-icon-button>
-          <paper-tooltip id="refreshtooltip" for="locationRefresh">Pause automatic location updates from settings to enable.</paper-tooltip>
-          <paper-icon-button icon="search"></paper-icon-button>
+         <!--  <paper-icon-button id="locationRefresh" icon="refresh" on-click="singleUpdateLocation"></paper-icon-button>
+          <paper-tooltip id="refreshtooltip" for="locationRefresh">Pause automatic location updates from settings to enable.</paper-tooltip> -->
+
+          <paper-icon id="searchicon" icon="search"> </paper-icon>
+          <paper-tooltip id="searchicontooltip" for="searchicon">Log-in to use search</paper-tooltip>
+        <div></div>
+            <bt-search id="btsearch" value="{{username}}"></bt-search>
+        <paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip>
+         
 
 
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name">BlueTag </div> <tag-badge style="padding-left: 300px"></tag-badge>
-
+            <div class="app-name">BlueTag </div> <tag-badge style="position: relative; margin-left: 40px"></tag-badge>
           </div>
 
           <!-- Application sub title -->
@@ -148,30 +153,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <url-service></url-service>
             <app-globals></app-globals>
 
+
           <section data-route="splash">
               <div align="center">Welcome</div>
             <h4></h4>
             <div align="center">
-            <paper-material>
-              <paper-input floatingLabel name="name" label="enter a name to get started" value="{{username}}" id="userinput" required>
+            <paper-material elevation="1">
+            <div border="red">
+            <paper-material elevation="0" style="border-style: inset; border-width: 2px; background-color: #f7f7f7; padding: 2px">
+              <paper-input name="name" label="Enter a name to get started" placeholder=" " value="{{username}}" id="userinput" required>
               </paper-input>
+              </paper-material>
+              </div>
+             
               <br>
               <div align="center"> <get-username  id="getusername" value="{{username}}"></get-username></div>
               </paper-material>
 
-              <paper-material style="margin-top:150px">
+              <paper-material style="margin-top:50px">
                 <iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
                <div> <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a></div>
               </paper-material>
 
               <paper-material>
+                <iron-icon src="images/java-liberty-bluemix.png"></iron-icon> <iron-icon src="images/bluemix.png"></iron-icon> 
+               <div> <a href="https://developer.ibm.com/wasdev/">Powered by Liberty.</a> <a href="http://bluemix.net"> Running on Bluemix.</a></div>
+              </paper-material>
+         
+              <paper-material>
                 <iron-icon src="images/polymer-logo.png"></iron-icon> 
                <div> <a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
-              </paper-material>
-
-              <paper-material>
-                <iron-icon src="images/java-liberty-bluemix.png"></iron-icon> <iron-icon src="images/bluemix.png"></iron-icon> 
-               <div> <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> <a href="http://bluemix.net"> Running on Bluemix.</a></div>
               </paper-material>
           </div>
     
@@ -183,6 +194,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p class="paper-font-subhead">Use the navigation menu to:</p>
                 <my-list></my-list>
               </paper-material> -->
+              <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #eeff41;margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
+
+              <paper-toast id="findme" text="Map will reset on your next location update"></paper-toast>
           </section>
 
             <section data-route="users">
@@ -196,7 +210,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
             <section data-route="search">
-                <bt-search value="{{username}}"></bt-search>
+                <!-- <bt-search value="{{username}}"></bt-search> -->
             </section>
 
 
@@ -220,7 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     
-    <paper-toast id="caching-complete"
+  <!--   <paper-toast id="caching-complete"
                  duration="6000"
                  text="Caching complete! This app will work offline.">
     </paper-toast>
@@ -232,7 +246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <platinum-sw-cache default-cache-strategy="fastest"
                          cache-config-file="cache-config.json">
       </platinum-sw-cache>
-    </platinum-sw-register>
+    </platinum-sw-register> -->
     
 
   </template>

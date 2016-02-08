@@ -143,7 +143,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         display: inline-block;
         background: white;
         box-sizing: border-box;
-        margin: 4px;
+        margin-bottom: 4px;
         padding: 16px;
         border-radius: 2px;
       }
@@ -167,6 +167,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
   		<div class="flex horizontal layout">
 		<div class="flex vertical layout">
           <!-- Main List for the items -->
+          <div align="center" id="empty-tag-panel">
+           <paper-material>These are places you marked on the map. Tap the <iron-icon icon="maps:my-location" tabindex="0"></iron-icon> to go there on the map.</paper-material>
+         </div>
          <iron-list style="margin-top: 3px" id="itemsList" items="[[ajaxGetmarksResponse.marked]]">
             <template>
               <div>
@@ -176,7 +179,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   <paper-material>
                     <div class="primary">
                     
-                      <span>[[item.locname]]</span> <iron-icon icon="maps:my-location" tabindex="0" raised on-click="showmyplaceonmap" data-args$="[[item.latitude]], [[item.longitude]]"></iron-icon>
+                      <span>[[item.locname]]</span> <div align="right"> <iron-icon icon="maps:my-location" tabindex="0" raised on-click="showmyplaceonmap" data-args$="[[item.latitude]], [[item.longitude]]"></iron-icon></div>
                      <div class="secondary dim"><span>[[item.latitude]]</span> <span> , </span> <span>[[item.longitude]]</span> </div>
                     </div>
                     

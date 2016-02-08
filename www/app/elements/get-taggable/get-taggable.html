@@ -153,7 +153,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         display: inline-block;
         background: white;
         box-sizing: border-box;
-        margin: 4px;
+        margin-bottom: 4px;
         padding: 16px;
         border-radius: 2px;
       }
@@ -178,7 +178,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
            <paper-material>People around you (within 10m) will show up here. Tag them to save to your contacts.</paper-material>
          </div>
           <!-- Main List for the items -->
-         <iron-list style="margin-top: 3px" id="itemsList" items="[[ajaxResponse.taggable]]">
+         <iron-list style="margin-top: 0px" id="itemsList" items="[[ajaxResponse.taggable]]">
             <template>
               <div>
                 <div tabindex="0" aria-label="somelabel">
@@ -186,19 +186,13 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   <div class="pad">
                   <paper-material>
                     <div class="primary">
-                    
                       <span>[[item]]</span>
                       <span>[[items]]</span>
-
                       <div align="right"><paper-button tabindex="0" raised class="colorful" on-click="tagclick" data-name="{{value}}">Tag</paper-button></div>
-
-
                     </div>
                     <div class="secondary dim"><span>Info about </span><span>[[item]]</span></div>
                     </paper-material>
-                  
                   </div>
-                  <iron-icon icon$="settings" class="star"></iron-icon>
                 </div>
                 <div class="border"></div>
               </div>

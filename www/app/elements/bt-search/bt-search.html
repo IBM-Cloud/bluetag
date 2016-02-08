@@ -25,7 +25,13 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../ws-element/ws-element.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
 
@@ -34,6 +40,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     <style>
       :host {
         display: block;
+        height: 30px;
+        width: 152px;
+        color: black;
+        
       }
       paper-material {
         background: white;
@@ -45,31 +55,58 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       iron-icon {
         --iron-icon-fill-color: var(--paper-green-300);
       }
+      paper-input {
+        position: relative;
+       --paper-input-container-underline: {
+        background-color: #466BB0;
+       };
+       font-size: 10px;
+       display: inline-block;
+        border: inset thin;
+        background-color: #FFF;
+        border-radius: 10px;
+        width: 150px;
+        height: 30px;
+        vertical-align: middle;
+        margin-bottom: 30px;
+      }
+      paper-menu {
+        pointer-events: auto;
+      }
     </style>
     
-    <template>
-    <div class="flex horizontal layout">
-    <div class="flex vertical layout">
-
-    <div align="center" id="empty-tag-panel">
-           <paper-material>Start typing a name to find that user. Tap the green guy to add this person to your contacts.</paper-material>
-        </div>
-        <paper-input type="bt-search"
-            placeholder="Enter user name to search for" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5">
+  <template>
+        <paper-input id="searchinput" disabled no-label-float type="bt-search"
+            label="Search" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5"><iron-icon icon="search" prefix></iron-icon>
         </paper-input>
+       
         <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
-        <template is="dom-repeat" items="{{searchResults}}">
+     
+       
+    <div class="flex vertical layout">
+        <iron-list id="searchList" items="{{searchResults}}">
+          <template>
+          <paper-material elevation="1">
            
-            <paper-material elevation="1">
                <span>{{item}}</span>
-               <div align="right"><iron-icon icon="social:person-add" class="colorful" tabindex="0" raised on-click="addcontact" data-name="{{value}}">Add Contact</iron-icon></div>
-            </paper-material>
+               <div align="right"><iron-icon icon="social:person-add" tabindex="0" raised on-click="addcontact" data-name="{{value}}"></iron-icon></div>
             
-        </template>
+            </paper-material>
+              </template>
+          </iron-list>
+          </div>
+            
+      
 
-        <paper-toast id="comingsoon" text="Coming Soon!"></paper-toast>
-        </div>
-        </div>
+    <iron-ajax
+    id="addcontact"
+    content-type="application/json"
+    url="[[tagUrl]]"
+    method="PUT"
+    handle-as="json"
+    last-response="{{ajaxAddContactResponse}}"
+    on-response="addContactResponse"
+    ></iron-ajax>
     </template> 
  
   <script>
@@ -87,6 +124,16 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       },
 
       url: {
+        type: String,
+        notify: true
+      },
+
+      tagUrl: {
+        type: String,
+        notify: true
+      },
+
+      value: {
         type: String,
         notify: true
       }
@@ -117,7 +164,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
             console.log('doSearch value entered: ' + this.searchValue);
             var wsElement = document.querySelector('ws-element');
 
-            if (this.searchValue != "") {
+            //if (this.searchValue != "") {
                 console.log('search socketState is: ' + wsElement.readyState());
 
                 if (wsElement.readyState() === 1) {
@@ -128,11 +175,24 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                     wsElement.send(this.searchValue);
                 }
               
-            }
+            //}
         },
 
         addcontact: function(e) {
-          document.querySelector('#comingsoon').show();
+          console.log(this.value + ' is going to add ' + e.model.item + ' as a contact, using this url ' + this.tagUrl);
+          var addcontactbody = {_id: this.value, username: e.model.item};
+          this.$.addcontact.body = JSON.stringify(addcontactbody);
+          document.getElementById('addcontact').generateRequest();
+        },
+
+        addContactResponse: function () {
+          console.log(JSON.stringify(this.ajaxAddContactResponse));
+          document.getElementById('addedcontact').show();
+          document.getElementById('tagged').generateRequest();
+
+          this.searchValue = '';
+          document.querySelector('ws-element').send('');
+
         }
 
       });
