@@ -56,25 +56,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="shared-styles"></style>
-  <style is="custom-style">
-    paper-material.maininput {
-      background-color: #f2f2f2;
-    }
-
-    paper-input.nameinput {
-      background-color: white;     
-    }
-    <!-- --paper-input-container-color: white; 
-         --paper-input-container-input-color: black;   
-         --paper-input-container-focus-color: blue;
-         --paper-input-container-invalid-color: green;        
-        --paper-input-container-underline: white;-->
-    
-    div.reflinks {
-        padding: 10px 20px 10px 20px;
-    }
-</style>
-
 
 </head>
 
@@ -113,16 +94,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Places</span>
           </a>
 
-<!--           <a data-route="search" href="/search" on-click="onDataRouteClick">
-            <iron-icon icon="search"></iron-icon>
-            <span>Search</span>
-          </a> -->
-
-<!--           <a data-route="settings" href="/settings" on-click="onDataRouteClick">
-            <iron-icon icon="settings"></iron-icon>
-            <span>Settings</span>
-          </a> -->
-
           <a data-route="help" href="/help" on-click="onDataRouteClick">
             <iron-icon icon="help"></iron-icon>
             <span>Help</span>
@@ -136,6 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
+         <tag-badge></tag-badge> 
           <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
 
           <span class="flex"></span>
@@ -148,22 +120,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-icon id="searchicon" icon="search"> </paper-icon>
           <paper-tooltip id="searchicontooltip" for="searchicon">Log-in to use search</paper-tooltip>
         <div></div>
+
             <bt-search id="btsearch" value="{{username}}"></bt-search>
+
         <paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip>
-         
-
-
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name">BlueTag </div> <tag-badge style="position: relative; margin-left: 40px"></tag-badge>
+            <div class="app-name">BlueTag </div> 
           </div>
 
-          <!-- Application sub title -->
-          <!-- <div class="bottom bottom-container center horizontal layout">
-            <div class="bottom-title paper-font-subhead">Locate. Tag. Connect.</div>
-          </div> -->
 
+          <!-- Application sub title -->
+          <div class="bottom bottom-container center horizontal layout">
+            <div style="margin-top: 40px; font-size: small" class="bottom-title paper-font-subhead">Locate. Tag. Connect.</div>
+          </div>
+             
         </paper-toolbar>
 
         <!-- Main Content -->
@@ -171,44 +143,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
             <url-service></url-service>
             <app-globals></app-globals>
-<!-- <<<<<<< HEAD -->
-          <section data-route="splash">
-              <div align="center">Welcome</div>
-            <h4></h4>
-            <div align="center">
-            <paper-material elevation="1">
-            <div border="red">
-            <paper-material elevation="0" style="border-style: inset; border-width: 2px; background-color: #f7f7f7; padding: 2px">
-              <paper-input name="name" label="Enter a name to get started" placeholder=" " value="{{username}}" id="userinput" required>
+
+        <section data-route="splash">          
+          <div align="center">
+            <paper-material class="maininput">
+              <paper-input class="nameinput" alwaysFloatLabel name="name" placeholder=" " label="Please enter a name to get started"value="{{username}}" id="userinput" required><div prefix><iron-icon icon="social:people" style="color: #466BB0" prefix></iron-icon></div>prefix>
               </paper-input>
-              </paper-material>
-              </div>
-             
-              <br>
-              <div align="center"> <get-username  id="getusername" value="{{username}}"></get-username></div>
-              </paper-material>
-
-              <paper-material style="margin-top:50px">
-                <iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
-               <div> <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a></div>
-              </paper-material>
-
-              <paper-material>
-                <iron-icon src="images/java-liberty-bluemix.png"></iron-icon> <iron-icon src="images/bluemix.png"></iron-icon> 
-               <div> <a href="https://developer.ibm.com/wasdev/">Powered by Liberty.</a> <a href="http://bluemix.net"> Running on Bluemix.</a></div>
-              </paper-material>
-         
-              <paper-material>
-                <iron-icon src="images/polymer-logo.png"></iron-icon> 
-               <div> <a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
-
-  <!--         <section data-route="splash">          
-            <div align="center">
-            <paper-material class=maininput>
-              <paper-input class=nameinput floatingLabel name="name" label="Please enter a name to get started" value="{{username}}" id="userinput" required><div prefix><iron-icon icon="social:people" color=blue prefix></iron-icon></div>prefix>
-              </paper-input>
-              
               <div align="center"><get-username  id="getusername" value="{{username}}"></get-username></div>
+             
+
+              
               <p>&nbsp;</p>
               <p>&nbsp;</p>
               <div class=reflinks><iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
@@ -220,26 +164,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <div class=reflinks><iron-icon src="images/bluemix.png"></iron-icon><a href="http://bluemix.net"> Running on Bluemix.</a>
               </div>          
               <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
- -->
               </paper-material>
           </div>
     
-          </section>
+        </section>
 
           <section data-route="home">
-				        <my-map value="{{username}}"></my-map>
-              <!-- <paper-material elevation="1" class="paper-font-body2">
-                <p class="paper-font-subhead">Use the navigation menu to:</p>
-                <my-list></my-list>
-              </paper-material> -->
+				      <my-map value="{{username}}"></my-map>
+
               <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #eeff41;margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
 
-              <paper-toast id="findme" text="Map will reset on your next location update"></paper-toast>
+              <paper-toast id="findme" text="Map Reset"></paper-toast>
           </section>
 
-            <section data-route="users">
+          <section data-route="users">
               <get-taggable value={{username}}>get-taggable</get-taggable>
-            </section>
+          </section>
 
 
             <section data-route="contact">

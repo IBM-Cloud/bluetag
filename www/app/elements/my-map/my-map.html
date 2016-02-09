@@ -140,6 +140,11 @@ Polymer({
 	centerMap: function() {
 		console.log('Map will center around user on next location update ');
 		document.querySelector('#locupdate-center').setAttribute('value', 'true');
+		document.querySelector('#g-mark').latitude = document.querySelector('#latdiv').innerHTML;
+		document.querySelector('#g-mark').longitude = document.querySelector('#londiv').innerHTML;
+
+		document.querySelector('#g-map').latitude = document.querySelector('#latdiv').innerHTML;
+		document.querySelector('#g-map').longitude = document.querySelector('#londiv').innerHTML;
 		document.getElementById('findme').show();
 
 	}

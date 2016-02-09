@@ -138,10 +138,14 @@ Polymer({
     console.log(nameResp);
 
     if (nameResp == "success"){
-      app.route = "home";
+      //app.route = "home";
+      document.querySelector('iron-pages').select('home');
       document.querySelector('#toast2').show();
     } else {
-        app.route = "home";
+        //app.route = "home";
+        //document.querySelector('iron-pages').select('home');
+        var apppages = document.querySelector('iron-pages');
+        apppages.select('home');
         document.querySelector('#toast1').show();
     }
         document.getElementById("taggable").generateRequest();

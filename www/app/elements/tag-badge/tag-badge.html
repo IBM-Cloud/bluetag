@@ -23,26 +23,24 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
-
-
-
-
-
+<link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 
 <dom-module name="tag-badge">
 
-<style>
+  <style>
+  html, body {
+    background-color: #81C784;
+  }
+
       paper-badge {
-        /*display: inline-block;*/
-        --webkit-transition: all 0.1s;
-        transition: all 0.1s;
-        --paper-badge-background: var(--paper-green-300);
-        opacity: 0.95;
+        display: inline-block;
+        position: absolute;
+      --paper-badge-background: var(--paper-green-300);
+      vertical-align: middle;
+      margin-left: 30%;
       }
-/*      paper-badge[label="0"] {
-        opacity: 0.3;
-      }
-*/</style>
+
+</style>
 
 <template>
 
