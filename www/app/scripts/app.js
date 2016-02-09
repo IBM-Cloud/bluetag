@@ -28,9 +28,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
-
 var env = require('../env-config.json');
 
+// anonymous function expression, to be evaluated immediately:
 (function(document) {
     'use strict';
 
@@ -53,125 +53,153 @@ var env = require('../env-config.json');
     // Listen for template bound event to know when bindings
     // have resolved and content has been stamped to the page
     app.addEventListener('dom-change', function() {
-        console.log('Our app is ready to rock!');
+        console.log('Bluetag app.js, adding dom-change event listeners...');
 	
 	    document.querySelector('get-username').addEventListener('kick', function(e) {
-        document.querySelector('#searchinput').disabled = false;
-	    console.log('App user is ' + e.detail.q);
-	    appuser = e.detail.q;
+            document.querySelector('#searchinput').disabled = false;
+	        console.log('App user is ' + e.detail.q);
+	        appuser = e.detail.q;
 	
-	    //locationSocket = new WebSocket('ws://bluetaglocation1.mybluemix.net/wsLocationResource');
-	    locationSocket = new WebSocket(env.location + 'wsLocationResource');
-	    locationSocket.onopen = function(msg) {console.log('Socket Open: ' + JSON.stringify(msg));};
-	    locationSocket.onmessage = function(msg) {console.log('Server says: ' + JSON.stringify(msg));};
+	        //create the location service webSocket
+	        locationSocket = new WebSocket(env.location + 'wsLocationResource');
+	        locationSocket.onopen = function(msg) {console.log('Location service webSocket Open: ' + JSON.stringify(msg));};
+	        locationSocket.onmessage = function(msg) {console.log('Location service webSocket onMessage: ' + JSON.stringify(msg));};
 	
-	    document.querySelector('my-map').addEventListener('locupdate', function(e) {
-	    console.log('Location changed: ' + 'lat: ' + e.detail.lat + ' lon: ' + e.detail.lon);
+	        document.querySelector('my-map').addEventListener('locupdate', function(e) {
+	            console.log('Location changed: ' + 'lat: ' + e.detail.lat + ' lon: ' + e.detail.lon);
 		
-	    if (appuser !== null) {
-		    var userloc = {
-						_id: appuser,
-						longitude: e.detail.lat,
-						latitude: e.detail.lon };
+    	        if (appuser !== null) {
+    		        var userloc = {
+    						_id: appuser,
+    						longitude: e.detail.lat,
+    						latitude: e.detail.lon };
+                    var userlocJSON = JSON.stringify(userloc)
 
-		    console.log('Sending location update over socket: ' + JSON.stringify(userloc));
-		    //TODO - this socket will timeout if location data is not flowing - need to add error checking
-            if(locationSocket.readyState === 1){
-                locationSocket.send(JSON.stringify(userloc));
-            } else {
-                setTimeout( function () {
-                    locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                }, 500);
-                locationSocket.send(JSON.stringify(userloc));
-            }				  
-	    }
-    }); // end addEventListener()
-	           
-    //added this block so map centers once around current location - then only marker will be updated to show marker
-    //moving on stationary map. Limits data usage on every map load for testing - to have map re-center on each update comment out
-    //getCurrentPosition call and update #g-map in watchPosition call.
-      
-    navigator.geolocation.getCurrentPosition( function(singlePos){
+    		        console.log('Sending location update over socket: ' + userlocJSON );
+    		        //TODO - this socket will timeout if location data is not flowing - need to add error checking
+                    if (locationSocket.readyState === 1){
+                        console.log('my-map.locupdate event handler, sending loc update over websocket');
+                        locationSocket.send(userlocJSON);
+                    } else {
+                        setTimeout( function () {
+                            console.log('my-map.locupdate event handler, open websocket, wait 500ms');
+                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                        }, 500);
+                        console.log('my-map.locupdate event handler, sending loc update over websocket');
+                        locationSocket.send(userlocJSON);
+                    }				  
+    	        }
+            }); // end querySelector('my-map').addEventListener
+	    
 
-        var singleLat = singlePos.coords.latitude;
-        var singleLon = singlePos.coords.longitude;
+        //Geolocation functions and callbacks.   See https://developer.mozilla.org/en-US/docs/Web/API/Geolocation
 
-        console.log('geting single position to center map once: ' + singleLat + ' , ' + singleLon);
-        document.querySelector('#g-map').latitude = singleLat;
-        document.querySelector('#g-map').longitude = singleLon;
+        function getCurrentPositionSuccess(pos) {
+            var crd = pos.coords;
 
-        document.querySelector('#g-mark').latitude = singleLat;
-        document.querySelector('#g-mark').longitude = singleLon;
+            console.log('one time, getCurrentPosition callback: current position is:');
+            console.log('Latitude : ' + crd.latitude);
+            console.log('Longitude: ' + crd.longitude);
+            console.log('Altitude: '  + crd.altitude);
+            console.log('More or less ' + crd.accuracy + ' meters.');
+            var singleLat = crd.latitude;
+            var singleLon = crd.longitude;
 
-        document.querySelector('#markitlat').innerHTML = singleLat;
-        document.querySelector('#markitlon').innerHTML = singleLon;
-    });
+            //console.log('geting single position to center map once: ' + singleLat + ' , ' + singleLon);
+            //TODO why g-mark AND markitlat?
+            document.querySelector('#g-map').latitude = singleLat;
+            document.querySelector('#g-map').longitude = singleLon;
 
-    var options={enableHighAccuracy: true, timeout: 60000, maximumAge: 10000};
-        
-    var watchID = navigator.geolocation.watchPosition(
-        function(position) {
+            document.querySelector('#g-mark').latitude = singleLat;
+            document.querySelector('#g-mark').longitude = singleLon;
+
+            document.querySelector('#markitlat').innerHTML = singleLat;
+            document.querySelector('#markitlon').innerHTML = singleLon;
+        };
+
+        function getCurrentPositionError(err) {
+          console.warn('ERROR(getCurrentPosition callback: ' + err.code + '): ' + err.message);
+        };
+
+        function getWatchPositionSucess(pos) {
+            var crd = pos.coords;
+            console.log('getWatchPosition callback: current position is lat,lon,alt,accuracy(meters): ' + crd.latitude + ',' + crd.longitude + ',' + crd.altitude + ',' + crd.accuracy);
+            //TODO if onlyupdateonpress is set we do not send loc updates to the service.  Saves data during debug
+            //TODO enable the setting on the UI
             if (!(document.querySelector('#onlyupdateonpress').active)) {
-                var longitude = position.coords.longitude;
-                var latitude = position.coords.latitude;
+                var longitude = crd.longitude;
+                var latitude = crd.latitude;
                 var d = getDistanceFromLatLonInKm(latitude,longitude, latitudePrev, longitudePrev)
                  
-                console.log('distance ' + d);
+                console.log('distance moved: ' + d);
 
-                longitudePrev = position.coords.longitude;
-                latitudePrev = position.coords.latitude;
+                longitudePrev = crd.longitude;
+                latitudePrev = crd.latitude;
 
                 //document.querySelector('#location').innerHTML = latitude + "," + longitude;
-             	console.log('app.js watchpos: ' + latitude + ',' + longitude );
-				document.querySelector('#latdiv').innerHTML = latitude;
-				document.querySelector('#londiv').innerHTML = longitude;
+                //console.log('app.js watchpos: ' + latitude + ',' + longitude );
+                document.querySelector('#latdiv').innerHTML = latitude;
+                document.querySelector('#londiv').innerHTML = longitude;
                 document.querySelector('#distdiv').innerHTML = d;
                 var updatemap = document.querySelector('#locupdate-center').getAttribute('value');
-                console.log('Location update - recenter map? : ' + updatemap);
-              if (updatemap === "true") {
-                document.querySelector('#g-map').latitude = latitude;
-                document.querySelector('#g-map').longitude = longitude;
+                console.log('Location changed - recenter map?: ' + updatemap);
+                if (updatemap === "true") {
+                    document.querySelector('#g-map').latitude = latitude;
+                    document.querySelector('#g-map').longitude = longitude;
                                     
-                document.querySelector('#g-mark').latitude = latitude;
-                document.querySelector('#g-mark').longitude = longitude;
-            }
+                    document.querySelector('#g-mark').latitude = latitude;
+                    document.querySelector('#g-mark').longitude = longitude;
+                }
                 document.querySelector('#markitlat').innerHTML = latitude;
                 document.querySelector('#markitlon').innerHTML = longitude;
 
-				if(appuser !== null) {
-					console.log(appuser);
-
-					var userloc = {
-						_id: appuser,
-						longitude: longitude,
-						latitude: latitude};																		
-                    try {
-                        console.log('Trying to send through socket: ' + JSON.stringify(userloc));
+                if(appuser !== null) {
+                    var userloc = {
+                        _id: appuser,
+                        longitude: longitude,
+                        latitude: latitude}; 
+                    var userlocJSON = JSON.stringify(userloc);
+                    console.log('userlocJSON'+userlocJSON);                                                                       
+                    try {   
+                        console.log('Trying to send location update over websocket: ' + userlocJSON);
 
                         //readyState means socket is open and ready to communicate. If state is 2 (Closing) or 3 (Closed) try to re-open
                         //the socket before sending location again
                         if(locationSocket.readyState === 1){
-						  locationSocket.send(JSON.stringify(userloc));
+                            console.log('getWatchPosition callback, sending loc update over websocket');
+                            locationSocket.send(userlocJSON);
                         } else {
+                            console.log('getWatchPosition callback, setTimeout');
                             setTimeout( function () {
+                                console.log('getWatchPosition callback, create new websocket and wait 500ms...');
                                 locationSocket = new WebSocket(env.location + 'wsLocationResource');
                             }, 500);
-                            locationSocket.send(JSON.stringify(userloc));
+                            console.log('getWatchPosition callback, sending loc update over websocket');
+                            locationSocket.send(userlocJSON);
                         }
                     } catch(err) {
-                        console.log('Failed because: ' + err.message);
+                        console.log('getWatchPosition callback websocket request failed because: ' + err.message);
                     }
-					document.getElementById('taggable').generateRequest();
-				}
+                    document.getElementById('taggable').generateRequest();
+                }
             }
-        },
-        function(error) {
-            console.log('Error getting location: ' + error.code + ' ' + error.message);
-            console.log('Error getting location');
-        }, options);                    
-    }); //end watchPosition()
-  
-    });  //TODO  is this line extra? :)
+        }
+        function getWatchPositionError(error) {
+            console.warn('ERROR getWatchPosition callback: ' + error.code + ': ' + error.message);
+        }
+        
+        var options={enableHighAccuracy: true, timeout: 60000, maximumAge: 10000};
+
+        //added getCurrentPosition so map centers once around current location - then only marker will be updated to show marker
+        //moving on stationary map. Limits data usage on every map load for testing - to have map re-center on each update comment out
+        //getCurrentPosition call and update #g-map in watchPosition call.
+          
+        navigator.geolocation.getCurrentPosition(getCurrentPositionSuccess, getCurrentPositionError, options);
+            
+        var watchID = navigator.geolocation.watchPosition(getWatchPositionSucess, getWatchPositionError, options);                    
+        }); //end querySelector('get-username').addEventListener
+        console.log('Bluetag is ready to rock!');
+    });  //end addEventListener('dom-change' function
  
     // See https://github.com/Polymer/polymer/issues/1381
     window.addEventListener('WebComponentsReady', function() {
@@ -180,7 +208,9 @@ var env = require('../env-config.json');
 	    document.querySelector('#paperDrawerPanel').closeDrawer();
 	    // imports are loaded and elements have been registered
 
-	    document.querySelector('#meta-config').setAttribute('value', JSON.stringify(env));
+	    
+        //setup all microservice URLs based on env-config.json values
+        document.querySelector('#meta-config').setAttribute('value', JSON.stringify(env));
 	    var urls = document.querySelector('#meta-config').getAttribute('value');
 	    
 	    document.querySelector('get-username').url = JSON.parse(urls).register + 'api/register/';
@@ -193,7 +223,7 @@ var env = require('../env-config.json');
 	    document.querySelector('bt-search').url = JSON.parse(urls).search + 'SearchWS/';
         document.querySelector('bt-search').tagUrl = JSON.parse(urls).tag + 'api/tag/';
 
-	    document.querySelector('ws-element').open(); //opening search socket after url is known - need to change this to work within bt-search
+	    document.querySelector('ws-element').open(); //TODO opening search socket after url is known - need to change this to work within bt-search
 
     });
 
@@ -230,52 +260,57 @@ var env = require('../env-config.json');
         }
     };
 
+    //TODO do we need this one and the above getCurrentPosition?
     app.singleUpdateLocation = function() {
         if (document.querySelector('#onlyupdateonpress').active){
   	        console.log('Single location update');
 
             navigator.geolocation.getCurrentPosition( function(singlePos) {
 
-            var singleLat = singlePos.coords.latitude;
-            var singleLon = singlePos.coords.longitude;
+                var singleLat = singlePos.coords.latitude;
+                var singleLon = singlePos.coords.longitude;
 
-            console.log('getting single position to center map once: ' + singleLat + ' , ' + singleLon);
-            document.querySelector('#g-map').latitude = singleLat;
-            document.querySelector('#g-map').longitude = singleLon;
+                console.log('getting single position to center map once: ' + singleLat + ' , ' + singleLon);
+                document.querySelector('#g-map').latitude = singleLat;
+                document.querySelector('#g-map').longitude = singleLon;
 
-            document.querySelector('#g-mark').latitude = singleLat;
-            document.querySelector('#g-mark').longitude = singleLon;
+                document.querySelector('#g-mark').latitude = singleLat;
+                document.querySelector('#g-mark').longitude = singleLon;
 
-            document.querySelector('#markitlat').innerHTML = singleLat;
-            document.querySelector('#markitlon').innerHTML = singleLon;
+                document.querySelector('#markitlat').innerHTML = singleLat;
+                document.querySelector('#markitlon').innerHTML = singleLon;
 
-            if(appuser != null) {
-                console.log(appuser);
+                if(appuser != null) {
+                    console.log(appuser);
 
-                var userloc = {
-                    _id: appuser,
-                    longitude: singleLat,
-                    latitude: singleLon };
-            
-            try {
-                console.log('Trying to send through socket: ' + JSON.stringify(userloc));
-                if(locationSocket.readyState === 1){
-                    locationSocket.send(JSON.stringify(userloc));
-                } else {
-                    locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                    locationSocket.send(JSON.stringify(userloc));
+                    var userloc = {
+                        _id: appuser,
+                        longitude: singleLat,
+                        latitude: singleLon };
+                
+                    try {
+                        console.log('Trying to send through socket: ' + JSON.stringify(userloc));
+                        if(locationSocket.readyState === 1){
+                        locationSocket.send(JSON.stringify(userloc));
+                        } else {
+                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                            locationSocket.send(JSON.stringify(userloc));
+                        }
+                        } catch(err) {
+                        console.log('Failed because: ' + err.message);
+                    }
+                    document.getElementById('taggable').generateRequest();
                 }
-            } catch(err) {
-                console.log('Failed because: ' + err.message);
+            },
+            function (error) {
+                console.warn('ERROR getWatchPosition callback: ' + error.code + ': ' + error.message);
             }
-            document.getElementById('taggable').generateRequest();
-        }
-        }); //TODO why is this here?
-        } else {
-            console.log('Pause automatic updates in settings menu to use this');
-            document.querySelector('#refreshtooltip').playAnimation();
-        }
-    };
+            ); //end navigator.geolocation.getCurrentPosition
+            } else {
+                console.log('Pause automatic updates in settings menu to use this');
+                document.querySelector('#refreshtooltip').playAnimation();
+            }
+        };
 
     app.showSearchMenu = function() {
         console.log('Show the search menu');
