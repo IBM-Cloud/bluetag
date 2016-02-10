@@ -75,7 +75,7 @@ public class GameLogicThread extends Thread {
 						// them to taggable
 						if (!loc1.get_id().equals(loc2.get_id())) {
 							
-							
+						if ( (loc1.getLatitude() != 0.0 && loc1.getLongitude() != 0.0 ) || (loc2.getLatitude() !=0 && loc2.getLongitude() !=0) ) {	
 							double d = distance(loc1.getLatitude(),
 									loc2.getLatitude(),
 									loc1.getLongitude(),
@@ -87,7 +87,8 @@ public class GameLogicThread extends Thread {
 								if (taggedDB.get(loc1.get_id()) != null && !taggedDB.get(loc1.get_id()).contains(loc2.get_id()))  {
 									taggableDB.get(loc1.get_id()).add(loc2.get_id());
 									distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));				
-								}	
+									}	
+								}
 							}
 						}
 					}
