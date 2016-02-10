@@ -15,6 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import com.bluetag.api.location.service.LocationService;
 import com.bluetag.model.LocationModel;
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 @ApplicationScoped
 @ServerEndpoint(value = "/wsLocationResource")
@@ -23,8 +24,11 @@ public class WSLocationResource {
 	
 	private final String updateLocation = "/UPDATE";
 	
+	private String user;
+	
 	LocationService locationService;
 	Gson gson;
+	JsonParser jparser = new JsonParser();
 	
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig ec) {
@@ -44,6 +48,10 @@ public class WSLocationResource {
 	public String onReceiveLocation (String location, Session session) {
 		System.out.println("Message from " + session.getId() + " : " + location);
 		
+		user = jparser.parse(location).getAsJsonObject().get("_id").getAsString();
+		//had to have received atleast one location update to know who user is
+		System.out.println("Updating location for: " + user);
+		
 		return locationService.updateLocation(gson.fromJson(location, LocationModel.class));
 	}
 	
@@ -55,5 +63,14 @@ public class WSLocationResource {
 	@OnClose
 	public void onClose(Session session, CloseReason reason) {
 		System.out.println("Session " + session.getId() + " has ended. Reason: " + reason);
+		
+		
+		if (user != null) {
+			locationService.sendClosingLocation(user);
+			System.out.println("Closed out user: " + user);
+		} else {
+			System.out.println("Something went wrong with setting the user");
+			
+		}
 	}
 }
