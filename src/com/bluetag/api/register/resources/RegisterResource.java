@@ -1,6 +1,7 @@
 package com.bluetag.api.register.resources;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,5 +18,15 @@ public class RegisterResource {
 	public String register(String userInfo){
 		RegisterService registerService = new RegisterService();
 		return registerService.registerUser(userInfo);
+	}
+	
+	@GET
+	@Path("/clearLocs")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String clearLocations() {
+		RegisterService regserv = new RegisterService();
+		regserv.clearLocations();
+		
+		return "{\"result\": \"reset all locations to 0,0\"}";
 	}
 }

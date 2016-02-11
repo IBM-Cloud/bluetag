@@ -7,6 +7,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -16,7 +17,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.bluetag.api.register.resources.CloudantCredential;
+import com.bluetag.model.AllLocationDocsModel;
 import com.bluetag.model.LocationModel;
+import com.bluetag.model.LocationRowModel;
 import com.bluetag.model.MarkitModel;
 import com.bluetag.model.SearchIndexModel;
 import com.bluetag.model.TagModel;
@@ -26,7 +29,8 @@ import com.google.gson.Gson;
 public class RegisterService {
 
 	private String successJson = "{\"result\": \"success\"}";
-	private String alreadyExistsJson = "{\"result\": \"user already exists\"}";
+	private String alreadyExistsNotInUseJson = "{\"result\": \"user already exists; not in use\"}";
+	private String alreadyExistsInUseJson = "{\"result\": \"user already exists; in use\"}";
 	private String failJson = "{\"result\": \"something has gone horribly wrong. Please try again\"}";
 	private String authHeaderKey = "Authorization";
 	private String acceptHeaderKey = "Accept";
@@ -41,6 +45,53 @@ public class RegisterService {
 	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
 	private String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
 	private String cloudantURI = cc.getCloudantURI();
+	
+	public void clearLocations() {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+	try {
+		HttpGet locInfoGet = new HttpGet(cloudantURI
+				+ "/location/_all_docs?include_docs=true");
+		locInfoGet.addHeader(authHeaderKey, authHeaderValue);
+		locInfoGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+		locInfoGet.addHeader(contentHeaderKey, contentHeaderValue);
+		HttpResponse locInfoResp = httpclient.execute(locInfoGet);
+		Gson gson = new Gson();
+		AllLocationDocsModel allDocs = gson.fromJson(
+				EntityUtils.toString(locInfoResp.getEntity()),
+				AllLocationDocsModel.class);
+		httpclient.close();
+			
+			for(LocationRowModel row1: allDocs.getRows()) {
+				LocationModel loc1 = row1.getDoc();
+				LOGGER.info("Resetting for " + loc1.get_id());
+				loc1.setLatitude(0.0);
+				loc1.setLongitude(0.0);
+				loc1.setAltitude(0.0);
+				
+				
+				HttpPut closingLocPut = new HttpPut(cloudantURI + "/location/" + loc1.get_id());
+				closingLocPut.addHeader(authHeaderKey, authHeaderValue);
+				closingLocPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+				closingLocPut.addHeader(contentHeaderKey, contentHeaderValue);
+				closingLocPut.setEntity(new StringEntity(gson.toJson(loc1)));
+				httpclient = HttpClients.createDefault();
+				HttpResponse closingLocResp = httpclient.execute(closingLocPut);
+				
+				
+				
+				
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 	public String registerUser(String userInfo) {
@@ -62,11 +113,13 @@ public class RegisterService {
 			HttpResponse checkExistsDbResp = httpclient.execute(checkDbExistsGet);
 			String resp = EntityUtils.toString(checkExistsDbResp.getEntity());
 			
+			//what DBs exist
 			LOGGER.info("DBs are: " + resp);
 			
 			if (!resp.contains("info") && !resp.contains("location") && !resp.contains("markedlocations") && !resp.contains("tag")) {
 				LOGGER.info("One or more dbs do not exist. Creating info, location, markedlocations and tag");
 				
+				//one or more DBs are missing so create all of them
 				
 				//PUT request to create info
 				HttpPut createInfoDbPut = new HttpPut(cloudantURI + "/info");
@@ -127,15 +180,42 @@ public class RegisterService {
 			checkExistsGet.addHeader(acceptHeaderKey, acceptHeaderValue);
 			checkExistsGet.addHeader(contentHeaderKey, contentHeaderValue);
 			HttpResponse checkExistsResp = httpclient.execute(checkExistsGet);
-
-			// if userID exists, return already exists
-			if (checkExistsResp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				httpclient.close();
-				return alreadyExistsJson;
+			
+			//if userID exists - check if it's currently in use by polling user location - if it's something other than 0,0 - consider userID to be in use
+		if (checkExistsResp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+			LOGGER.info(userID + " exits. Checking if this ID is in use");
+			
+			HttpGet userLocCheckGet = new HttpGet(cloudantURI + "/location/" + userID);
+			userLocCheckGet.addHeader(authHeaderKey, authHeaderValue);
+			userLocCheckGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+			userLocCheckGet.addHeader(contentHeaderKey, contentHeaderValue);
+			HttpResponse userLocCheckGetResp = httpclient.execute(userLocCheckGet);
+			LocationModel userLocCheck = gson.fromJson(EntityUtils.toString(userLocCheckGetResp.getEntity()), LocationModel.class);
+			httpclient.close();
+			
+			if (userLocCheck.getLatitude() == 0.0 && userLocCheck.getLongitude() == 0.0) {
+				LOGGER.info(userID + " exists and is not in use." + " latitude check is " + userLocCheck.getLatitude() + " longitude check is " + userLocCheck.getLongitude());
+				return alreadyExistsNotInUseJson;
+			} else {
+				//user lat and lon are 0,0
+				LOGGER.info("User is in use, lat lon are not 0,0: " + "Lat - " + userLocCheck.getLatitude() + " Lon - " + userLocCheck.getLongitude());
+				return alreadyExistsInUseJson;
 			}
+		}
+			
+//			if (userLocCheck.getLatitude() == 0 && userLocCheck.getLongitude() == 0 && 
+//					checkExistsResp.getStatusLine().getStatusCode() == HttpStatus.SC_OK ) {
+//				//User exists and is not in use
+//				return alreadyExistsJson;
+//			} else if (checkExistsResp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+//				// if userID exists, return already exists and in use
+//				httpclient.close();
+//				return alreadyExistsInUseJson;
+//			}
 			httpclient.close();
 			
 			// otherwise attempt to create user
+			LOGGER.info(userID + " doesn't exist; going to create");
 			HttpPost createUserPost = new HttpPost(cloudantURI + "/info");
 			createUserPost.addHeader(authHeaderKey, authHeaderValue);
 			createUserPost.addHeader(acceptHeaderKey, acceptHeaderValue);
@@ -149,7 +229,7 @@ public class RegisterService {
 				return createUserEntity;
 			}
 			httpclient.close();
-
+			LOGGER.info("Created info entry for " + userID);
 			// create tagged entry
 			HttpPost createTaggedPost = new HttpPost(cloudantURI + "/tag");
 			createTaggedPost.addHeader(authHeaderKey, authHeaderValue);
@@ -165,7 +245,7 @@ public class RegisterService {
 				return createTaggedEntity;
 			}
 			httpclient.close();
-			
+			LOGGER.info("Created tag entry for " + userID);
 			//create location entry
 			HttpPost createLocationPost = new HttpPost(cloudantURI + "/location");
 			createLocationPost.addHeader(authHeaderKey, authHeaderValue);
@@ -181,7 +261,7 @@ public class RegisterService {
 				return createLocEntity;
 			}
 			httpclient.close();
-			
+			LOGGER.info("Created location entry for " + userID);
 			//create marked locations entry
 			HttpPost createMarkitPost = new HttpPost(cloudantURI + "/markedlocations");
 			createMarkitPost.addHeader(authHeaderKey, authHeaderValue);
@@ -197,7 +277,7 @@ public class RegisterService {
 				return createMarkitEntity;
 			}
 			httpclient.close();
-			
+			LOGGER.info("Created markedlocations entry for " + userID);
 			return successJson;
 
 		} catch (Exception e) {
