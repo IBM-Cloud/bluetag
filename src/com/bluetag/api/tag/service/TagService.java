@@ -1,6 +1,7 @@
 package com.bluetag.api.tag.service;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 
 public class TagService {
 	private String successJson = "{\"result\": \"success\"}";
+	private String alreadyTaggedJson = "{\"result\": \"already tagged\"}";
 	private String failJson = "{\"result\": \"something has gone horribly wrong. Please try again\"}";
 	private String authHeaderKey = "Authorization";
 	private String acceptHeaderKey = "Accept";
@@ -31,12 +33,13 @@ public class TagService {
 	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
 	private String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
 	private String cloudantURI = cc.getCloudantURI();
-	
+	private final static Logger LOGGER = Logger.getLogger(TagService.class.getName());
 	public String updateTagged(NewTagModel newtag) {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 			// get old tagged from cloudant
+			//in NewTagModel - get_id() returns person initiating tag - getUsername() returns person to tag
 			HttpGet oldTagGet = new HttpGet(cloudantURI + "/tag/"
 					+ newtag.get_id());
 			oldTagGet.addHeader(authHeaderKey, authHeaderValue);
@@ -49,8 +52,14 @@ public class TagService {
 					TagModel.class);
 			httpclient.close();
 
+			
+			//check for and don't allow retagging - currently front-end design shouldn't allow for this but needs to be checked on server side as well
+			if (updatedtag.getTagged().contains(newtag.getUsername())) {
+				LOGGER.info(newtag.getUsername() + " already exists in tagged list for " + updatedtag.get_id());
+				return alreadyTaggedJson;
+			}
+			
 			// update array of tagged in updatedtag and update entry in cloudant
-			//TODO check for and don't allow retagging - currently front-end design shouldn't allow for this but needs to be checked on server side as well
 			updatedtag.getTagged().add(newtag.getUsername());
 			HttpPut updatedTagPut = new HttpPut(cloudantURI + "/tag/"
 					+ newtag.get_id());
@@ -67,7 +76,7 @@ public class TagService {
 				return updatedTagEntity;
 			}
 			httpclient.close();
-
+			LOGGER.info(newtag.get_id() + " tagged " + newtag.getUsername());
 			return successJson;
 		} catch (Exception e) {
 			try {
