@@ -1,8 +1,15 @@
-#Developing a mobile / web application using Polymer & Cordova
+#Developing a hybrid mobile application
 
-The BlueTag client application is a hybrid mobile application that is built on Cordova.  Polymer web components are used to assemble the UI and make REST service calls to the backend services deployed to Bluemix.
+The Bluetag client is a hybrid mobile application written using HTML5 and javascript. 
+Web Components based on Polymer are used to develop the UI and make REST service calls to the backend services deployed to Bluemix. 
+It can be deployed as a native Android or iOS application easily using Apache Cordova.
 
-Let's start by examining the contents of the application we pulled in earlier from GitHub.  The www folder under BlueTagFrontEnd contains the majority of the application code.  The rest of the files under BlueTagFrontEnd are Cordova artifacts.  Let’s look at a couple of other key files unde www.
+For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../README.md).
+
+Let's examine the contents of the application we pulled in earlier from GitHub. 
+The www folder under bluetag-frontend contains the majority of the application code. 
+The rest of the files under bluetag-frontend are Cordova artifacts. 
+Let’s look at a couple of other key files under www.
 
 *index.html - As the name would imply, this is the starting point of the application.  This file is invoked when the application is started.
 *app.js – This contains the js scripts that are run in the application.  One of the key aspects of this application, location data management, is handled in this file.
