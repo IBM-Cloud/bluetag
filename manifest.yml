@@ -5,4 +5,4 @@
     path: defaultServer
     services: 
      - bluetag-cloudant
-    host: bluetag-register
+    host: <prefix>-bluetag-register
