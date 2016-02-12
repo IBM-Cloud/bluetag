@@ -140,8 +140,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         line-height: 50px;
     }
     paper-button.colorful {
-		  background: #4285f4;
-		  color: #fff;
+      text-transform: none;
+		  color: #05E9FF;
     }
 	 paper-material {
         display: inline-block;
@@ -208,6 +208,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       last-response="{{ajaxFindPlayerResponse}}"
       on-response="findPlayerResponse">
     </iron-ajax>
+
+    <paper-toast id="playeroffline" text="This player is offline."> <paper-button on-click="goBackToMap" class="colorful"> Go back to Map </paper-button></paper-toast>
 	</template>
 	
 	<script>
@@ -266,17 +268,27 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
     findPlayerResponse: function() {
       console.log('Response from trying to find a player: ' + JSON.stringify(this.ajaxFindPlayerResponse.latitude));
-      document.querySelector('#find-contact-marker').latitude = this.ajaxFindPlayerResponse.latitude;
-      document.querySelector('#find-contact-marker').longitude = this.ajaxFindPlayerResponse.longitude;
+
+      if (this.ajaxFindPlayerResponse.latitude !== 0 && this.ajaxFindPlayerResponse.longitude !== 0) {
+        document.querySelector('#find-contact-marker').latitude = this.ajaxFindPlayerResponse.latitude;
+        document.querySelector('#find-contact-marker').longitude = this.ajaxFindPlayerResponse.longitude;
 
       //This global value is defined by iron-meta in app-globals.html. Setting this to false here
       //to stop map from re-centering on a location update when user is attemping to view
       //another area on the map
-      document.querySelector('#locupdate-center').setAttribute('value', 'false');
+        document.querySelector('#locupdate-center').setAttribute('value', 'false');
+        console.log('Resetting map');
+        document.querySelector('#g-map').latitude = this.ajaxFindPlayerResponse.latitude;
+        document.querySelector('#g-map').longitude = this.ajaxFindPlayerResponse.longitude;
 
-      document.querySelector('#g-map').latitude = this.ajaxFindPlayerResponse.latitude;
-      document.querySelector('#g-map').longitude = this.ajaxFindPlayerResponse.longitude;
+        document.querySelector('iron-pages').select('home');
+      } else {
+        document.querySelector('#playeroffline').show()
+      }
+    },
 
+    goBackToMap: function() {
+      document.querySelector('#playeroffline').toggle();
       document.querySelector('iron-pages').select('home');
     },
 

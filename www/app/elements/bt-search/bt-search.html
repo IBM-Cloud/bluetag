@@ -186,9 +186,17 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         },
 
         addContactResponse: function () {
-          console.log(JSON.stringify(this.ajaxAddContactResponse));
-          document.getElementById('addedcontact').show();
-          document.getElementById('tagged').generateRequest();
+          console.log('[bt-search]:addContactResponse - ' + JSON.stringify(this.ajaxAddContactResponse));
+
+          if (this.ajaxAddContactResponse.result === 'already tagged') {
+            console.log('[bt-search]:addContactResponse - already tagged');
+            document.getElementById('contactexists').show();
+            document.getElementById('tagged').generateRequest();
+          } else if (this.ajaxAddContactResponse.result === 'success') {
+            console.log('[bt-search]:addContactResponse - adding to contacts');
+            document.getElementById('addedcontact').show();
+            document.getElementById('tagged').generateRequest();
+          }
 
           this.searchValue = '';
           document.querySelector('ws-element').send('');

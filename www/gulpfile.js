@@ -242,7 +242,7 @@ gulp.task('serve', [/* Disable lint task for now - failing because of formatting
   browserSync({
     port: 5000,
     notify: false,
-    logPrefix: 'PSK',
+    logPrefix: 'BT',
     snippetOptions: {
       rule: {
         match: '<span id="browser-sync-binding"></span>',
@@ -264,7 +264,7 @@ gulp.task('serve', [/* Disable lint task for now - failing because of formatting
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['browserify'/*,'lint'*/]);
+  gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['browserify', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -273,7 +273,7 @@ gulp.task('serve:dist', ['default'], function() {
   browserSync({
     port: 5001,
     notify: false,
-    logPrefix: 'PSK',
+    logPrefix: 'BT',
     snippetOptions: {
       rule: {
         match: '<span id="browser-sync-binding"></span>',
@@ -292,35 +292,45 @@ gulp.task('serve:dist', ['default'], function() {
 });
 
 // Build production files, the default task
-gulp.task('default', ['clean'], function(cb) {
+//gulp.task('default', ['clean'], function(cb) {
+//  // Uncomment 'cache-config' if you are going to use service workers.
+//  runSequence(
+//    ['copy', 'styles'],
+//    'elements', 'browserify'
+//    [/*'lint',*/'images', 'fonts', 'html'],
+//    'vulcanize', //'cache-config',
+//    cb);
+//});
+
+gulp.task('default', ['clean', 'browserify'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
-    ['copy', 'styles'],
+    ['ensureFiles', 'copy', 'styles'],
     'elements',
-    [/*'lint',*/ 'browserify', 'images', 'fonts', 'html'],
-    'vulcanize', 'cache-config',
+    ['images', 'fonts', 'html'],
+    'vulcanize', // 'cache-config',
     cb);
 });
 
 // Build then deploy to GitHub pages gh-pages branch
-gulp.task('build-deploy-gh-pages', function(cb) {
-  runSequence(
-    'default',
-    'deploy-gh-pages',
-    cb);
-});
-
-// Deploy to GitHub pages gh-pages branch
-gulp.task('deploy-gh-pages', function() {
-  return gulp.src(dist('**/*'))
-    // Check if running task from Travis CI, if so run using GH_TOKEN
-    // otherwise run using ghPages defaults.
-    .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
-      remoteUrl: 'https://$GH_TOKEN@github.com/polymerelements/polymer-starter-kit.git',
-      silent: true,
-      branch: 'gh-pages'
-    }), $.ghPages()));
-});
+//gulp.task('build-deploy-gh-pages', function(cb) {
+//  runSequence(
+//    'default',
+//    'deploy-gh-pages',
+//    cb);
+//});
+//
+//// Deploy to GitHub pages gh-pages branch
+//gulp.task('deploy-gh-pages', function() {
+//  return gulp.src(dist('**/*'))
+//    // Check if running task from Travis CI, if so run using GH_TOKEN
+//    // otherwise run using ghPages defaults.
+//    .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
+//      remoteUrl: 'https://$GH_TOKEN@github.com/polymerelements/polymer-starter-kit.git',
+//      silent: true,
+//      branch: 'gh-pages'
+//    }), $.ghPages()));
+//});
 
 gulp.task('browserify', function() {
       return browserify(['app/scripts/app.js']).bundle()

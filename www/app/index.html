@@ -96,27 +96,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-menu hidden class="list" attr-for-selected="data-route" selected="[[route]]" on-click="onDataRouteClick">
           <a data-route="home" href="/home">
             <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
+            <span style="margin-top:20px">Home</span>
           </a>
 
           <a data-route="users" href="/users" on-click="onDataRouteClick">
             <iron-icon icon="social:group"></iron-icon>
-            <span>Near me </span>
+            <span style="margin-top:20px">Near me </span>
           </a>
 
           <a data-route="contact" href="/contact" on-click="onDataRouteClick">
             <iron-icon icon="list"></iron-icon>
-            <span>Contact</span>
+            <span style="margin-top:20px">Contact</span>
           </a>
 
           <a data-route="places" href="/places" on-click="onDataRouteClick">
             <iron-icon icon="explore"></iron-icon>
-            <span>Places</span>
+            <span style="margin-top:20px">Places</span>
           </a>
 
           <a data-route="help" href="/help" on-click="onDataRouteClick">
             <iron-icon icon="help"></iron-icon>
-            <span>Help</span>
+            <span style="margin-top:20px">Help</span>
           </a>
 
         </paper-menu>
@@ -158,12 +158,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
              
         </paper-toolbar>
 
+        <!-- These toasts respond to adding contact from the search menu. They are here so they show up on any panel, since search is a toolbar function and can be done from any panel-->
+        <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
+        <paper-toast id="contactexists" text="You already have this contact"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
             <url-service></url-service>
             <app-globals></app-globals>
-
+            
         <section data-route="splash">          
           <div align="center">
             <paper-material class="maininput">
@@ -183,14 +186,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
               </paper-material>
           </div>    
+              <paper-toast id="toast3" text="This user is currently logged in. Please choose a different name"></paper-toast>
         </section>
 
           <section data-route="home">
 				      <my-map value="{{username}}"></my-map>
 
-              <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #eeff41;margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
-
+              
               <paper-toast id="findme" text="Map Reset"></paper-toast>
+
+              <paper-toast id="toast1" text="Welcome back"></paper-toast>
+              <paper-toast id="toast2" text="Welcome"></paper-toast>
           </section>
 
           <section data-route="users">

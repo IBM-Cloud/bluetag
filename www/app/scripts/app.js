@@ -171,9 +171,9 @@ var env = require('../env-config.json');
                         } else {
                             console.log('getWatchPosition callback, setTimeout');
                             setTimeout( function () {
-                                console.log('getWatchPosition callback, create new websocket and wait 500ms...');
+                                console.log('getWatchPosition callback, create new websocket and wait 1s...');
                                 locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                            }, 500);
+                            }, 1000);
                             console.log('getWatchPosition callback, sending loc update over websocket');
                             locationSocket.send(userlocJSON);
                         }

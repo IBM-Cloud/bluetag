@@ -53,7 +53,7 @@ app.use(function(request, response, next){
         next();
 });
 
-app.use(express.static(__dirname+"/app"));
+app.use(express.static(__dirname+"/dist"));
 //app.use(express.static(__dirname+"/public"));
 
 
