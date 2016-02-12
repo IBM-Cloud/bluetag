@@ -1,26 +1,8 @@
 <server>
     <featureManager>
-        <feature>jsf-2.0</feature>
-        <feature>jsp-2.2</feature>
-        <feature>ejbLite-3.1</feature>
-        <feature>cdi-1.0</feature>
-        <feature>jpa-2.0</feature>
-        <feature>jdbc-4.0</feature>
-        <feature>jndi-1.0</feature>
-        <feature>managedBeans-1.0</feature>
         <feature>jaxrs-1.1</feature>
-        <feature>icap:managementConnector-1.0</feature>
-        <feature>appstate-1.0</feature>
-        <feature>localConnector-1.0</feature>
-	<feature>websocket-1.0</feature>
+		<feature>websocket-1.0</feature>
     </featureManager>
     <application name='myapp' location='myapp.war' type='war' context-root='/' />
     <httpEndpoint host="*" httpPort="${port}" id="defaultHttpEndpoint"/>
-    <webContainer extractHostHeaderPort="true" trustHostHeaderPort="true"/>
-    <include location="runtime-vars.xml"/>
-    <logging consoleLogLevel="INFO" logDirectory="${application.log.dir}"/>
-    <httpDispatcher enableWelcomePage="false"/>
-    <applicationMonitor dropinsEnabled="false" updateTrigger="mbean"/>
-    <config updateTrigger="mbean"/>
-    <appstate appName="myapp" markerPath="${home}/../.liberty.state"/>
 </server>
