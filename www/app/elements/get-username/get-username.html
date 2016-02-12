@@ -113,7 +113,7 @@ Polymer({
 	},
                     
   clickHandler: function(e, detail) {
-    document.querySelector('paper-menu').hidden = false;
+    //document.querySelector('paper-menu').hidden = false;
 		console.log("inside submit clickHandler");		
 		//this.fire("kick", {q: this.value});
     document.getElementById("register").generateRequest();
@@ -140,6 +140,7 @@ Polymer({
       
       console.log('[get-username] New user login; continuing with login');
       apppages.select('home');
+      document.querySelector('paper-menu').hidden = false;
       document.querySelector('paper-progress').disabled = true;
 
         document.querySelector('#toast2').show();
@@ -151,6 +152,7 @@ Polymer({
         
         console.log('[get-username] User not in use; continuing with login');
         apppages.select('home');
+        document.querySelector('paper-menu').hidden = false;
         document.querySelector('paper-progress').disabled = true;
 
         document.querySelector('#toast1').show();
