@@ -243,7 +243,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 				tagUrl: {
 					type: String,
 					notify: true
-				}
+				},
+        markers: {
+          type: Array,
+          value: [],
+          notify: true
+        }
 			},
 			
 			ready: function() {
@@ -259,14 +264,23 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         var map = document.querySelector('google-map');
         var currentMapInstance = map.map;
 
+        //console.log('Markers is now: ' + this.markers);
+        for (var i = 0; i < this.markers.length; i++) {
+          this.markers[i].setMap(null);
+        }
+        this.markers = []
         for (var i = 0, len = taggableInfo.length; i < len; i++){
+
             var playerLatLng = {lat: taggableInfo[i].latitude, lng: taggableInfo[i].longitude};
             var marker = new google.maps.Marker({
             position: playerLatLng,
             map: currentMapInstance,
-            icon: 'images/location_24.png',
+            icon: 'images/closeplayericon.png',
             title: taggableInfo[i]._id
           });
+            this.markers.push(marker);
+            //console.log('Pushed this marker: ' + this.marker);
+            //console.log('Markers is now : ' + this.markers)
 
         }
 
