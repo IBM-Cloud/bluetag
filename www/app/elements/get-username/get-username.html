@@ -136,10 +136,24 @@ Polymer({
     console.log('[get-usenrame] regResponse ' + nameResp);
     var apppages = document.querySelector('iron-pages');
     if (nameResp == 'success'){
-      this.fire("kick", {q: this.value});
+      this.fire("kick", {q: this.value}); //fire event to begin opening socket in app.js
       
       console.log('[get-username] New user login; continuing with login');
-      apppages.select('home');
+      apppages.select('home'); //Route user to homepage
+
+
+      //Apply 'move' style to shift title components to left of toolbar
+      document.querySelector('#titlecontainer').className += ' move';
+      document.querySelector('#taglinecontainer').className += ' fadein';
+
+      //Show the drawer panel and menu button
+      //document.querySelector('paper-drawer-panel').forceNarrow = false;
+      document.querySelector('#paperToggle').hidden = false;
+
+        document.querySelector('bt-search').hidden = false;
+        //document.querySelector('tag-badge').className += ' display';
+
+      //show the menu and disable the progress bar
       document.querySelector('paper-menu').hidden = false;
       document.querySelector('paper-progress').disabled = true;
 
@@ -152,8 +166,20 @@ Polymer({
         
         console.log('[get-username] User not in use; continuing with login');
         apppages.select('home');
+
+        document.querySelector('#titlecontainer').className += ' move';
+        document.querySelector('#taglinecontainer').className += ' fadein';
+
+        //document.querySelector('paper-drawer-panel').forceNarrow = false;
+        document.querySelector('#paperToggle').hidden = false;
+
+        document.querySelector('bt-search').hidden = false;
+        //document.querySelector('tag-badge').className += ' display';
+
         document.querySelector('paper-menu').hidden = false;
         document.querySelector('paper-progress').disabled = true;
+
+
 
         document.querySelector('#toast1').show();
         document.getElementById("taggable").generateRequest();

@@ -83,13 +83,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-    <paper-drawer-panel id="paperDrawerPanel">
+    <paper-drawer-panel force-narrow id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">BT Navigation</span>
+          <span class="paper-font-title">Welcome [[username]]</span>
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -127,8 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
-         <tag-badge></tag-badge> 
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <paper-icon-button hidden id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
 
           <span class="flex"></span>
 
@@ -141,21 +140,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-tooltip id="searchicontooltip" for="searchicon">Log-in to use search</paper-tooltip>
         <div></div>
 
-            <bt-search id="btsearch" value="{{username}}"></bt-search>
+            <div><bt-search hidden id="btsearch" value="{{username}}"></bt-search></div>
 
         <paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip>
 
-          <!-- Application name -->
-          <div class="middle middle-container center horizontal layout">
-            <div class="app-name">BlueTag </div> 
-          </div>
 
+          <!-- Application name -->
+          <div id="titlecontainer" class="middle middle-container center horizontal layout">
+            <div class="app-name"> BlueTag </div>
+          </div>
 
           <!-- Application sub title -->
-          <div class="bottom bottom-container center horizontal layout">
-            <div style="margin-top: 40px; font-size: small" class="bottom-title paper-font-subhead">Locate. Tag. Connect.</div>
+          <div id="taglinecontainer" class="bottom bottom-container center horizontal layout">
+            <div style="font-size: x-small" class="bottom-title paper-font-subhead">Locate. Tag. Connect.</div>
+            <div style="margin-bottom: 33%"><tag-badge></tag-badge></div>
           </div>
-             
         </paper-toolbar>
 
         <!-- These toasts respond to adding contact from the search menu. They are here so they show up on any panel, since search is a toolbar function and can be done from any panel-->

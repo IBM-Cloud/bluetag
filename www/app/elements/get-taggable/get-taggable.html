@@ -186,11 +186,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   <div class="pad">
                   <paper-material>
                     <div class="primary">
-                      <span>[[item]]</span>
-                      <span>[[items]]</span>
+                      <span>[[item._id]]</span>
                       <div align="right"><paper-button tabindex="0" raised class="colorful" on-click="tagclick" data-name="{{value}}">Tag</paper-button></div>
                     </div>
-                    <div class="secondary dim"><span>Info about </span><span>[[item]]</span></div>
+                    <div class="secondary dim"><span>[[item._id]] is [[item.distance]]m away</span></div>
                     </paper-material>
                   </div>
                 </div>
@@ -248,12 +247,29 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 			},
 			
 			ready: function() {
-				console.log("get-taggable is ready.");
+				console.log('get-taggable is ready.');
 			},
 
 			tagListResponse: function(response) {
-				console.log("There are " + this.ajaxResponse.taggable.length + " people around you: " + this.ajaxResponse.taggable);
+				console.log('[get-taggable]: tagListResponse - There are ' + this.ajaxResponse.taggable.length + ' people around you ');
 				this.fire('iron-signal', {name: 'tagnum', data: this.ajaxResponse.taggable.length});
+        
+        var taggableInfo = this.ajaxResponse.taggable;
+
+        var map = document.querySelector('google-map');
+        var currentMapInstance = map.map;
+
+        for (var i = 0, len = taggableInfo.length; i < len; i++){
+            var playerLatLng = {lat: taggableInfo[i].latitude, lng: taggableInfo[i].longitude};
+            var marker = new google.maps.Marker({
+            position: playerLatLng,
+            map: currentMapInstance,
+            icon: 'images/location_24.png',
+            title: taggableInfo[i]._id
+          });
+
+        }
+
 			},
 
 			tagResponse: function (response) {

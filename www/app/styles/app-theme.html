@@ -113,7 +113,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   #mainToolbar .middle-container  {
-    height: 100%;
+    margin-left: 43%;
+    -webkit-transition: 4s;
+  }
+
+  #mainToolbar .move {
     margin-left: 48px;
   }
 
@@ -123,11 +127,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   #mainToolbar .bottom {
+    opacity: 0;
     margin-left: 48px;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
+    margin-top: 30px;
+    -webkit-transition: 3s;
+    transition-delay: 1s;
+
+     /*Required for main area's paper-scroll-header-panel custom condensing transformation */
+   -webkit-transform-origin: left center;
     transform-origin: left center;
   }
+
+  #mainToolbar .fadein {
+    opacity: 1;
+  }
+
 
   /* Height of the scroll area */
   .content {

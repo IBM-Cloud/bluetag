@@ -22,6 +22,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/google-map/google-map-directions.html">
+<link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
 
 
 
@@ -66,12 +70,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 	<google-map id="g-map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="19" language="en" styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'>
 		
-		<google-map-marker icon="images/blueanchor.png" id="g-mark" latitude="{{latitude}}" longitude="{{longitude}}"
+		<google-map-marker id="g-mark" latitude="{{latitude}}" longitude="{{longitude}}"
 		                  title="me"></google-map-marker>
 
 		 <template is="dom-repeat" items="{{markedlocations}}">
 
-		 	<google-map-marker id="places-markers" longitude="{{item.longitude}}" latitude="{{item.latitude}}" title="{{item.locname}}"></google-map-marker>
+		 	<google-map-marker id="places-markers" icon="images/compass_32.png" longitude="{{item.longitude}}" latitude="{{item.latitude}}" title="{{item.locname}}"></google-map-marker>
 
 		 </template>
 
@@ -79,7 +83,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 		 <mark-it value="{{value}}"></mark-it>
 
-		 <paper-button raised on-click="centerMap"><iron-icon style="color: #00B8D4; height: 16px; width: 16px" icon="maps:my-location"></iron-icon> Find me</paper-button>
+		 <paper-button raised on-click="centerMap"><iron-icon style="color: #FE7569; height: 16px; width: 16px" icon="maps:place"></iron-icon> Find me</paper-button>
 
 
 
