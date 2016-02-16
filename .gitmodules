@@ -1,6 +1,3 @@
-[submodule "bluetag-tag"]
-	path = bluetag-tag
-	url = git@github.ibm.com:Bluetag/bluetag-tag.git
 [submodule "bluetag-frontend"]
 	path = bluetag-frontend
 	url = git@github.ibm.com:Bluetag/bluetag-frontend.git
