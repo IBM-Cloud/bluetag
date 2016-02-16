@@ -6,12 +6,14 @@ public class LocationModel {
 	private double latitude; 
 	private double longitude;
 	private double altitude;
+	private double distance;
 	
 	public LocationModel(String _id){
 		this._id = _id;
 		this.latitude = 0;
 		this.longitude = 0;
 		this.altitude = 0;
+		this.distance = 0;
 	}
 
 	public String get_id() {
@@ -52,5 +54,13 @@ public class LocationModel {
 
 	public void set_rev(String _rev) {
 		this._rev = _rev;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	} 
 }
