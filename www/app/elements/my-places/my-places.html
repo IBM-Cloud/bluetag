@@ -164,13 +164,23 @@ All Rights Reserved. Licensed Materials - Property of IBM.
   	on-response="getMarksResponse">
   </iron-ajax>
 
+  <iron-ajax
+  id='deletemark'
+  content-type='application/json'
+  url='[[urlDeleteMark]]'
+  method='PUT'
+  handle-as='json'
+  last-response="{{ajaxDeleteMarkResponse}}"
+  on-response="deleteMarkResponse">
+ </iron-ajax>
+
   		<div class="flex horizontal layout">
 		<div class="flex vertical layout">
           <!-- Main List for the items -->
           <div align="center" id="empty-tag-panel">
            <paper-material>These are places you marked on the map. Tap the <iron-icon icon="maps:my-location" tabindex="0"></iron-icon> to go there on the map.</paper-material>
          </div>
-         <iron-list style="margin-top: 3px" id="itemsList" items="[[ajaxGetmarksResponse.marked]]">
+         <iron-list style="margin-top: 5px" id="itemsList" items="[[ajaxGetmarksResponse.marked]]">
             <template>
               <div>
                 <div tabindex="0" aria-label="somelabel">
@@ -178,20 +188,16 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   <div class="pad">
                   <paper-material>
                     <div class="primary">
-                    
-                      <span>[[item.locname]]</span> <div align="right"> <iron-icon icon="maps:my-location" tabindex="0" raised on-click="showmyplaceonmap" data-args$="[[item.latitude]], [[item.longitude]]"></iron-icon></div>
+                      <span>[[item.locname]]</span> 
+                      </div>
+                      <div align="right"> <iron-icon icon="delete" tabindex="0" raised on-click="deletePlace" data-args$="[[item.latitude]], [[item.longitude]], [[item.locname]]"></iron-icon>
+                       <iron-icon icon="maps:my-location" tabindex="0" raised on-click="showmyplaceonmap" data-args$="[[item.latitude]], [[item.longitude]]"></iron-icon></div>
                      <div class="secondary dim"><span>[[item.latitude]]</span> <span> , </span> <span>[[item.longitude]]</span> </div>
-                    </div>
-                    
-                    </paper-material>
-                  
+                                        </paper-material>
                   </div>
-                  <iron-icon icon$="settings" class="star"></iron-icon>
                 </div>
                 <div class="border"></div>
               </div>
-              <google-map-marker icon="../../styles/flag.png" for="g-map" latitude="[[item.latitude]]" longitude="[[item.longitude]]">
-                      </google-map-marker>
             </template>
           </iron-list>
         </div>
@@ -209,6 +215,10 @@ Polymer({
 			notify: true
 		},
     url: {
+      type: String,
+      notify: true
+    },
+    urlDeleteMark: {
       type: String,
       notify: true
     }
@@ -240,8 +250,32 @@ Polymer({
     document.querySelector('#g-map').longitude = centeringCoords[1];
 
     document.querySelector('iron-pages').select('home');
+  },
+
+  deletePlace: function(e) {
+
+    var deletePlaceInfo = e.target.getAttribute('data-args').split(',');
+    console.log('[my-places]:deletePlace - going to remove: ' + deletePlaceInfo[2]);
+
+    var deleteMarkBody =  {
+        _id: this.value,
+        locname: deletePlaceInfo[2],
+        latitude: deletePlaceInfo[0],
+        longitude: deletePlaceInfo[1]
+    }
+
+    this.$.deletemark.body = JSON.stringify(deleteMarkBody);
+
+    this.$.deletemark.generateRequest();
+  },
+
+  deleteMarkResponse: function() {
+    console.log('[my-places]: deleteMarkResponse - ' + JSON.stringify(this.ajaxDeleteMarkResponse));
+
+    document.querySelector('#putmark').generateRequest();
   }
-})
+
+});
 </script>
 
 

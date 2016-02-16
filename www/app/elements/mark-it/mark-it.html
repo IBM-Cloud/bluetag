@@ -69,7 +69,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <iron-ajax
   id='putmark'
   content-type='application/json'
-  url='[[url]]'
+  url='[[urlAddMark]]'
   method='PUT'
   body='[[newMarkitPutBody(value, newlocation)]]'
   handle-as='json'
@@ -95,7 +95,7 @@ Polymer({
 		newlocation: {
 			type: String
 		},
-		url: {
+		urlAddMark: {
 			type: String,
 			notify: true
 		}

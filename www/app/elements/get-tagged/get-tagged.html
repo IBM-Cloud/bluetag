@@ -46,7 +46,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       .item {
 			@apply(--layout-horizontal);
 			
-			margin: 16px 16px 0 16px;
+			margin: 0px 0px 0px 0px;
 			padding: 20px;
 			border-radius: 8px;
 			background-color: white;
@@ -183,10 +183,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                       <span>[[item]]</span>
                     </div>
                     <div class="secondary dim">Details about <span>[[item]]</span></div>
-                    <div align="right"><iron-icon icon="maps:near-me" class="star" on-click="findPlayer" data-args$="[[item]]"></iron-icon></div>
+                    <div align="right">
+                    <iron-icon icon="delete" class="star" on-click="untagPlayer" data-args$="[[item]]"></iron-icon>
+                    <iron-icon icon="maps:near-me" class="star" on-click="findPlayer" data-args$="[[item]]"></iron-icon></div>
                     </paper-material>
                   </div>
-                  
                 </div>
                 <div class="border"></div>
                 </div>
@@ -209,7 +210,18 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       on-response="findPlayerResponse">
     </iron-ajax>
 
+    <iron-ajax
+      id="untag"
+      content-type='application/json'
+      url="[[untagUrl]]"
+      method="PUT"
+      handle-as="json"
+      last-response="{{ajaxUntagResponse}}"
+      on-response="untagResponse">
+    </iron-ajax>
+
     <paper-toast id="playeroffline" text="This player is offline."> <paper-button on-click="goBackToMap" class="colorful"> Go back to Map </paper-button></paper-toast>
+    <paper-toast id="contactremoved" text="Removed contact"></paper-toast>
 	</template>
 	
 	<script>
@@ -233,6 +245,10 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         notify: true
       },
       findPlayerUrl: {
+        type: String,
+        notify: true
+      },
+      untagUrl: {
         type: String,
         notify: true
       },
@@ -294,6 +310,22 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
     getClassForItem: function(item, expanded) {
           return expanded ? 'item expanded' : 'item';
+    },
+    untagPlayer: function(e) {
+      var untagRequestBody = {
+        _id: this.value,
+        username: e.target.getAttribute('data-args')
+      }
+      this.$.untag.body = JSON.stringify(untagRequestBody);
+
+      this.$.untag.generateRequest();
+    },
+    untagResponse: function() {
+      console.log('[get-tagged]:untagResponse - ' + JSON.stringify(this.ajaxUntagResponse));
+      this.$.tagged.generateRequest();
+
+      this.$.contactremoved.show();
+
     }
 
 	});
