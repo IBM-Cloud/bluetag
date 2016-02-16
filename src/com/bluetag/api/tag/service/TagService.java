@@ -88,4 +88,43 @@ public class TagService {
 			return failJson;
 		}
 	}
+	
+	public String unTag(NewTagModel untag) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+	try{
+		HttpGet oldTagGet = new HttpGet(cloudantURI + "/tag/"
+				+ untag.get_id());
+		oldTagGet.addHeader(authHeaderKey, authHeaderValue);
+		oldTagGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+		oldTagGet.addHeader(contentHeaderKey, contentHeaderValue);
+		HttpResponse oldTagResp = httpclient.execute(oldTagGet);
+		Gson gson = new Gson();
+		TagModel updatedtag = gson.fromJson(
+				EntityUtils.toString(oldTagResp.getEntity()),
+				TagModel.class);
+		httpclient.close();
+		
+		updatedtag.getTagged().remove(untag.getUsername());
+		LOGGER.info(untag.get_id() + " is untagging " + untag.getUsername());
+		HttpPut updatedTagPut = new HttpPut(cloudantURI + "/tag/"
+				+ untag.get_id());
+		updatedTagPut.addHeader(authHeaderKey, authHeaderValue);
+		updatedTagPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+		updatedTagPut.addHeader(contentHeaderKey, contentHeaderValue);
+		updatedTagPut.setEntity(new StringEntity(gson.toJson(updatedtag)));
+		httpclient = HttpClients.createDefault();
+		HttpResponse updatedTagResp = httpclient.execute(updatedTagPut);
+		if (!(updatedTagResp.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)) {
+			String updatedTagEntity = EntityUtils.toString(updatedTagResp
+					.getEntity());
+			httpclient.close();
+			return updatedTagEntity;
+		}
+		httpclient.close();
+		return successJson;
+	} catch (Exception e) {
+		e.printStackTrace();
+		return failJson;
+	}
+	}
 }

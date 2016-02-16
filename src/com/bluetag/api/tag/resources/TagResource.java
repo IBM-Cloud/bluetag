@@ -20,4 +20,14 @@ public class TagResource {
 		Gson gson = new Gson();
 		return tagService.updateTagged(gson.fromJson(tagInfo, NewTagModel.class));
 	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/untag")
+	public String unTag(String tagInfo) {
+		TagService tagService = new TagService();
+		Gson gson = new Gson();
+		return tagService.unTag(gson.fromJson(tagInfo, NewTagModel.class));
+	}
 }

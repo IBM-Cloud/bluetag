@@ -1,6 +1,7 @@
 package com.bluetag.api.tag.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
@@ -23,6 +24,7 @@ public class MarkitService {
 	private final static Logger LOGGER = Logger.getLogger(MarkitService.class.getName());
 	private String successJson = "{\"result\": \"success\"}";
 	private String failJson = "{\"result\": \"something has gone horribly wrong with Markit. Please try again\"}";
+	private String deleteJson = "{\"result\": \"error deleting place\"}";
 	private String authHeaderKey = "Authorization";
 	private String acceptHeaderKey = "Accept";
 	private String acceptHeaderValue = "application/json";
@@ -102,6 +104,65 @@ public class MarkitService {
 			httpclient.close();
 			
 			return successJson;
+			
+		} catch (Exception e) {
+			try {
+				httpclient.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			return failJson;
+		}
+	}
+	
+	public String deleteMarked(NewMarkedLocationModel deleteMark) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		
+		try {
+			//get existing marked array
+			HttpGet oldMarkedGet = new HttpGet(cloudantURI + "/markedlocations/" + deleteMark.get_id());
+			oldMarkedGet.addHeader(authHeaderKey, authHeaderValue);
+			oldMarkedGet.addHeader(acceptHeaderKey, acceptHeaderValue);
+			oldMarkedGet.addHeader(contentHeaderKey, contentHeaderValue);
+			HttpResponse oldMarkedResponse = httpclient.execute(oldMarkedGet);
+			Gson gson = new Gson();
+			MarkitModel marked = gson.fromJson(
+					EntityUtils.toString(oldMarkedResponse.getEntity()), MarkitModel.class);
+			LOGGER.info("Old marked locations: " + marked.getMarked());
+			//httpclient.close();
+			
+			//update marked array
+			ArrayList<NewMarkedLocationModel>marks = marked.getMarked();
+			for (int i = 0; i < marks.size(); i++) {
+				String currentPlace = marks.get(i).getLocname();
+				double currentLat = marks.get(i).getLatitude();
+				String deletePlace = deleteMark.getLocname();
+				double deleteLat = deleteMark.getLatitude();
+				//LOGGER.info("Marked place is: " + currentPlace + ". Comparing with " + deletePlace);
+				//LOGGER.info("Marked place lat is: " + currentPlace + " Comparing with " + deletePlace);
+				if (currentPlace.equalsIgnoreCase(deletePlace.replace(" ", "")) && currentLat == deleteLat) {
+					LOGGER.info("Found a match to delete with: " + currentPlace);
+					marks.remove(i);
+					deleteJson = successJson;
+				}
+			}
+			marked.setMarked(marks);
+			HttpPut updatedMarkitPut = new HttpPut(cloudantURI + "/markedlocations/" + deleteMark.get_id());
+			updatedMarkitPut.addHeader(authHeaderKey, authHeaderValue);
+			updatedMarkitPut.addHeader(acceptHeaderKey, acceptHeaderValue);
+			updatedMarkitPut.addHeader(contentHeaderKey, contentHeaderValue);
+			updatedMarkitPut.setEntity(new StringEntity(gson.toJson(marked)));
+			httpclient = HttpClients.createDefault();
+			HttpResponse updatedMarkitResponse = httpclient.execute(updatedMarkitPut);
+			if(!(updatedMarkitResponse.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)) {
+				String updatedMarkitEntity = EntityUtils.toString(updatedMarkitResponse.getEntity());
+				httpclient.close();
+				return updatedMarkitEntity;
+			}
+			httpclient.close();
+			
+			return deleteJson;
 			
 		} catch (Exception e) {
 			try {

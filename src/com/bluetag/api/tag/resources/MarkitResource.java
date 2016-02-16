@@ -34,5 +34,16 @@ public class MarkitResource {
 		return markitService.updateMarked(gson.fromJson(markitInfo, NewMarkedLocationModel.class));
 		
 	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/removemark")
+	public String deleteMarked(String markitInfo) {
+		MarkitService markitService = new MarkitService();
+		Gson gson = new Gson();
+		return markitService.deleteMarked(gson.fromJson(markitInfo, NewMarkedLocationModel.class));
+		
+	}
 
 }
