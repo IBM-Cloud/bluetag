@@ -1,6 +1,3 @@
-[submodule "bluetag-register"]
-	path = bluetag-register
-	url = git@github.ibm.com:Bluetag/bluetag-register.git
 [submodule "bluetag-shared-libs"]
 	path = bluetag-shared-libs
 	url = git@github.ibm.com:Bluetag/bluetag-shared-libs.git
