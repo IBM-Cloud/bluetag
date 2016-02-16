@@ -1,9 +1,6 @@
 [submodule "bluetag-search"]
 	path = bluetag-search
 	url = git@github.ibm.com:Bluetag/bluetag-search.git
-[submodule "bluetag-engine"]
-	path = bluetag-engine
-	url = git@github.ibm.com:Bluetag/bluetag-engine.git
 [submodule "bluetag-test"]
 	path = bluetag-test
 	url = git@github.ibm.com:Bluetag/bluetag-test.git
