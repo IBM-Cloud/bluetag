@@ -1,0 +1,7 @@
+<server>
+    <featureManager>
+        <feature>jaxrs-1.1</feature>
+    </featureManager>
+    <application name='myapp' location='myapp.war' type='war' context-root='/' />
+    <httpEndpoint host="*" httpPort="${port}" id="defaultHttpEndpoint"/>
+</server>
