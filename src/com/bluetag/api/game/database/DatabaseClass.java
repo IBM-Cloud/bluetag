@@ -3,11 +3,13 @@ package com.bluetag.api.game.database;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.bluetag.model.LocationModel;
+
 public class DatabaseClass {
-	private static HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+	private static HashMap<String, ArrayList<LocationModel>> taggableDB = new HashMap<String, ArrayList<LocationModel>>();
 	private static HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 
-	public static synchronized void setTaggabledDB(HashMap<String, ArrayList<String>> addDB) {
+	public static synchronized void setTaggabledDB(HashMap<String, ArrayList<LocationModel>> addDB) {
 		taggableDB.clear(); 
 		for(String user: addDB.keySet()){
 			taggableDB.put(user, addDB.get(user));
@@ -21,7 +23,7 @@ public class DatabaseClass {
 		}
 	}
 	
-	public static synchronized ArrayList<String> getTaggableList(String username){
+	public static synchronized ArrayList<LocationModel> getTaggableList(String username){
 		return taggableDB.get(username);
 	}
 	

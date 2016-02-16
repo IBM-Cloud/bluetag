@@ -1,6 +1,8 @@
 package com.bluetag.api.game.logic;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -34,7 +36,7 @@ public class GameLogicThread extends Thread {
 	private static String contentHeaderValue = "application/json";
 	
 
-	HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+	HashMap<String, ArrayList<LocationModel>> taggableDB = new HashMap<String, ArrayList<LocationModel>>();
 	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 	private final int maxTaggableDistance = 10;
 
@@ -42,12 +44,13 @@ public class GameLogicThread extends Thread {
 	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
 	private static String authHeaderValue = "Basic " + DatatypeConverter.printBase64Binary((cc.getCloudantUsername() + ":" + cc.getCloudantPassword()).getBytes());
 	private static String cloudantURI = cc.getCloudantURI();
+	LocationModel tlm2;
 
 	public void run() {
 
 		while (true) {
 			CloseableHttpClient httpclient = HttpClientBuilder.create().setMaxConnPerRoute(100).setMaxConnTotal(100).build();
-			HashMap<String, ArrayList<String>> taggableDB = new HashMap<String, ArrayList<String>>();
+			HashMap<String, ArrayList<LocationModel>> taggableDB = new HashMap<String, ArrayList<LocationModel>>();
 			HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
 			try {
 				// get all location info from cloudantDB
@@ -67,7 +70,7 @@ public class GameLogicThread extends Thread {
 				
 				for (LocationRowModel row1 : allDocs.getRows()) {
 					LocationModel loc1 = row1.getDoc();
-					taggableDB.put(loc1.get_id(), new ArrayList<String>());
+					taggableDB.put(loc1.get_id(), new ArrayList<LocationModel>());
 					distancesDB.put(loc1.get_id(), new ArrayList<String>());
 					for (LocationRowModel row2 : allDocs.getRows()) {
 						LocationModel loc2 = (LocationModel) row2.getDoc();
@@ -85,7 +88,8 @@ public class GameLogicThread extends Thread {
 										
 							if (d<= maxTaggableDistance) {
 								if (taggedDB.get(loc1.get_id()) != null && !taggedDB.get(loc1.get_id()).contains(loc2.get_id()))  {
-									taggableDB.get(loc1.get_id()).add(loc2.get_id());
+									loc2.setDistance(new BigDecimal(d).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+									taggableDB.get(loc1.get_id()).add(loc2);
 									distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));				
 									}	
 								}
