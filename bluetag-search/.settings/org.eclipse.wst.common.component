@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="bluetag-search">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
+        <dependent-module archiveName="commons-logging-1.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/commons-logging-1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="bluetag-models-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/bluetag-models-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec-1.9.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/commons-codec-1.9.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpcore-4.4.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/httpcore-4.4.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="gson-2.3.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/gson-2.3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpclient-4.5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/bluetag-shared-libs/lib/httpclient-4.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/bluetag-search/WebContent/WEB-INF/classes"/>
+        <property name="context-root" value="bluetag-search"/>
+    </wb-module>
+</project-modules>
