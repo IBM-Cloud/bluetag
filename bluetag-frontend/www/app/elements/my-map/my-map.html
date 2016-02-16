@@ -1,0 +1,162 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/google-map/google-map-directions.html">
+<link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
+
+
+
+<dom-module name="my-map">
+	<style>
+	body, html {
+		height: 100vh;
+		margin: 0;
+		padding: 0;
+	}
+	google-map {
+		height: 90vh;
+		saturation: -85;
+	}
+	mark-it {
+		display: inline-block;
+		margin-top: 12px;
+		float: right;
+		padding-right: 12px;
+	}
+	paper-button {
+		margin-top: 12px;
+		padding: 5px;
+		float: right;
+		background-color: var(--paper-green-200);
+		text-transform: none;
+	}
+	</style>
+	
+
+	
+<template>
+	
+	<!-- <geo-location watch-pos high-accuracy latitude="{{latitude}}" longitude="{{longitude}}" on-geo-response="locationChange"></geo-location> -->
+    <div id="location-display" hidden>
+
+    	lat: <span id="latdiv" latitude={{latitude}}>{{latitude}}</span> , 
+    	long: <span id="londiv" longitude={{longitude}}>{{longitude}}</span> , 
+    	dist: <span id="distdiv" distance={{distance}}>{{distance}}</span>
+    	
+    </div>
+
+	<google-map id="g-map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="19" language="en" styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'>
+		
+		<google-map-marker id="g-mark" latitude="{{latitude}}" longitude="{{longitude}}"
+		                  title="me"></google-map-marker>
+
+		 <template is="dom-repeat" items="{{markedlocations}}">
+
+		 	<google-map-marker id="places-markers" icon="images/compass_32.png" longitude="{{item.longitude}}" latitude="{{item.latitude}}" title="{{item.locname}}"></google-map-marker>
+
+		 </template>
+
+		 <google-map-marker icon="images/person_32.png" id="find-contact-marker" longitude="{{longitude}}" latitude="{{atitude}}" title="{{playerToFind}}"></google-map-marker>
+
+		 <mark-it value="{{value}}"></mark-it>
+
+		 <paper-button raised on-click="centerMap"><iron-icon style="color: #FE7569; height: 16px; width: 16px" icon="maps:place"></iron-icon> Find me</paper-button>
+
+
+
+	</google-map>
+
+	<iron-signals on-iron-signal-listofplaces="listOfPlaces"></iron-signals>
+
+</template>
+
+<script>
+
+Polymer({
+	is: "my-map",
+
+	
+	properties: {
+		
+		latitude: {
+			type: Number,
+			notify: true
+		},
+		
+		longitude: {
+			type: Number,
+			notify: true
+		},
+
+		value: {
+			type: String,
+			notify: true
+		}
+		
+	},
+
+	ready: function() {
+		console.log('my-map is ready ' + this.value);
+
+		this.markedlocations = [
+				{"_id":"muneeb","locname":"office","latitude":41.6591401,"longitude":-73.9385348}
+			]
+	},
+	
+	locationChange: function(e, detail) {
+		console.log("location changed");
+
+		
+		this.fire('locupdate', {lat: this.latitude, lon: this.longitude});
+		this.fire('iron-signal', {name: 'hello', data: null});
+								
+	},
+
+	listOfPlaces: function(e) {
+		console.log("info for markers via ironsignal: " + JSON.stringify(e.detail.marked));
+
+		this.markedlocations = e.detail.marked;
+	},
+
+	centerMap: function() {
+		console.log('Map will center around user on next location update ');
+		document.querySelector('#locupdate-center').setAttribute('value', 'true');
+		document.querySelector('#g-mark').latitude = document.querySelector('#latdiv').innerHTML;
+		document.querySelector('#g-mark').longitude = document.querySelector('#londiv').innerHTML;
+
+		document.querySelector('#g-map').latitude = document.querySelector('#latdiv').innerHTML;
+		document.querySelector('#g-map').longitude = document.querySelector('#londiv').innerHTML;
+		document.getElementById('findme').show();
+
+	}
+
+
+
+
+});
+</script>
+
+</dom-module>

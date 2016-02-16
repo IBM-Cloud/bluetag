@@ -1,0 +1,99 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<dom-module name="game-info">
+
+<style>
+paper-material{
+  background-color: white;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-bottom: 25px;
+}
+</style>
+
+<template>
+<paper-material>
+<h1 align="center">Welcome to BlueTag!</h1>
+<div>
+Is it a game, or a tool for finding old friends and making new ones?   That's up for you to decide.
+<br></br>
+
+BlueTag is similar to the old fashion game of "tag" or "hide and seek" - But on steroids and with the aid of Harry Potter's Marauder's map. This is how it works:
+<br></br>
+
+Install the BlueTag app, or just run it from a browser on your laptop, and sign-in using a Twitter, Gmail, or Linked-In id.     Now you are part of the game.  BlueTag keeps track of your location so  that others can tag you.  You are in control of how visible you are to others.
+<br></br>
+
+
+  
+In BlueTag everyone is "it" and the goal is to tag as many people as you wan to.  
+People participating in the game have a choice about how much they hide.   They can:
+<ul> 
+<li>choose not to hide at</li>
+<li>only be visible to their contacts</li>
+<li>only be visible by time of day</li>
+<li>only be visible by location</li>
+<li>only be visible upon request</li>
+</ul>
+
+You can tag someone when the are within 10 meters.   They will appear on your "near me" list and you simply press "tag"  After that they will appear in your Contacts list and you will appear in their Tagged By list.
+<br></br>
+
+The winners will be the people who tag the most people AND the people who are tagged most.
+<br></br>
+
+That's the basics! Have fun!
+<br></br>
+
+<h5>Game Etiquette</h5> 
+   Not sure.  Please help us write (or code) the rules :)
+   <br></br>
+
+<div align="center"><h3>BlueTag has the following tools to help you: <h3></div>
+
+<h5>The map:</h5>
+  People near you will appear on the map.  Also, you can press locate on a contact to find out where they are.
+  <br></br>
+
+<h5>Search:</h5>
+  Lets you search for people to add as a contact.
+  <br></br>
+
+<h5>Drop Pin:</h5>
+  When you press Drop Pin your location is added to your Places list.   Later, you can locate a marker and it will appear on your map.</div>
+
+<h5>Find me:</h5>
+  If you lose yourself on the map, tap this and the map will be re-centered around you on your next location update.</div>
+  </paper-material>
+</template>
+
+<script>
+	Polymer ({
+		is: 'game-info'
+	});
+</script>
+
+</dom-module>

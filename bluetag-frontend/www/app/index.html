@@ -1,0 +1,262 @@
+<!doctype html>
+<!--
+@license
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any
+ form without payment to IBM for the purposes of developing, using, marketing
+ or distributing application programs conforming to the application programming
+ interface for the operating platform for which the sample code is written.
+
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING,
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY,
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+
+ (C) Copyright IBM Corp. 2015.
+
+All Rights Reserved. Licensed Materials - Property of IBM.
+-->
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Polymer Starter Kit" />
+  <title>BlueTag</title>
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#2E3AA1">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- will be replaced with elements/elements.vulcanized.html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- endreplace-->
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+  <span id="browser-sync-binding"></span>
+  <template is="dom-bind" id="app">
+
+    <paper-drawer-panel force-narrow id="paperDrawerPanel">
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Welcome [[username]]</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu hidden class="list" attr-for-selected="data-route" selected="[[route]]" on-click="onDataRouteClick">
+          <a data-route="home" href="/home">
+            <iron-icon icon="home"></iron-icon>
+            <span style="margin-top:20px">Home</span>
+          </a>
+
+          <a data-route="users" href="/users" on-click="onDataRouteClick">
+            <iron-icon icon="social:group"></iron-icon>
+            <span style="margin-top:20px">Near me </span>
+          </a>
+
+          <a data-route="contact" href="/contact" on-click="onDataRouteClick">
+            <iron-icon icon="list"></iron-icon>
+            <span style="margin-top:20px">Contact</span>
+          </a>
+
+          <a data-route="places" href="/places" on-click="onDataRouteClick">
+            <iron-icon icon="explore"></iron-icon>
+            <span style="margin-top:20px">Places</span>
+          </a>
+
+          <a data-route="help" href="/help" on-click="onDataRouteClick">
+            <iron-icon icon="help"></iron-icon>
+            <span style="margin-top:20px">Help</span>
+          </a>
+
+        </paper-menu>
+      </paper-scroll-header-panel>
+
+      <!-- Main Area -->
+      <paper-scroll-header-panel main fixed>
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar">
+          <paper-icon-button hidden id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+
+          <span class="flex"></span>
+
+          <!-- Toolbar icons -->
+
+         <!--  <paper-icon-button id="locationRefresh" icon="refresh" on-click="singleUpdateLocation"></paper-icon-button>
+          <paper-tooltip id="refreshtooltip" for="locationRefresh">Pause automatic location updates from settings to enable.</paper-tooltip> -->
+
+          <paper-icon id="searchicon" icon="search"> </paper-icon>
+          <paper-tooltip id="searchicontooltip" for="searchicon">Log-in to use search</paper-tooltip>
+        <div></div>
+
+            <div><bt-search hidden id="btsearch" value="{{username}}"></bt-search></div>
+
+        <paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip>
+
+
+          <!-- Application name -->
+          <div id="titlecontainer" class="middle middle-container center horizontal layout">
+            <div class="app-name"> BlueTag </div>
+          </div>
+
+          <!-- Application sub title -->
+          <div id="taglinecontainer" class="bottom bottom-container center horizontal layout">
+            <div style="font-size: x-small" class="bottom-title paper-font-subhead">Locate. Tag. Connect.</div>
+            <div style="margin-bottom: 33%"><tag-badge></tag-badge></div>
+          </div>
+        </paper-toolbar>
+
+        <!-- These toasts respond to adding contact from the search menu. They are here so they show up on any panel, since search is a toolbar function and can be done from any panel-->
+        <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
+        <paper-toast id="contactexists" text="You already have this contact"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+            <url-service></url-service>
+            <app-globals></app-globals>
+            
+        <section data-route="splash">          
+          <div align="center">
+            <paper-material class="maininput">
+              <paper-input class="nameinput" alwaysFloatLabel name="name" placeholder=" " label="Please enter a name to get started"value="{{username}}" id="userinput" required><div prefix><iron-icon icon="social:people" style="color: #466BB0" prefix></iron-icon></div>prefix>
+              </paper-input>
+              <div align="center"><get-username  id="getusername" value="{{username}}"></get-username></div>              
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <div class=reflinks><iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
+               <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a>
+               </div>
+              <div class=reflinks><iron-icon src="images/java-liberty-bluemix.png"></iron-icon> 
+              <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> 
+              </div>              
+              <div class=reflinks><iron-icon src="images/bluemix.png"></iron-icon><a href="http://bluemix.net"> Running on Bluemix.</a>
+              </div>          
+              <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
+              </paper-material>
+          </div>    
+              <paper-toast id="toast3" text="This user is currently logged in. Please choose a different name"></paper-toast>
+        </section>
+
+          <section data-route="home">
+				      <my-map value="{{username}}"></my-map>
+
+              
+              <paper-toast id="findme" text="Map Reset"></paper-toast>
+
+              <paper-toast id="toast1" text="Welcome back"></paper-toast>
+              <paper-toast id="toast2" text="Welcome"></paper-toast>
+          </section>
+
+          <section data-route="users">
+              <get-taggable value={{username}}>get-taggable</get-taggable>
+          </section>
+
+
+            <section data-route="contact">
+				        <get-tagged value="{{username}}"></get-tagged>
+            </section>
+
+
+            <section data-route="search">
+                <!-- <bt-search value="{{username}}"></bt-search> -->
+            </section>
+
+
+            <section data-route="places">
+              <my-places value="{{username}}"></my-places>
+            </section>
+
+            <section data-route="settings">
+                <h2 class="page-title">Settings</h2>
+                <bt-settings value="{{username}}"></bt-settings>
+            </section>
+
+            <section data-route="help">
+                <game-info></game-info>
+            </section>
+
+          </iron-pages>
+        </div>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+
+    <!-- Uncomment next block to enable Service Worker support (1/2) -->
+    
+  <!--   <paper-toast id="caching-complete"
+                 duration="6000"
+                 text="Caching complete! This app will work offline.">
+    </paper-toast>
+
+    <platinum-sw-register auto-register
+                          clients-claim
+                          skip-waiting
+                          on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="fastest"
+                         cache-config-file="cache-config.json">
+      </platinum-sw-cache>
+    </platinum-sw-register> -->
+    
+
+  </template>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/bundle.js"></script>
+  <!-- app.js is included in bundle.js. bundle.js was produced using browserify (https://github.com/substack/node-browserify)
+  browserify lets you require node modules in the browser by bundling module dependencies with app code. This is written to
+  bundle.js (includes app code and dependencies). Therefore, no need to include app.js
+  <script src="scripts/app.js"></script> -->
+
+  <!-- endbuild-->
+</body>
+</html>

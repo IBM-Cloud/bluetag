@@ -1,0 +1,338 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+
+
+<link rel="import" href="../get-username/get-username.html">
+
+	<dom-module name="get-taggable" id="get-taggable" un="{{globalusername}}">
+	
+	<style>
+      :host {
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
+        @apply(--paper-font-common-base);
+        display: block;
+        font-family: sans-serif;
+      }
+      .toolbar paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+      #itemsList, 
+      #selectedItemsList {
+        @apply(--layout-flex);
+      }
+      .item {
+			@apply(--layout-horizontal);
+			
+			margin: 16px 16px 0 16px;
+			padding: 5px;
+			border-radius: 8px;
+			background-color: white;
+			border: 1px solid #ddd;
+		}
+      .item:focus,
+      .item.selected:focus {
+        outline: 1;
+        background-color: #fff;
+      }
+      .item.selected .star {
+        color: var(--paper-blue-600);
+      }
+      .item.selected:not(:focus) {
+        /*background-color: var(--google-grey-100);*/
+        background-color: white;
+      }
+      .avatar {
+        height: 40px;
+        width: 40px;
+        border-radius: 20px;
+        box-sizing: border-box;
+        background-color: #DDD;
+      }
+      .pad {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        padding: 0 0px;
+      }
+      .primary {
+        font-size: 16px;
+      }
+      .secondary {
+        font-size: 14px;
+      }
+      .dim {
+        color: gray;
+      }
+      .star {
+        width: 24px;
+        height: 24px;
+      }
+      iron-list {
+			background-color: var(--paper--blue-600);
+			padding-bottom: 16px;
+	}
+      paper-badge {
+        -webkit-transition: all 0.1s;
+        transition: all 0.1s;
+        opacity: 1;
+        margin-top: 5px;
+      }
+      paper-badge[label="0"] {
+        opacity: 0;
+      }
+      #starredView {
+        width: 200px;
+        border-left: 1px solid #ddd;
+      }
+      paper-item {
+        white-space: nowrap;
+        cursor: pointer;
+        position: relative;
+      }
+      paper-item:focus {
+        outline: 0;
+        background-color: #ddd;
+      }
+      paper-item:hover::after {
+        content: "－";
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-radius: 50% 50%;
+        background-color: var(--google-red-300);
+        margin-left: 10px;
+        line-height: 16px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        position: absolute;
+        right: 15px;
+        top: calc(50% - 8px);
+      }
+      .noSelection {
+        color: #999;
+        margin-left: 10px;
+        line-height: 50px;
+      }
+    paper-button.colorful {
+		background: #4285f4;
+		color: #fff;
+	  }
+	paper-material {
+        display: inline-block;
+        background: white;
+        box-sizing: border-box;
+        margin-bottom: 4px;
+        padding: 16px;
+        border-radius: 2px;
+      }
+		
+	</style>
+
+		<template>
+		 <iron-ajax
+			id="taggable"
+			content-type:'application/json'
+			url="[[getTaggableUrl(value)]]"
+			method="GET"
+			handle-as="json"
+			last-response="{{ajaxResponse}}"
+			on-response="tagListResponse"
+			></iron-ajax> 
+			
+
+		<div class="flex horizontal layout">
+		<div class="flex vertical layout">
+		<div align="center" id="empty-tag-panel">
+           <paper-material>People around you (within 10m) will show up here. Tag them to save to your contacts.</paper-material>
+         </div>
+          <!-- Main List for the items -->
+         <iron-list style="margin-top: 0px" id="itemsList" items="[[ajaxResponse.taggable]]">
+            <template>
+              <div>
+                <div tabindex="0" aria-label="somelabel">
+                  <!-- <img class="avatar" src="[[item.image]]"> -->
+                  <div class="pad">
+                  <paper-material>
+                    <div class="primary">
+                      <span>[[item._id]]</span>
+                      <div align="right"><paper-button tabindex="0" raised class="colorful" on-click="tagclick" data-name="{{value}}">Tag</paper-button></div>
+                    </div>
+                    <div class="secondary dim"><span>[[item._id]] is [[item.distance]]m away</span></div>
+                    </paper-material>
+                  </div>
+                </div>
+                <div class="border"></div>
+              </div>
+            </template>
+          </iron-list>
+        </div>
+        </div>
+        
+			
+
+	  <iron-ajax
+		id="tag"
+		content-type="application/json"
+		url="[[tagUrl]]"
+		method="PUT"
+		handle-as="json"
+		last-response="{{ajaxTagResponse}}"
+		on-response="tagResponse"
+		></iron-ajax>
+		
+		
+		<paper-toast id="tagsuccesstoast" text="Tagged!"></paper-toast>
+		<paper-toast id="tagfailtoast" text="Tag Failed, try again"></paper-toast>
+
+		<iron-signals on-iron-signal-hello="locUpdate">
+			
+
+			
+		</template>
+		
+		<script>
+		Polymer ({
+			is: "get-taggable",
+			
+			properties: {
+				items: "{{ajaxResponse.taggable}}",
+
+				tagnum: "{{this.ajaxResponse.taggable.length}}",
+				
+				value: {
+					type: String,
+					notify: true
+				},
+
+				url: {
+					type: String,
+					notify: true
+				},
+				tagUrl: {
+					type: String,
+					notify: true
+				},
+        markers: {
+          type: Array,
+          value: [],
+          notify: true
+        }
+			},
+			
+			ready: function() {
+				console.log('get-taggable is ready.');
+			},
+
+			tagListResponse: function(response) {
+				console.log('[get-taggable]: tagListResponse - There are ' + this.ajaxResponse.taggable.length + ' people around you ');
+				this.fire('iron-signal', {name: 'tagnum', data: this.ajaxResponse.taggable.length});
+        
+        var taggableInfo = this.ajaxResponse.taggable;
+
+        var map = document.querySelector('google-map');
+        var currentMapInstance = map.map;
+
+        //console.log('Markers is now: ' + this.markers);
+        for (var i = 0; i < this.markers.length; i++) {
+          this.markers[i].setMap(null);
+        }
+        this.markers = []
+        for (var i = 0, len = taggableInfo.length; i < len; i++){
+
+            var playerLatLng = {lat: taggableInfo[i].latitude, lng: taggableInfo[i].longitude};
+            var marker = new google.maps.Marker({
+            position: playerLatLng,
+            map: currentMapInstance,
+            icon: 'images/closeplayericon.png',
+            title: taggableInfo[i]._id
+          });
+            this.markers.push(marker);
+            //console.log('Pushed this marker: ' + this.marker);
+            //console.log('Markers is now : ' + this.markers)
+
+        }
+
+			},
+
+			tagResponse: function (response) {
+				var tagResponse = this.ajaxTagResponse.result;
+				console.log(tagResponse);
+				
+				if(tagResponse == "success") {
+					document.querySelector('#tagsuccesstoast').show();
+					this.fire('iron-signal', {name: 'tagsuccess', data: null});
+					document.getElementById("taggable").generateRequest();
+				} else {
+					document.querySelector('#tagfailtoast').show();
+				}
+			},
+			getTaggableUrl: function (value) {	
+				return this.url + "api/taggable/" + value;
+			},
+			
+			tagclick: function(e) {
+				
+				console.log(this.value + " is trying to tag " + e.model.item);
+				var tagbody = {_id: this.value, username: e.model.item};
+				console.log(JSON.stringify(tagbody));
+				
+				this.$.tag.body = JSON.stringify(tagbody);
+
+				document.getElementById("tag").generateRequest();
+
+				
+			},
+			
+
+			getusername: function (value) {
+				console.log(value);
+				return value;
+			},
+
+			locUpdate: function() {
+				console.log('got iron signal that location updated');
+				if (this.value != "") {
+					document.getElementById("taggable").generateRequest();
+				}
+			}
+			
+		});
+
+		</script>
+</dom-module>
+
+
+
+    

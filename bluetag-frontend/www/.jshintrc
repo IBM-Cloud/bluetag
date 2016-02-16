@@ -1,0 +1,27 @@
+{
+  "node": true,
+  "browser": true,
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "indent": 4,
+  "noarg": true,
+  "quotmark": "true",
+  "undef": true,
+  "unused": true,
+  "newcap": false,
+  "maxerr": 500,
+  "asi": false,
+  "white": true,
+  "globals": {
+    "wrap": true,
+    "unwrap": true,
+    "Polymer": true,
+    "Platform": true,
+    "page": true,
+    "app": true
+  }
+}

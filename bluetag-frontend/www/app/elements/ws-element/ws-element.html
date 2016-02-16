@@ -1,0 +1,73 @@
+
+<!--
+@license
+Found in https://github.com/mesopotamia/ws-element
+No license info provided
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+
+<dom-module id="ws-element">
+	<style>
+		:host {
+			display: none;
+		}
+	</style>
+	<template>
+
+	</template>
+</dom-module>
+<script type="text/javascript">
+	(function() {
+        Polymer({
+            is: "ws-element",
+            socket: null,
+            properties: {
+                protocol: {
+                    type: String
+                },
+                url: {
+                    type: String,
+                    //value: "ws://bluetagsearch1.mybluemix.net/SearchWS"
+                }
+            },
+            ready: function () {
+                //ws://bluetaglocation1.mybluemix.net/wsLocationResource
+                //TODO we don't need protocol for now this.socket = new WebSocket(this.url, this.protocol);
+
+            },
+            onError: function (error) {
+                this.fire('onerror', error);
+            },
+            onOpen: function (event) {
+                this.fire('onopen');
+            },
+            onMessage: function (event) {
+                this.fire('onmessage', event.data);
+                document.querySelector('#searchList').fire('iron-resize');
+            },
+            onClose: function(event){
+                console.log('search socket closed: ' + event.data);
+            },
+            send: function (message) {
+                console.log("ws send");
+                this.socket.send(message);
+            },
+            close: function () {
+                this.socket.close();
+            },
+            
+            open: function () {
+                this.socket = new WebSocket(this.url);
+                console.log("opened socket");
+                this.socket.onerror = this.onError.bind(this);
+                this.socket.onopen = this.onOpen.bind(this);
+                this.socket.onmessage = this.onMessage.bind(this);
+            },
+
+            readyState: function() {
+                return this.socket.readyState;
+            }
+        })
+	})();
+</script>

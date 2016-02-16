@@ -1,0 +1,7 @@
+  applications:
+  - name: bluetag-frontend
+    framework: node
+    runtime: node12
+    memory: 128M
+    instances: 1
+    host: vijai-bluetag

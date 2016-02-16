@@ -1,0 +1,209 @@
+<!--
+ COPYRIGHT LICENSE: This information contains sample code provided in source
+ code form. You may copy, modify, and distribute these sample programs in any 
+ form without payment to IBM for the purposes of developing, using, marketing 
+ or distributing application programs conforming to the application programming 
+ interface for the operating platform for which the sample code is written. 
+ 
+ Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
+ ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
+ BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
+ SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
+ CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
+ OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
+ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
+ SOURCE CODE.
+ 
+ (C) Copyright IBM Corp. 2015.
+ 
+All Rights Reserved. Licensed Materials - Property of IBM.   
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../ws-element/ws-element.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+
+<dom-module name="bt-search" id="bt-search">
+      
+    <style>
+      :host {
+        display: block;
+        height: 30px;
+        width: 152px;
+        color: black;
+        
+      }
+      paper-material {
+        background: white;
+        box-sizing: border-box;
+        margin: 4px;
+        padding: 16px;
+        border-radius: 2px;
+      }
+      iron-icon {
+        --iron-icon-fill-color: var(--paper-green-300);
+      }
+      paper-input {
+        position: relative;
+       --paper-input-container-underline: {
+        background-color: #466BB0;
+       };
+       font-size: 10px;
+       display: inline-block;
+        border: inset thin;
+        background-color: #FFF;
+        border-radius: 10px;
+        width: 150px;
+        height: 30px;
+        vertical-align: middle;
+        margin-bottom: 30px;
+      }
+      paper-menu {
+        pointer-events: auto;
+      }
+    </style>
+    
+  <template>
+        <paper-input id="searchinput" disabled no-label-float type="bt-search"
+            label="Search" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5"><iron-icon icon="search" prefix></iron-icon>
+        </paper-input>
+       
+        <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
+     
+       
+    <div class="flex vertical layout">
+        <iron-list id="searchList" items="{{searchResults}}">
+          <template>
+          <paper-material elevation="1">
+           
+               <span>{{item}}</span>
+               <div align="right"><iron-icon icon="social:person-add" tabindex="0" raised on-click="addcontact" data-name="{{value}}"></iron-icon></div>
+            
+            </paper-material>
+              </template>
+          </iron-list>
+          </div>
+            
+      
+
+    <iron-ajax
+    id="addcontact"
+    content-type="application/json"
+    url="[[tagUrl]]"
+    method="PUT"
+    handle-as="json"
+    last-response="{{ajaxAddContactResponse}}"
+    on-response="addContactResponse"
+    ></iron-ajax>
+    </template> 
+ 
+  <script>
+
+  Polymer({
+    is: 'bt-search',
+    properties: {   
+      searchValue: {
+        type: String
+      },
+
+      searchResults: {
+        type: Array,
+        notify: true
+      },
+
+      url: {
+        type: String,
+        notify: true
+      },
+
+      tagUrl: {
+        type: String,
+        notify: true
+      },
+
+      value: {
+        type: String,
+        notify: true
+      }
+    },
+
+        handleMsg: function(message) {
+          console.log('handleMsg:' + message.detail);
+
+          if (message.detail.indexOf('{') === 0) {
+          this.searchResults = JSON.parse(message.detail).processedSearchResults;
+
+          console.log('handleMsg: array of names:' + searchResults);
+          
+          //set searchResults inthe bt-search object.  this.searchResults is not part of bt-search
+          document.querySelector('bt-search').searchResults = searchResults;
+        }
+        },
+
+        ready: function() {
+          //this.searchResults = ['results' ];
+
+          //listen for search results from ws-element          
+          addEventListener('onmessage', this.handleMsg );
+          console.log('bt-search is ready.');
+        },
+
+        doSearch: function(searchValue) {
+            console.log('doSearch value entered: ' + this.searchValue);
+            var wsElement = document.querySelector('ws-element');
+
+            //if (this.searchValue != "") {
+                console.log('search socketState is: ' + wsElement.readyState());
+
+                if (wsElement.readyState() === 1) {
+                  wsElement.send(this.searchValue);
+                } else {
+                  console.log('Search socket closed. Re-establishing.');
+                    wsElement.open();
+                    wsElement.send(this.searchValue);
+                }
+              
+            //}
+        },
+
+        addcontact: function(e) {
+          console.log(this.value + ' is going to add ' + e.model.item + ' as a contact, using this url ' + this.tagUrl);
+          var addcontactbody = {_id: this.value, username: e.model.item};
+          this.$.addcontact.body = JSON.stringify(addcontactbody);
+          document.getElementById('addcontact').generateRequest();
+        },
+
+        addContactResponse: function () {
+          console.log('[bt-search]:addContactResponse - ' + JSON.stringify(this.ajaxAddContactResponse));
+
+          if (this.ajaxAddContactResponse.result === 'already tagged') {
+            console.log('[bt-search]:addContactResponse - already tagged');
+            document.getElementById('contactexists').show();
+            document.getElementById('tagged').generateRequest();
+          } else if (this.ajaxAddContactResponse.result === 'success') {
+            console.log('[bt-search]:addContactResponse - adding to contacts');
+            document.getElementById('addedcontact').show();
+            document.getElementById('tagged').generateRequest();
+          }
+
+          this.searchValue = '';
+          document.querySelector('ws-element').send('');
+
+        }
+
+      });
+  </script>
+
+</dom-module>
