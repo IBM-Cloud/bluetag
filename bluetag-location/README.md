@@ -2,7 +2,7 @@
 
 This service is responsible for interacting with the frontend device to process the location data of a user over a websocket connection.
 
-For implementation and design details, please refer to the [design documention](../../../bluetag-docs/blob/master/bluetag-backend-implementation-details.md).  For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../../../bluetag/blob/master/README.md).
+For an overview of the Bluetag application, instructions on building and deploying the application, and accessing a live demo please refer to the [overview documentation](../../../blob/master/README.md).
 
 #APIs exposed by service
 
