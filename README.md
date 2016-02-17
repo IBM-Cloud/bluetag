@@ -34,15 +34,28 @@ Below is a high level architecture diagram of the Bluetag application.  For more
 
 ## Download the Bluetag code
 
-All the code for Bluetag is housed in git repositories.  Let's clone these repositories to your local environment first.  Since Bluetag follows a microservice architecture, all the services have their own github repositories.  All the services are defined as submodules of bluetag.  The --recursive attribute in the git clone command will pull down the code from all the submodules automatically.  From your terminal run the following commands:
+All the code for Bluetag is housed in this repository.  Let's clone these repositories to your local environment first.  Since Bluetag follows a microservice architecture, all the services have their own project folder. To clone Bluetag, run the following commands from your terminal:
 
   ```
   mkdir myBluetag
   cd myBluetag
-  git clone --recursive git@github.ibm.com:Bluetag/bluetag.git
+  git clone git@github.com:IBM-Bluemix/bluetag.git
   ```
 
-This will pull in the master bluetag repository and all the submodules that contain the code for the front-end, back-end microservices, and shared code.
+This will pull in the master bluetag repository including all projects that contain the code for the front-end, back-end microservices, and shared code - the services are split as follows:
+
+```
+bluetag-frontend - Polymer based front end application
+
+bluetag-register    - back-end register java service
+bluetag-location    - back-end location java service
+bluetag-engine      - back-end engine java service
+bluetag-tag         - back-end tag java service
+bluetag-search      - back-end search java service
+
+bluetag-models      - shared java models for JSON conversion
+bluetag-shared-libs - service dependencies
+```
 
 ## Running the app on Bluemix
 
