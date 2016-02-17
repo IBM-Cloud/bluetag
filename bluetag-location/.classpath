@@ -7,11 +7,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/WebSphere Application Server Liberty Profile">
-		<attributes>
-			<attribute name="owner.project.facets" value="jst.web"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/bluetag-models-1.0.jar"/>
 	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/commons-codec-1.9.jar"/>
@@ -19,5 +14,6 @@
 	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/gson-2.3.1.jar"/>
 	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/httpclient-4.5.jar"/>
 	<classpathentry kind="lib" path="/bluetag-shared-libs/lib/httpcore-4.4.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/WebSphere Application Server Liberty Profile"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>
