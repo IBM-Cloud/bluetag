@@ -1,6 +1,8 @@
 ## Overview
 
-BlueTag is a mobile application that aims to connect people based on skills and geolocation. The app can be used at conferences, work places, and meetups to help a user locate people based on common skills and geo-location.  
+BlueTag is a mobile application that aims to connect people based on geolocation. The app can be used at conferences, work places, and meetups to help you locate people.
+We would like to extend Bluetag to locate people based on skills and interests as well as location.  
+<img src="./bluetag-services.png" width="650px"/>
 
 As a sample, Bluetag showcases how you can build a set of back-end microservices coupled with an HTML5 mobile enabled front-end application. The back-end is comprised of a set of microservices that run on Liberty Java runtimes that interact with the front-end application and a Cloudant database via REST and Web Socket APIs. The frontend is based on HTML5 Web Components and can be deployed as a native application using Apache Cordova or as a web application running on any web server. The application will run in any modern browser on a laptop or mobile device and can also be deployed as a native application running on Android or iOS.
 
@@ -29,8 +31,7 @@ We would love for you to join the project and contribute!
 
 ## Architecture and implementation details
 
-Below is a high level architecture diagram of the Bluetag application.  For more details of the services, please review the design and implementation detail docs under [bluetag-docs](bluetag-docs).
-<img src="./bluetag-services.png" width="650px"/>
+For more details about the services please review the design and implementation detail docs under [bluetag-docs](bluetag-docs).
 
 ## Download the Bluetag code
 
