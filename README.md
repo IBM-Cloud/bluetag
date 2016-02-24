@@ -155,10 +155,11 @@ You should have a workspace that's ready to build the Bluetag back-end services 
    ```
    npm install
    ```
-* Next, pull down the latest polymer components used to build the front end using bower. The dependencies needed are defined in the bower.json file, so to pull them down run:
+* Next, pull down the latest polymer components used to build the front end using bower. The dependencies needed are defined in the bower.json file, so to pull them down run
+
    ```
    bower update
-   ```   
+   ```  
 * To build and start a webserver to host the application locally run the following command
 
    ```
