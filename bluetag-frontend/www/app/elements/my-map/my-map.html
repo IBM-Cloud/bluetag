@@ -26,6 +26,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../../bower_components/google-map/google-map-directions.html">
 <link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 
 
@@ -53,6 +54,21 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 		background-color: var(--paper-green-200);
 		text-transform: none;
 	}
+	paper-button.dialog {
+      background-color: var(--google-grey-300);
+      padding: 5px;
+    }
+	    paper-dialog.colored {
+      border: 2px solid;
+      border-color: var(--paper-green-500);
+      background-color: var(--paper-light-green-50);
+      color: var(--paper-green-500);
+    }
+          .star {
+        width: 24px;
+        height: 24px;
+        --iron-icon-fill-color: var(--paper-green-300);
+      }
 	</style>
 	
 
@@ -68,9 +84,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     	
     </div>
 
-	<google-map id="g-map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="19" language="en" styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]'>
+	<google-map id="g-map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="19" language="en" styles='[{"stylers":[{"saturation":-85}]},{"featureType":"water","stylers":[{"lightness":-20}]}]' drag-events>
 		
-		<google-map-marker id="g-mark" latitude="{{latitude}}" longitude="{{longitude}}"
+		<google-map-marker id="g-mark" latitude="[[latitude]]" longitude="[[longitude]]"
 		                  title="me"></google-map-marker>
 
 		 <template is="dom-repeat" items="{{markedlocations}}">
@@ -79,11 +95,19 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
 		 </template>
 
-		 <google-map-marker icon="images/person_32.png" id="find-contact-marker" longitude="{{longitude}}" latitude="{{atitude}}" title="{{playerToFind}}"></google-map-marker>
+		 <google-map-marker icon="images/person_32.png" id="find-contact-marker" longitude="[[longitude]]" latitude="[[latitude]]" title="{{playerToFind}}"></google-map-marker>
 
 		 <mark-it value="{{value}}"></mark-it>
 
 		 <paper-button raised on-click="centerMap"><iron-icon style="color: #FE7569; height: 16px; width: 16px" icon="maps:place"></iron-icon> Find me</paper-button>
+
+		 <paper-button data-dialog="dialog" on-click="markerhelp">What are all these markers?</paper-button>
+		 <paper-dialog id="helpdialog" class="colored">
+      <h2>Markers</h2>
+      <p><iron-icon src="../../images/closeplayericon.png"></iron-icon> - Player near you</p>
+      <p><iron-icon src="../../images/person_32.png"></iron-icon> - Player you mapped from Contact or Search using <iron-icon icon="maps:near-me" class="star"></iron-icon> </p>
+      <p><iron-icon src="../../images/compass_32.png"></iron-icon> - Place you marked using 'Drop Pin'</p>
+    </paper-dialog>
 
 
 
@@ -94,10 +118,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 </template>
 
 <script>
-
 Polymer({
 	is: "my-map",
-
 	
 	properties: {
 		
@@ -120,10 +142,9 @@ Polymer({
 
 	ready: function() {
 		console.log('my-map is ready ' + this.value);
-
-		this.markedlocations = [
-				{"_id":"muneeb","locname":"office","latitude":41.6591401,"longitude":-73.9385348}
-			]
+		// this.markedlocations = [
+		// 		{"_id":"muneeb","locname":"office","latitude":41.6591401,"longitude":-73.9385348}
+		// 	]
 	},
 	
 	locationChange: function(e, detail) {
@@ -151,12 +172,14 @@ Polymer({
 		document.querySelector('#g-map').longitude = document.querySelector('#londiv').innerHTML;
 		document.getElementById('findme').show();
 
+	},
+	markerhelp: function(e) {
+		console.log('[my-map]: markerhelp - open dialog');
+		document.querySelector('#helpdialog').open();
+
 	}
-
-
-
-
 });
+
 </script>
 
 </dom-module>

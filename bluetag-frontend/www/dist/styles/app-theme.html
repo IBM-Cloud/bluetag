@@ -56,9 +56,26 @@
     background: white;
   }
 
+  paper-progress {
+    width: 100%;
+    --paper-progress-container-color:#f2f2f2;
+  }
+
+  paper-button.colorful {
+      text-transform: none;
+      color: #05E9FF;
+  }
+
   paper-menu iron-icon {
+    height: 24px;
+    width: 24px;
     margin-right: 33px;
+    margin-top: 20px;
     opacity: 0.54;
+  }
+
+  .menuposition {
+    margin-top: 20px;
   }
 
   .paper-menu > .iron-selected {
@@ -96,7 +113,11 @@
   }
 
   #mainToolbar .middle-container  {
-    height: 100%;
+    margin-left: 43%;
+    -webkit-transition: 4s;
+  }
+
+  #mainToolbar .move {
     margin-left: 48px;
   }
 
@@ -106,11 +127,29 @@
   }
 
   #mainToolbar .bottom {
+    opacity: 0;
     margin-left: 48px;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
+    margin-top: 30px;
+    -webkit-transition: 3s;
+    transition-delay: 1s;
+
+     /*Required for main area's paper-scroll-header-panel custom condensing transformation */
+   -webkit-transform-origin: left center;
     transform-origin: left center;
   }
+
+  #mainToolbar .fadein {
+    opacity: 1;
+  }
+
+  a:link {
+    text-decoration: none;
+  }
+
+  a:visited {
+    text-decoration: none;
+  }
+
 
   /* Height of the scroll area */
   .content {
@@ -127,6 +166,9 @@
       width: calc(97.33% - 32px);
       padding-left: 16px;
       padding-right: 16px;
+      margin-bottom: 1px;
+      margin-top: 0px;
+
     }
 
     paper-toolbar.tall .app-name {
@@ -146,6 +188,27 @@
       background: white;
     }
 
+    paper-material.maininput {
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+
+    paper-input.nameinput {
+      --paper-input-container-underline: {
+        background-color: #FFF;
+       };
+      --paper-input-container-underline-focus: {
+        background-color: #FFF;
+       };
+      background-color: white;
+      border: inset thin;
+      border-radius: 5px;
+    }
+    
+    div.reflinks {
+        padding: 10px 20px 10px 20px;
+    }
+
   }
 
   /* Tablet+ */
@@ -153,7 +216,8 @@
 
     paper-material {
       width: calc(98% - 46px);
-      margin-bottom: 32px;
+      margin-bottom: 1px;
+      margin-top: 0px;
       padding-left: 30px;
       padding-right: 30px;
     }
@@ -163,9 +227,32 @@
     }
 
     iron-pages {
-      padding: 48px 62px;
+      padding: 0px 0px;
     }
 
+    paper-input {
+      width: 300px;
+    }
+    paper-material.maininput {
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+
+    paper-input.nameinput {
+      --paper-input-container-underline: {
+        background-color: #FFF;
+       };
+      --paper-input-container-underline-focus: {
+        background-color: #FFF;
+       };
+      background-color: white;
+      border: inset thin;
+      border-radius: 5px;
+    }
+    
+    div.reflinks {
+        padding: 10px 20px 10px 20px;
+    }
   }
 
   /* Material Design Adaptive Breakpoints */

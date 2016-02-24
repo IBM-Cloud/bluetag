@@ -115,7 +115,7 @@ Polymer({
 		console.log('Mark-it: Current location is - ' + document.getElementById('markitlat').innerHTML + " , " + document.getElementById('markitlon').innerHTML);
 		console.log(this.value + ' marked and saved ' + this.newlocation + ' as new location.');
 		
-
+		document.querySelector('paper-progress').disabled = false;
 		document.getElementById('putmark').generateRequest();
 
 		document.getElementById('dropdown').close();

@@ -35,12 +35,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="Polymer Starter Kit" />
+  <meta name="generator" content="Bluetag" />
   <title>BlueTag</title>
   <!-- Place favicon.ico in the `app/` directory -->
 
   <!-- Chrome for Android theme color -->
-  <meta name="theme-color" content="#2E3AA1">
+  <meta name="theme-color" content="#466BB0">
 
   <!-- Web Application Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -50,13 +50,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="PSK">
+  <meta name="application-name" content="BT">
   <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
 
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <meta name="apple-mobile-web-app-title" content="Bluetag">
   <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
 
   <!-- Tile icon for Win8 (144x144) -->
@@ -102,10 +102,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a data-route="users" href="/users" on-click="onDataRouteClick">
             <iron-icon icon="social:group"></iron-icon>
             <span style="margin-top:20px">Near me </span>
+            <div style="display: inline-block; margin-left: 5%"><tag-badge></tag-badge></div>
           </a>
 
           <a data-route="contact" href="/contact" on-click="onDataRouteClick">
-            <iron-icon icon="list"></iron-icon>
+            <iron-icon icon="social:person-add"></iron-icon>
             <span style="margin-top:20px">Contact</span>
           </a>
 
@@ -120,6 +121,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
 
         </paper-menu>
+              <div style="margin-left: 5%; margin-bottom: 7%; margin-top: 45%; font-size: 14px">
+              <a href="https://github.com/IBM-Bluemix/bluetag" target="_blank"><iron-icon src="images/GitHub-Mark-64px.png"></iron-icon><span style="margin-left: 10%">Bluetag on GitHub</span></a> </div>
+
+               <div style="margin-left: 5%; margin-bottom: 7%; font-size: 14px">
+               <a href="https://developer.ibm.com/wasdev/" target="_blank"><iron-icon src="images/java-liberty-bluemix.png"></iron-icon><span style="margin-left: 10%">WebSphere Liberty</span></a> 
+               </div>
+
+               <div style="margin-left: 5%; margin-bottom: 7%; font-size: 14px">
+               <a href="http://bluemix.net" target="_blank"><iron-icon src="images/bluemix.png"></iron-icon><span style="margin-left: 10%">Running on Bluemix</span></a>
+               </div>
+
+               <div style="margin-left: 5%; margin-bottom: 7%; font-size: 14px">
+               <a href="https://www.polymer-project.org/1.0/" target="_blank"><iron-icon src="images/polymer-logo.png"></iron-icon><span style="margin-left: 10%">Polymer Design</span></a>
+               </div>
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
@@ -140,10 +155,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-tooltip id="searchicontooltip" for="searchicon">Log-in to use search</paper-tooltip>
         <div></div>
 
-            <div><bt-search hidden id="btsearch" value="{{username}}"></bt-search></div>
+            <div>
+            <bt-search hidden id="btsearch" value="{{username}}"></bt-search>
+            <!-- <div><paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip></div> -->
+            </div>
 
-        <paper-tooltip id="btsearch" for="searchinput" position="left">Sign-in to use</paper-tooltip>
-
+        
+        
 
           <!-- Application name -->
           <div id="titlecontainer" class="middle middle-container center horizontal layout">
@@ -156,10 +174,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div style="margin-bottom: 33%"><tag-badge></tag-badge></div>
           </div>
         </paper-toolbar>
+        <paper-progress disabled indeterminate></paper-progress>
 
         <!-- These toasts respond to adding contact from the search menu. They are here so they show up on any panel, since search is a toolbar function and can be done from any panel-->
         <paper-toast id="addedcontact" text="Added to"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
         <paper-toast id="contactexists" text="You already have this contact"><span role="button" tabindex="0" style="color: #05E9FF; margin: 10px" on-click="addContactTooltip">Contacts</span></paper-toast>
+
+        <paper-toast id="playeroffline" text="This player is offline."> <paper-button on-click="goBackToMap" class="colorful"> Go back to Map </paper-button></paper-toast>
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
@@ -169,23 +190,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <section data-route="splash">          
           <div align="center">
             <paper-material class="maininput">
-              <paper-input class="nameinput" alwaysFloatLabel name="name" placeholder=" " label="Please enter a name to get started"value="{{username}}" id="userinput" required><div prefix><iron-icon icon="social:people" style="color: #466BB0" prefix></iron-icon></div>prefix>
+              <paper-input auto-validate error-message="No spaces please" allowed-pattern="[a-zA-Z0-9]" class="nameinput" alwaysFloatLabel name="name" placeholder=" " label="Enter a name to begin (no spaces)"value="{{username}}" id="userinput"><div prefix><iron-icon icon="social:people" style="color: #466BB0" prefix></iron-icon></div>
               </paper-input>
               <div align="center"><get-username  id="getusername" value="{{username}}"></get-username></div>              
               <p>&nbsp;</p>
               <p>&nbsp;</p>
               <div class=reflinks><iron-icon src="images/GitHub-Mark-64px.png"></iron-icon> 
-               <a href="https://github.ibm.com/Bluetag/bluetag">View and contribute to this sample on GitHub</a>
+               <a href="https://github.com/IBM-Bluemix/bluetag" target="_blank">View and contribute to this sample on GitHub</a>
                </div>
               <div class=reflinks><iron-icon src="images/java-liberty-bluemix.png"></iron-icon> 
-              <a href="https://developer.ibm.com/wasdev/">Powered by Liberty Microservices.</a> 
+              <a href="https://developer.ibm.com/wasdev/" target="_blank">Powered by Liberty Microservices.</a> 
               </div>              
-              <div class=reflinks><iron-icon src="images/bluemix.png"></iron-icon><a href="http://bluemix.net"> Running on Bluemix.</a>
+              <div class=reflinks><iron-icon src="images/bluemix.png"></iron-icon><a href="http://bluemix.net" target="_blank"> Running on Bluemix.</a>
               </div>          
-              <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/">Designed with Polymer web components</a></div>
+              <div><iron-icon src="images/polymer-logo.png"></iron-icon><a href="https://www.polymer-project.org/1.0/" target="_blank">Designed with Polymer web components</a></div>
               </paper-material>
           </div>    
               <paper-toast id="toast3" text="This user is currently logged in. Please choose a different name"></paper-toast>
+              <paper-toast id="toast4" text="Please enter a name with no spaces"></paper-toast>
         </section>
 
           <section data-route="home">

@@ -23,6 +23,9 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+
 
 <dom-module id="my-places" name="my-places">
 
@@ -44,16 +47,16 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       .item {
 			@apply(--layout-horizontal);
 			
-			margin: 16px 16px 0 16px;
-			padding: 5px;
+			margin: 0px 0px 0px 0px;
+			padding: 20px;
 			border-radius: 8px;
 			background-color: white;
 			border: 1px solid #ddd;
 		}
       .item:focus,
       .item.selected:focus {
-        outline: 1;
-        background-color: #fff;
+        outline: 0;
+        background-color: #ddd;
       }
       .item.selected .star {
         color: var(--paper-blue-600);
@@ -76,16 +79,19 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       }
       .primary {
         font-size: 16px;
+        /*color: white;*/
       }
       .secondary {
         font-size: 14px;
+        padding-top: 10px;
       }
       .dim {
-        color: gray;
+        color: grey;
       }
       .star {
         width: 24px;
         height: 24px;
+        --iron-icon-fill-color: var(--paper-green-300);
       }
       iron-list {
 			background-color: var(--paper--blue-600);
@@ -141,6 +147,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 	  }
 	paper-material {
         display: inline-block;
+        /*background: #757575; darker items*/
         background: white;
         box-sizing: border-box;
         margin-bottom: 4px;
@@ -177,12 +184,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
   		<div class="flex horizontal layout">
 		<div class="flex vertical layout">
           <!-- Main List for the items -->
-          <div align="center" id="empty-tag-panel">
-           <paper-material>These are places you marked on the map. Tap the <iron-icon icon="maps:my-location" tabindex="0"></iron-icon> to go there on the map.</paper-material>
+        <div style="/*color: white;*/ width: 100%" align="center" id="empty-places-panel">
+           <paper-material color="white">These are places you marked on the map. Tap the <iron-icon icon="maps:my-location" class="star"></iron-icon> to go there on the map.</paper-material>
          </div>
          <iron-list style="margin-top: 5px" id="itemsList" items="[[ajaxGetmarksResponse.marked]]">
             <template>
-              <div>
                 <div tabindex="0" aria-label="somelabel">
                   <!-- <img class="avatar" src="[[item.image]]"> -->
                   <div class="pad">
@@ -197,7 +203,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
                   </div>
                 </div>
                 <div class="border"></div>
-              </div>
             </template>
           </iron-list>
         </div>
@@ -235,6 +240,7 @@ Polymer({
 
 	getMarksResponse: function() {
 		console.log("Get marks response: " + JSON.stringify(this.ajaxGetmarksResponse));
+    document.querySelector('paper-progress').disabled = true;
     this.fire('iron-signal', {name: "listofplaces" , data: this.ajaxGetmarksResponse});
 	},
 
@@ -265,14 +271,14 @@ Polymer({
     }
 
     this.$.deletemark.body = JSON.stringify(deleteMarkBody);
-
+    document.querySelector('paper-progress').disabled = false;
     this.$.deletemark.generateRequest();
   },
 
   deleteMarkResponse: function() {
     console.log('[my-places]: deleteMarkResponse - ' + JSON.stringify(this.ajaxDeleteMarkResponse));
-
-    document.querySelector('#putmark').generateRequest();
+    document.querySelector('paper-progress').disabled = true;
+    document.querySelector('#getmarks').generateRequest();
   }
 
 });

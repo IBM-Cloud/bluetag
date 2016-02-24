@@ -60,7 +60,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <template>
 <div>
     <div class="horizontal-section">
-        <paper-progress class=myprogress disabled indeterminate></paper-progress><br>
+        <br>
         <paper-button class="ripple blue" raised
             on-click="clickHandler">Go</paper-button>        
 
@@ -116,6 +116,7 @@ Polymer({
     //document.querySelector('paper-menu').hidden = false;
 		console.log("inside submit clickHandler");		
 		//this.fire("kick", {q: this.value});
+    document.querySelector('paper-progress').disabled = false;
     document.getElementById("register").generateRequest();
 
    },
@@ -133,7 +134,7 @@ Polymer({
   
   regResponse: function() {
     var nameResp = this.ajaxResponse.result;
-    console.log('[get-usenrame] regResponse ' + nameResp);
+    console.log('[get-username] regResponse ' + nameResp);
     var apppages = document.querySelector('iron-pages');
     if (nameResp == 'success'){
       this.fire("kick", {q: this.value}); //fire event to begin opening socket in app.js
@@ -186,12 +187,16 @@ Polymer({
         document.getElementById("tagged").generateRequest();
         document.getElementById("getmarks").generateRequest();
     } else if (nameResp == 'user already exists; in use') {
-      console.log('[get-username] User already in use; use different username');
+      console.log('[get-username]:regResponse -  User already in use; use different username');
       document.querySelector('#toast3').show();
       document.querySelector('paper-progress').disabled = true;
-    }
-
+    } else if(nameResp == 'name and id should not have spaces') {
+      console.log('[get-username]: regResponse - username contained spaces - invalid')
+      document.querySelector('paper-progress').disabled = true;
+      document.querySelector('#toast4').show();
    }
+
+ }
 					
 });
 </script>

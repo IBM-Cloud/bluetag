@@ -78,13 +78,14 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     }
     .primary {
         font-size: 16px;
+        color: white;
     }
     .secondary {
         font-size: 14px;
         padding-top: 10px;
     }
     .dim {
-        color: gray;
+        color: white;
     }
     .star {
         width: 24px;
@@ -145,7 +146,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
     }
 	 paper-material {
         display: inline-block;
-        background: white;
+        background: #757575;
         box-sizing: border-box;
         margin-bottom: 4px;
         padding: 16px;
@@ -168,8 +169,8 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <div class="flex horizontal layout">
 		<div class="flex vertical layout">
           <!-- Main List for the items -->
-         <div align="center" id="empty-tagged-panel">
-           <paper-material>People you tag or add from search will be saved here. Tap <iron-icon icon="maps:near-me" class="star" ></iron-icon> to put them on the map.</paper-material>
+         <div style="color: white" align="center" id="empty-tagged-panel">
+           <paper-material color="white">People you tag or add from search will be saved here. Tap <iron-icon icon="maps:near-me" class="star" ></iron-icon> to put them on the map.</paper-material>
          </div>
           <iron-list style="margin-top: 0px" id="list" items="{{ajaxTaggedResponse.tagged}}" as="item">
             <template>
@@ -220,7 +221,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       on-response="untagResponse">
     </iron-ajax>
 
-    <paper-toast id="playeroffline" text="This player is offline."> <paper-button on-click="goBackToMap" class="colorful"> Go back to Map </paper-button></paper-toast>
+    <!-- <paper-toast id="playeroffline" text="This player is offline."> <paper-button on-click="goBackToMap" class="colorful"> Go back to Map </paper-button></paper-toast> -->
     <paper-toast id="contactremoved" text="Removed contact"></paper-toast>
 	</template>
 	
@@ -268,6 +269,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 		
 		taggedListResponse: function() {
 			console.log("Tagged people response: " + this.ajaxTaggedResponse.tagged)
+      document.querySelector('paper-progress').disabled = true;
 		},
 		updateTagged: function() {
 			console.log("Updating tagged list");
@@ -286,6 +288,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
       console.log('Response from trying to find a player: ' + JSON.stringify(this.ajaxFindPlayerResponse.latitude));
 
       if (this.ajaxFindPlayerResponse.latitude !== 0 && this.ajaxFindPlayerResponse.longitude !== 0) {
+        document.querySelector('ws-element').send('');
         document.querySelector('#find-contact-marker').latitude = this.ajaxFindPlayerResponse.latitude;
         document.querySelector('#find-contact-marker').longitude = this.ajaxFindPlayerResponse.longitude;
 
@@ -317,7 +320,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         username: e.target.getAttribute('data-args')
       }
       this.$.untag.body = JSON.stringify(untagRequestBody);
-
+      document.querySelector('paper-progress').disabled = false;
       this.$.untag.generateRequest();
     },
     untagResponse: function() {

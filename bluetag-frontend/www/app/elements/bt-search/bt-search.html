@@ -26,8 +26,6 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../ws-element/ws-element.html">
@@ -70,14 +68,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         vertical-align: middle;
         margin-bottom: 30px;
       }
-      paper-menu {
-        pointer-events: auto;
-      }
     </style>
     
   <template>
         <paper-input id="searchinput" disabled no-label-float type="bt-search"
-            label="Search" on-keyup="doSearch" value={{searchValue}} autosave="test" results="5"><iron-icon icon="search" prefix></iron-icon>
+            label="Search users.." on-keyup="doSearch" value={{searchValue}} autosave="test" results="5"><iron-icon icon="search" prefix></iron-icon>
         </paper-input>
        
         <ws-element url='[[url]]' protocol="echo-protocol"></ws-element>
@@ -89,8 +84,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
           <paper-material elevation="1">
            
                <span>{{item}}</span>
-               <div align="right"><iron-icon icon="social:person-add" tabindex="0" raised on-click="addcontact" data-name="{{value}}"></iron-icon></div>
-            
+               <div align="right">
+               <iron-icon id="addcontacticon" icon="social:person-add" tabindex="0" raised on-click="addcontact" data-name="{{value}}"></iron-icon>
+               
+               <iron-icon id="mapplayericon" icon="maps:near-me" tabindex="0" raised on-click="findPlayer" data-args$="[[item]]"></iron-icon>
+               </div>
             </paper-material>
               </template>
           </iron-list>
@@ -146,6 +144,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
           this.searchResults = JSON.parse(message.detail).processedSearchResults;
 
           console.log('handleMsg: array of names:' + searchResults);
+          document.querySelector('paper-progress').disabled = true;
           
           //set searchResults inthe bt-search object.  this.searchResults is not part of bt-search
           document.querySelector('bt-search').searchResults = searchResults;
@@ -169,10 +168,12 @@ All Rights Reserved. Licensed Materials - Property of IBM.
 
                 if (wsElement.readyState() === 1) {
                   wsElement.send(this.searchValue);
+                  document.querySelector('paper-progress').disabled = false;
                 } else {
                   console.log('Search socket closed. Re-establishing.');
                     wsElement.open();
                     wsElement.send(this.searchValue);
+                    document.querySelector('paper-progress').disabled = false;
                 }
               
             //}
@@ -182,11 +183,13 @@ All Rights Reserved. Licensed Materials - Property of IBM.
           console.log(this.value + ' is going to add ' + e.model.item + ' as a contact, using this url ' + this.tagUrl);
           var addcontactbody = {_id: this.value, username: e.model.item};
           this.$.addcontact.body = JSON.stringify(addcontactbody);
+          document.querySelector('paper-progress').disabled = false;
           document.getElementById('addcontact').generateRequest();
         },
 
         addContactResponse: function () {
           console.log('[bt-search]:addContactResponse - ' + JSON.stringify(this.ajaxAddContactResponse));
+          document.querySelector('paper-progress').disabled = true;
 
           if (this.ajaxAddContactResponse.result === 'already tagged') {
             console.log('[bt-search]:addContactResponse - already tagged');
@@ -201,6 +204,11 @@ All Rights Reserved. Licensed Materials - Property of IBM.
           this.searchValue = '';
           document.querySelector('ws-element').send('');
 
+        },
+
+        findPlayer: function(e) {
+
+          document.querySelector('get-tagged').findPlayer(e);
         }
 
       });

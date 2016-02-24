@@ -72,18 +72,20 @@ var env = require('../env-config.json');
 	        appuser = e.detail.q;
 	
 	        //create the location service webSocket
-	        locationSocket = new WebSocket(env.location + 'wsLocationResource');
-	        locationSocket.onopen = function(msg) {console.log('Location service webSocket Open: ' + JSON.stringify(msg));};
-	        locationSocket.onmessage = function(msg) {console.log('Location service webSocket onMessage: ' + JSON.stringify(msg));};
-	
+            app.openLocationSocket();
+	        // locationSocket = new WebSocket(env.location + 'wsLocationResource');
+	        // locationSocket.onopen = function(msg) {console.log('Location service webSocket Open: ' + JSON.stringify(msg));};
+	        // locationSocket.onmessage = function(msg) {console.log('Location service webSocket onMessage: ' + JSON.stringify(msg));};
+         //    locationSocket.onclose = function(msg) {console.log('Location service websocket onclose: ' + JSON.stringify(msg));};
+	var locationTimer = setInterval(app.locationTimer, 60000);
 	        document.querySelector('my-map').addEventListener('locupdate', function(e) {
 	            console.log('Location changed: ' + 'lat: ' + e.detail.lat + ' lon: ' + e.detail.lon);
 		
     	        if (appuser !== null) {
     		        var userloc = {
     						_id: appuser,
-    						longitude: e.detail.lat,
-    						latitude: e.detail.lon };
+    						longitude: e.detail.lon,
+    						latitude: e.detail.lat };
                     var userlocJSON = JSON.stringify(userloc)
 
     		        console.log('Sending location update over socket: ' + userlocJSON );
@@ -94,8 +96,8 @@ var env = require('../env-config.json');
                     } else {
                         setTimeout( function () {
                             console.log('my-map.locupdate event handler, open websocket, wait 500ms');
-                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                        }, 500);
+                            app.openLocationSocket();
+                        }, 1000);
                         console.log('my-map.locupdate event handler, sending loc update over websocket');
                         locationSocket.send(userlocJSON);
                     }				  
@@ -118,6 +120,8 @@ var env = require('../env-config.json');
 
             //console.log('geting single position to center map once: ' + singleLat + ' , ' + singleLon);
             //TODO why g-mark AND markitlat?
+            document.querySelector('#latdiv').innerHTML = singleLat;
+                document.querySelector('#londiv').innerHTML = singleLon;
             document.querySelector('#g-map').latitude = singleLat;
             document.querySelector('#g-map').longitude = singleLon;
 
@@ -183,7 +187,7 @@ var env = require('../env-config.json');
                             console.log('getWatchPosition callback, setTimeout');
                             setTimeout( function () {
                                 console.log('getWatchPosition callback, create new websocket and wait 1s...');
-                                locationSocket = new WebSocket(env.location + 'wsLocationResource');
+                                app.openLocationSocket();
                             }, 1000);
                             console.log('getWatchPosition callback, sending loc update over websocket');
                             locationSocket.send(userlocJSON);
@@ -227,7 +231,7 @@ var env = require('../env-config.json');
 	    document.querySelector('get-username').url = JSON.parse(urls).register + 'api/register/';
 	    document.querySelector('get-taggable').url = JSON.parse(urls).engine;
 	    document.querySelector('get-taggable').tagUrl = JSON.parse(urls).tag + 'api/tag/';
-        document.querySelector('get-tagged').untagUrl = JSON.parse(urls).tag + 'api/tag/untag/';
+        document.querySelector('get-tagged').untagUrl = JSON.parse(urls).tag + 'api/untag/';
 	    document.querySelector('get-tagged').url = JSON.parse(urls).tag;
         document.querySelector('get-tagged').findPlayerUrl = (JSON.parse(urls).location + 'api/getlocation/').replace('ws', 'http');
 	    document.querySelector('mark-it').urlAddMark = JSON.parse(urls).tag + 'api/markit/newmark/';
@@ -237,6 +241,11 @@ var env = require('../env-config.json');
         document.querySelector('bt-search').tagUrl = JSON.parse(urls).tag + 'api/tag/';
 
 	    document.querySelector('ws-element').open(); //TODO opening search socket after url is known - need to change this to work within bt-search
+
+    document.querySelector('google-map').addEventListener('google-map-dragstart', function(e){
+        console.log('[app-js] - map dragged, disabling automatic map recenter');
+        document.querySelector('#locupdate-center').setAttribute('value', 'false');
+    });
 
     });
 
@@ -275,7 +284,6 @@ var env = require('../env-config.json');
 
     //TODO do we need this one and the above getCurrentPosition?
     app.singleUpdateLocation = function() {
-        if (document.querySelector('#onlyupdateonpress').active){
   	        console.log('Single location update');
 
             navigator.geolocation.getCurrentPosition( function(singlePos) {
@@ -284,6 +292,8 @@ var env = require('../env-config.json');
                 var singleLon = singlePos.coords.longitude;
 
                 console.log('getting single position to center map once: ' + singleLat + ' , ' + singleLon);
+                document.querySelector('#latdiv').innerHTML = singleLat;
+                document.querySelector('#londiv').innerHTML = singleLon;
                 document.querySelector('#g-map').latitude = singleLat;
                 document.querySelector('#g-map').longitude = singleLon;
 
@@ -298,16 +308,15 @@ var env = require('../env-config.json');
 
                     var userloc = {
                         _id: appuser,
-                        longitude: singleLat,
-                        latitude: singleLon };
+                        longitude: singleLon,
+                        latitude: singleLat };
                 
                     try {
                         console.log('Trying to send through socket: ' + JSON.stringify(userloc));
                         if(locationSocket.readyState === 1){
                         locationSocket.send(JSON.stringify(userloc));
                         } else {
-                            locationSocket = new WebSocket(env.location + 'wsLocationResource');
-                            locationSocket.send(JSON.stringify(userloc));
+                            app.openLocationSocket();
                         }
                         } catch(err) {
                         console.log('Failed because: ' + err.message);
@@ -319,10 +328,7 @@ var env = require('../env-config.json');
                 console.warn('ERROR getWatchPosition callback: ' + error.code + ': ' + error.message);
             }
             ); //end navigator.geolocation.getCurrentPosition
-            } else {
-                console.log('Pause automatic updates in settings menu to use this');
-                document.querySelector('#refreshtooltip').playAnimation();
-            }
+
         };
 
     app.showSearchMenu = function() {
@@ -330,9 +336,34 @@ var env = require('../env-config.json');
         document.querySelector('#search-dropdown').open();
     };
 
+    app.openLocationSocket = function () {
+        locationSocket = new WebSocket(env.location + 'wsLocationResource');
+            locationSocket.onopen = function(msg) {
+                app.singleUpdateLocation();
+                console.log('Location service webSocket Open: ' + JSON.stringify(msg));
+
+            };
+            locationSocket.onmessage = function(msg) {console.log('Location service webSocket onMessage: ' + JSON.stringify(msg));};
+            locationSocket.onclose = function(msg) {
+
+                console.log('Location service websocket onclose: ' + JSON.stringify(msg));
+                setTimeout(app.openLocationSocket, 5000);
+            };
+
+    };
+
+    app.locationTimer = function() {
+        console.log('ping location socket');
+        locationSocket.send('---ping---');
+    };
+
     // Scroll page to top and expand header
     app.scrollPageToTop = function() {
         document.getElementById('mainContainer').scrollTop = 0;
+    };
+
+    app.goBackToMap = function() {
+        app.route = 'home'
     };
 
     app.addContactTooltip = function() {
