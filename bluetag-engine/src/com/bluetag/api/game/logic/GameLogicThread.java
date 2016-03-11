@@ -1,23 +1,3 @@
-// COPYRIGHT LICENSE: This information contains sample code provided in source
-// code form. You may copy, modify, and distribute these sample programs in any 
-// form without payment to IBM for the purposes of developing, using, marketing 
-// or distributing application programs conforming to the application programming 
-// interface for the operating platform for which the sample code is written. 
-// 
-// Notwithstanding anything to the contrary, IBM PROVIDES THE SAMPLE SOURCE CODE 
-// ON AN "AS IS" BASIS AND IBM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, 
-// BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, 
-// SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND ANY WARRANTY OR 
-// CONDITION OF NON-INFRINGEMENT. IBM SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT,
-// INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR
-// OPERATION OF THE SAMPLE SOURCE CODE. IBM HAS NO OBLIGATION TO PROVIDE
-// MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS TO THE SAMPLE
-// SOURCE CODE.
-// 
-// (C) Copyright IBM Corp. 2015.
-// 
-//All Rights Reserved. Licensed Materials - Property of IBM. 
-
 package com.bluetag.api.game.logic;
 
 import java.io.IOException;
@@ -58,7 +38,7 @@ public class GameLogicThread extends Thread {
 
 	HashMap<String, ArrayList<LocationModel>> taggableDB = new HashMap<String, ArrayList<LocationModel>>();
 	HashMap<String, ArrayList<String>> distancesDB = new HashMap<String, ArrayList<String>>();
-	private final int maxTaggableDistance = 10;
+	private final int maxTaggableDistance = 100;
 
 	static CloudantCredential cc = new CloudantCredential();
 	//private String toConvert = cc.getCloudantUsername() + ":" + cc.getCloudantPassword();
@@ -107,11 +87,11 @@ public class GameLogicThread extends Thread {
 							//LOGGER.info("Distance between " + loc1.get_id() + " and " + loc2.get_id() + " is " + d);
 										
 							if (d<= maxTaggableDistance) {
-								if (taggedDB.get(loc1.get_id()) != null && !taggedDB.get(loc1.get_id()).contains(loc2.get_id()))  {
+								//if (taggedDB.get(loc1.get_id()) != null && !taggedDB.get(loc1.get_id()).contains(loc2.get_id()))  {
 									loc2.setDistance(new BigDecimal(d).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 									taggableDB.get(loc1.get_id()).add(loc2);
 									distancesDB.get(loc1.get_id()).add(truncate(new Double(distance(loc1.getLatitude(), loc2.getLatitude(), loc1.getLongitude(), loc2.getLongitude(),0, 0)).toString()));				
-									}	
+									//}	
 								}
 							}
 						}
@@ -121,7 +101,7 @@ public class GameLogicThread extends Thread {
 				LOGGER.info("Distances: " + distancesDB.toString());
 
 				// update global database
-				DatabaseClass.setTaggabledDB(taggableDB);
+				DatabaseClass.setTaggableDB(taggableDB);
 				DatabaseClass.setDistancesDB(distancesDB);
 			} catch (Exception e) {
 				e.printStackTrace();

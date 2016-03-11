@@ -283,13 +283,23 @@ All Rights Reserved. Licensed Materials - Property of IBM.
             position: playerLatLng,
             map: currentMapInstance,
             icon: 'images/closeplayericon.png',
-            title: taggableInfo[i]._id,
-            info: taggableInfo[i]._id
+            title: taggableInfo[i]._id
           });
+            attachMarker(marker, taggableInfo[i]._id);
             this.markers.push(marker);
             //console.log('Pushed this marker: ' + this.marker);
             //console.log('Markers is now : ' + this.markers)
 
+        }
+
+        function attachMarker(marker, message) {
+          var infoWindow = new google.maps.InfoWindow({
+            content: message
+          });
+
+          marker.addListener('click', function() {
+            infoWindow.open(marker.get('map'), marker);
+          });
         }
 
 			},

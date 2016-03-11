@@ -291,6 +291,7 @@ All Rights Reserved. Licensed Materials - Property of IBM.
         document.querySelector('ws-element').send('');
         document.querySelector('#find-contact-marker').latitude = this.ajaxFindPlayerResponse.latitude;
         document.querySelector('#find-contact-marker').longitude = this.ajaxFindPlayerResponse.longitude;
+        document.querySelector('#find-contact-marker').title = this.ajaxFindPlayerResponse._id;
 
       //This global value is defined by iron-meta in app-globals.html. Setting this to false here
       //to stop map from re-centering on a location update when user is attemping to view
